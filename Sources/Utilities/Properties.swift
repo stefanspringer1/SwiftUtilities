@@ -1,5 +1,6 @@
 import Foundation
 
+/// Escpape characters in a text that is to be saved as a value in a property file.
 fileprivate func escapeInSimplePropertiesList(_ text: String) -> String {
     return text
         .replacingOccurrences(of: "\\", with: "\\\\")
@@ -9,6 +10,7 @@ fileprivate func escapeInSimplePropertiesList(_ text: String) -> String {
         .replacingOccurrences(of: "#", with: "\\#")
 }
 
+/// Unescpape characters in a text that is being read from a property file.
 fileprivate func unescapeInSimplePropertiesList(_ text: String) -> String {
     return text.components(separatedBy: "\\\\").map { $0
         .replacingOccurrences(of: "\\#", with: "#")
@@ -19,9 +21,9 @@ fileprivate func unescapeInSimplePropertiesList(_ text: String) -> String {
     }.joined(separator: "\\")
 }
 
-/**
- Comments ("# ...") are only considered when the (whitespace trimmed) line is started by "#" or there is a whitespace before it!
- */
+/// Read a properties file (with "...=..." lines).
+///
+/// Comments ("# ...") are only considered when the (whitespace trimmed) line is started by "#" or there is a whitespace before it!
 public func readSimplePropertiesList(path: String, errorHandler: ((String) -> ())? = nil) -> [String:String] {
     var result = [String:String]()
     var lineNumber = 0
@@ -66,6 +68,7 @@ public func readSimplePropertiesList(path: String, errorHandler: ((String) -> ()
     return result
 }
 
+/// Write a properties file (with "...=..." lines).
 public func writeSimplePropertiesList(properties: [String:String], path: String, title: String? = nil, lineEnding: String = "\n", errorHandler: ((String) -> ())? = nil) {
     do {
         let fileManager = FileManager.default

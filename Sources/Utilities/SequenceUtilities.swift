@@ -2,6 +2,7 @@ import Foundation
 
 public extension Sequence {
     
+    /// Async version of for each.
     func forEachAsync (
         _ operation: (Element) async -> Void
     ) async {
@@ -10,6 +11,7 @@ public extension Sequence {
         }
     }
     
+    /// Async version of for each (throwing).
     func forEachAsync (
         _ operation: (Element) async throws -> Void
     ) async rethrows {
@@ -18,6 +20,7 @@ public extension Sequence {
         }
     }
     
+    /// Async version of for map.
     func mapAsync<T>(
         _ transform: (Element) async -> T
     ) async -> [T] {
@@ -30,6 +33,7 @@ public extension Sequence {
         return values
     }
     
+    /// Async version of for map (throwing).
     func mapAsync<T>(
         _ transform: (Element) async throws -> T
     ) async rethrows -> [T] {
@@ -42,6 +46,7 @@ public extension Sequence {
         return values
     }
     
+    /// Take from a sequence while condition is fullfilled (corresponds to `prefix` from Swift Foundation).
     @inlinable func takeWhile(_ condition: (Self.Element) throws -> Bool) rethrows -> [Self.Element] {
         return try self.prefix(while: condition)
     }

@@ -1,10 +1,6 @@
 import Foundation
 
-/// This calsls can be used to print to standard error as follows:
-///
-/// ```Swift
-/// print("hello", to: &StandardError.instance)
-/// ```
+/// This class can be used to print to standard error output using `print("hello", to: &StandardError.instance)`.
 public class StandardError: TextOutputStream {
     
     private static let standardError = FileHandle.standardError
@@ -28,7 +24,6 @@ extension FileHandle {
     
 }
 
-
 /// This is how a file size is described.
 public typealias FileSize = UInt64
 
@@ -45,6 +40,7 @@ extension Array where Element == URL {
     
 }
 
+/// An error occurring with the copy operations defined in this library.
 public enum CopyError: Error {
     case notAFileError(String)
     case notADirectoryError(String)
@@ -54,16 +50,18 @@ public enum CopyError: Error {
     case directoryExistsError(String)
 }
 
+/// An error occurring with the copy operations defined in this library.
 public enum FileUtilExceptions: Error {
     case assertionError(String)
 }
 
-
+/// A marker to know if we are testing and want to produce certain errors deliberately.
 public enum TestMode {
     case NormalRun
     case CorruptBackup // corrupt backup to test that that gets noticed
 }
 
+/// Test a string if it is an absolute path.
 extension String {
         public var isAbsolutePath: Bool { contains(regex: #"(\/|[A-Za-z]:).*"#) }
 }

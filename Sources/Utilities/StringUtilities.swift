@@ -77,6 +77,9 @@ public extension StringProtocol {
         return String(self[...index])
     }
     
+    /// Test if a text contains a part matching a certain regular expression.
+    ///
+    /// Use a regular expression of the form "^...$" to test if the whole text matches the expression.
     func contains(regex: String) -> Bool {
         var match: Range<String.Index>?
         autoreleasepool {
@@ -85,6 +88,9 @@ public extension StringProtocol {
         return match != nil
     }
     
+    /// Replace all text matching a certain certain regular expression.
+    ///
+    /// Use lookarounds (e.g. lookaheads) to avoid having to apply your regular expression several times.
     func replace(regex: String, by theReplacement: String) -> String {
         var result: String = ""
         autoreleasepool {
@@ -93,6 +99,9 @@ public extension StringProtocol {
         return result
     }
     
+    /// Substring of a string until a ceratin string occurs.
+    ///
+    /// If the substring is not found, the whole string is returned.
     func until(substring: String) -> String {
         if let range = self.range(of: substring) {
             return String(self[self.startIndex..<range.lowerBound])
@@ -102,6 +111,9 @@ public extension StringProtocol {
         }
     }
     
+    /// Substring of a string after a ceratin string occurs.
+    ///
+    /// If the substring is not found, the whole string is returned.
     func after(substring: String) -> String {
         if let range = self.range(of: substring) {
             return String(self[range.lowerBound..<self.endIndex].dropFirst().dropLast())
@@ -111,6 +123,7 @@ public extension StringProtocol {
         }
     }
     
+    /// If the string is empty, return nil, else return self.
     func nonEmptyOrNil() -> Self? {
         self.isEmpty ? nil : self
     }
@@ -120,20 +133,19 @@ public extension StringProtocol {
 
 public extension String {
     
+    /// Create a string from a collection of `UnicodeScalar`.
     init<S: Sequence>(unicodeScalars ucs: S) where S.Iterator.Element == UnicodeScalar {
         var s = ""
         s.unicodeScalars.append(contentsOf: ucs)
         self = s
     }
     
-    var nonEmpty: String? {
-        self.isEmpty ? nil : self
-    }
-    
+    /// Trimming all whitespace.
     func trim() -> String {
         return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
+    /// Trimming left whitespace.
     func trimLeft() -> String {
         guard let index = firstIndex(where: { !CharacterSet(charactersIn: String($0)).isSubset(of: .whitespaces) }) else {
             return ""
@@ -141,6 +153,7 @@ public extension String {
         return String(self[index...])
     }
     
+    /// Trimming right whitespace.
     func trimRight() -> String {
         guard let index = lastIndex(where: { !CharacterSet(charactersIn: String($0)).isSubset(of: .whitespaces) }) else {
             return ""
@@ -148,6 +161,9 @@ public extension String {
         return String(self[...index])
     }
     
+    /// Test if a text contains a part matching a certain regular expression.
+    ///
+    /// Use a regular expression of the form "^...$" to test if the whole text matches the expression.
     func contains(regex: String) -> Bool {
         var match: Range<String.Index>?
         autoreleasepool {
@@ -156,6 +172,9 @@ public extension String {
         return match != nil
     }
     
+    /// Replace all text matching a certain certain regular expression.
+    ///
+    /// Use lookarounds (e.g. lookaheads) to avoid having to apply your regular expression several times.
     func replace(regex: String, by theReplacement: String) -> String {
         var result = self
         autoreleasepool {
@@ -164,6 +183,9 @@ public extension String {
         return result
     }
     
+    /// Replace all text matching a certain certain regular expression, repeat it while teh text is changing.
+    ///
+    /// Use lookarounds (e.g. lookaheads) to avoid the use of this method!
     func replaceWhileChanging(regex: String, by theReplacement: String) -> String {
         var result = self
         var newResult = self
@@ -174,6 +196,9 @@ public extension String {
         return result
     }
     
+    /// Substring of a string until a ceratin string occurs.
+    ///
+    /// If the substring is not found, the whole string is returned.
     func until(substring: String) -> String {
         if let range = self.range(of: substring) {
             return String(self[self.startIndex..<range.lowerBound])
@@ -183,6 +208,9 @@ public extension String {
         }
     }
     
+    /// Substring of a string after a ceratin string occurs.
+    ///
+    /// If the substring is not found, the whole string is returned.
     func after(substring: String) -> String {
         if let range = self.range(of: substring) {
             return String(self[range.lowerBound..<self.endIndex].dropFirst().dropLast())
@@ -192,6 +220,7 @@ public extension String {
         }
     }
     
+    /// If the string is empty, return nil, else return self.
     func nonEmptyOrNil() -> String? {
         self.isEmpty ? nil : self
     }
@@ -199,11 +228,15 @@ public extension String {
 
 public extension Array where Element == String? {
     
+    /// Join all strings in the array using a separator, but filter out nils,
+    /// and if the array is then empty, return nil.
     func joined(separator: String) -> String? {
         let nonNils = self.filter { $0 != nil } as! [String]
         return nonNils.isEmpty ? nil : nonNils.joined(separator: separator)
     }
     
+    /// Join all strings in the array using a separator, but filter out nils and
+    /// empty strings, and if the array is then empty, return nil.
     func joinedNonEmpties(separator: String) -> String? {
         let nonEmpties = self.filter { !($0?.isEmpty ?? false) } as! [String]
         return nonEmpties.isEmpty ? nil : nonEmpties.joined(separator: separator)

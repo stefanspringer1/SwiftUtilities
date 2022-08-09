@@ -1,5 +1,6 @@
 import Foundation
 
+/// An enumeration of possible platforms.
 public enum Platform {
     case macOSIntel
     case macOSARM
@@ -17,6 +18,7 @@ public enum Platform {
     }
 }
 
+/// Get the current platform.
 public func platform() -> Platform {
     #if os(macOS)
         #if arch(x86_64)
@@ -39,6 +41,25 @@ public func platform() -> Platform {
     #endif
 }
 
+/// Make an optional URL from an optional path.
+public func makeURL(fromPath path: String?) -> URL? {
+    if let path = path {
+        return URL(fileURLWithPath: path)
+    }
+    else {
+        return nil
+    }
+}
+
+/// Generate and return a temporary folder using an application name.
+///
+/// On Windows, use the value of the environment variable TEMP
+/// as the path of the grandparent folder of the temporary folder.
+///
+/// Else, the home directory is used as the path of the grandparent folder of the temporary folder.
+///
+/// For the actual temporary directory, ".\<application name>" and then "temp" are used
+/// as subdirectories (replace "<application name>" by the application name).
 public func getGeneralTemporaryFolder(applicationName: String) -> URL {
     var tempFolder: URL? = nil
     if platform() == Platform.WindowsIntel {
@@ -56,19 +77,13 @@ public func getGeneralTemporaryFolder(applicationName: String) -> URL {
     return tempFolder!
 }
 
-public func makeURL(fromPath path: String?) -> URL? {
-    if let path = path {
-        return URL(fileURLWithPath: path)
-    }
-    else {
-        return nil
-    }
-}
-
+/// Generate and return a temporary folder using an application name, using as grandparent directory the according argument
+/// or completely continues as in `getGeneralTemporaryFolder(applicationName:)`.
 public func generateTemporaryFolderForProcess(applicationName: String, temporaryFolder: String? = nil) -> URL {
     return (makeURL(fromPath: temporaryFolder) ?? getGeneralTemporaryFolder(applicationName: applicationName)).appendingPathComponent("\(applicationName)_" + UUID().description)
 }
 
+/// Get the path separator of the current platform ("/" or "\\").
 public func pathSeparator() -> String {
     return platform() == Platform.WindowsIntel ? "\\" : "/"
 }
