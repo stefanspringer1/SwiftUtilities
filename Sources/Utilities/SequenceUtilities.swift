@@ -10,7 +10,7 @@ public extension Sequence {
         }
     }
     
-    func forEachAsyncThrowing (
+    func forEachAsync (
         _ operation: (Element) async throws -> Void
     ) async rethrows {
         for element in self {
@@ -30,7 +30,7 @@ public extension Sequence {
         return values
     }
     
-    func mapAsyncThrowing<T>(
+    func mapAsync<T>(
         _ transform: (Element) async throws -> T
     ) async rethrows -> [T] {
         var values = [T]()
