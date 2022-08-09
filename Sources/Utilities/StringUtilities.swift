@@ -124,7 +124,7 @@ public extension StringProtocol {
     }
     
     /// If the string is empty, return nil, else return self.
-    func nonEmptyOrNil() -> Self? {
+    var nonEmptyOrNil: Self? {
         self.isEmpty ? nil : self
     }
 
@@ -221,7 +221,7 @@ public extension String {
     }
     
     /// If the string is empty, return nil, else return self.
-    func nonEmptyOrNil() -> String? {
+    var nonEmptyOrNil: String? {
         self.isEmpty ? nil : self
     }
 }
