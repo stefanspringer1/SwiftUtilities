@@ -1,3 +1,7 @@
+/*
+ Some definitions to be useful when working with files.
+*/
+
 import Foundation
 
 /// This class can be used to print to standard error output using `print("hello", to: &StandardError.instance)`.

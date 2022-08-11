@@ -1,4 +1,6 @@
-/// Definitons of some helpful data types.
+/*
+ Definitons of some helpful data types.
+*/
 
 import Foundation
 

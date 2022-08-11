@@ -1,3 +1,7 @@
+/*
+ Some definitions useful when working with lengths (e.g. in layouts).
+*/
+
 import Foundation
 
 fileprivate let U_LATIN_CAPITAL_LETTER_A = UnicodeScalar(0x0041)!

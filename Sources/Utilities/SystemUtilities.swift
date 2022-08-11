@@ -1,3 +1,7 @@
+/*
+ Some definitions useful e.g. to find out about the current platform.
+ */
+
 import Foundation
 
 /// An enumeration of possible platforms.

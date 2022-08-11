@@ -1,3 +1,7 @@
+/*
+ Some definitions useful when working with time, e.g. for measuring durations.
+ */
+
 import Foundation
 
 /// Get a string representation of the current time.

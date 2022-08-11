@@ -1,3 +1,7 @@
+/*
+ Definitions useful when working with sequences.
+ */
+
 import Foundation
 
 public extension Sequence {

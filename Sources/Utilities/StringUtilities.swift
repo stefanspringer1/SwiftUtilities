@@ -1,3 +1,7 @@
+/*
+ Definitions useful when working with string and substrings.
+ */
+
 import Foundation
 
 public extension String {
@@ -45,10 +49,6 @@ public extension StringProtocol {
     func appending<T: StringProtocol>(_ postfix: T?) -> String {
         if let postfix = postfix { return self.appending(postfix) } else { return self as? String ?? String(self) }
     }
-    
-}
-
-public extension StringProtocol {
     
     /// Removes whitespace  and newlines from left and right of self.
     ///

@@ -1,3 +1,7 @@
+/*
+ Some definitions for working with key-value properties lists in files.
+*/
+
 import Foundation
 
 /// Escpape characters in a text that is to be saved as a value in a property file.
