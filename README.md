@@ -14,7 +14,7 @@ Overview:
 - file `FileUtilities.swift`: Some definitions to be useful when working with files, e.g. `URL.files(withPattern:findRecursively:)` to find files. _Contains extensions of `FileHandle`, `URL`, `[URL]`, and `String`._
 - file `Lengths.swift`: Some definitions useful when working with lengths (e.g. in layouts).
 - file `Properties.swift`: Some definitions for working with key-value properties lists in files.
-- file `SequenceUtilities.swift`: Definitions useful when working with sequences. _Contains extensions of `Sequence`.
+- file `SequenceUtilities.swift`: Definitions useful when working with sequences. _Contains extensions of `Sequence`._
 - file `StringUtilities.swift`: Definitions useful when working with string and substrings. _Contains extensions of `String`, `[String]`, and `StringProtocol`._
 - file `SystemUtilities.swift`: Some definitions useful e.g. to find out about the current platform.
 - file `TimeUtilities.swift`: Some definitions useful when working with time, e.g. for measuring durations.
