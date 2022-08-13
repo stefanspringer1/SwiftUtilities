@@ -10,10 +10,10 @@ public struct ErrorWithDescription: LocalizedError, CustomStringConvertible {
     public init(_ message: String) {
         self.message = message
     }
-
-    public var description: String {
-        return message
-    }
+    
+    public var description: String { message }
+    
+    public var errorDescription: String? { message }
 }
 
 /// See `func ?!(...)`.
