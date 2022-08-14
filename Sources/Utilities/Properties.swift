@@ -28,6 +28,12 @@ fileprivate func unescapeInSimplePropertiesList(_ text: String) -> String {
 /// Read a properties file (with "...=..." lines).
 ///
 /// Comments ("# ...") are only considered when the (whitespace trimmed) line is started by "#" or there is a whitespace before it!
+public func readSimplePropertiesList(file: URL, errorHandler: ((String) -> ())? = nil) -> [String:String] {
+    return readSimplePropertiesList(path: file.path, errorHandler: errorHandler)
+}
+/// Read a properties file (with "...=..." lines).
+///
+/// Comments ("# ...") are only considered when the (whitespace trimmed) line is started by "#" or there is a whitespace before it!
 public func readSimplePropertiesList(path: String, errorHandler: ((String) -> ())? = nil) -> [String:String] {
     var result = [String:String]()
     var lineNumber = 0
@@ -70,6 +76,11 @@ public func readSimplePropertiesList(path: String, errorHandler: ((String) -> ()
         }
     }
     return result
+}
+
+/// Write a properties file (with "...=..." lines).
+public func writeSimplePropertiesList(properties: [String:String], file: URL, title: String? = nil, lineEnding: String = "\n", errorHandler: ((String) -> ())? = nil) {
+    writeSimplePropertiesList(properties: properties, path: file.path, title: title, lineEnding: lineEnding, errorHandler: errorHandler)
 }
 
 /// Write a properties file (with "...=..." lines).
