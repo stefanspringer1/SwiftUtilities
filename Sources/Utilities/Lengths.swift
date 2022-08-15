@@ -4,11 +4,6 @@
 
 import Foundation
 
-fileprivate let U_LATIN_CAPITAL_LETTER_A = UnicodeScalar(0x0041)!
-fileprivate let U_LATIN_CAPITAL_LETTER_Z = UnicodeScalar(0x005A)!
-fileprivate let U_LATIN_CAPITAL_LETTER_a = UnicodeScalar(0x0061)!
-fileprivate let U_LATIN_CAPITAL_LETTER_z = UnicodeScalar(0x007A)!
-
 /// An enumeration to desribe a length.
 public enum UnitOfLength: String, CaseIterable, CustomStringConvertible {
     
