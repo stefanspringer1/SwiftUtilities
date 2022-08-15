@@ -1,5 +1,5 @@
 /*
- Some definitions to be useful when working with characters.
+ Some definitions to be useful when working with characters, e.g. for characterizing them.
 */
 
 import Foundation

@@ -9,6 +9,7 @@ Build the documentation using DocC, e.g. in Xcode via the `Product` / `Build Doc
 Overview:
 
 - **AutoreleasepoolShim.swift:** Allowing you the use of auto-release pools to optimize memory footprint on Darwin platforms while maintaining compatibility with Linux where this API is not implemented (and not necessary).
+- **CharacterUtilities.swift:** Some definitions to be useful when working with characters, e.g. for characterizing them. _Contains extensions of `String` and `UnicodeScalar`._
 - **DataTypes.swift:** Definitons of some helpful data types.
 - **Errors.swift:** Definition of a basic error with desription, and of the usefule operastor `?!`.
 - **FileUtilities.swift:** Some definitions to be useful when working with files, e.g. `URL.files(withPattern:findRecursively:)` to find files. _Contains extensions of `FileHandle`, `URL`, `[URL]`, and `String`._
