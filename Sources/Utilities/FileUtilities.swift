@@ -3,6 +3,7 @@
 */
 
 import Foundation
+import ArgumentParser
 
 /// This class can be used to print to standard error output using `print("hello", to: &StandardError.instance)`.
 public class StandardError: TextOutputStream {
@@ -60,9 +61,9 @@ public enum FileUtilExceptions: Error {
 }
 
 /// A marker to know if we are testing and want to produce certain errors deliberately.
-public enum TestMode {
-    case NormalRun
-    case CorruptBackup // corrupt backup to test that that gets noticed
+public enum TestMode: String, ExpressibleByArgument {
+    case normalRun
+    case corruptBackup // corrupt backup to test that that gets noticed
 }
 
 /// Test a string if it is an absolute path.
@@ -287,7 +288,7 @@ public extension URL {
     /// Copying a file or a directory "safely", i.e. try to copy it sevaral times if necessary and throw an error if not finally copied.
     ///
     /// Files with name in `ignore` are ignored. The default for `ignore` is `[".DS_store", "Thumbs.db"]`.
-    func copySafely(destination: URL, ignore: [String] = [".DS_store", "Thumbs.db"], overwrite: Bool = false, tries: Int = 0, maxTries: Int = 5, secBeforeRetry: TimeInterval = 1, testMode : TestMode = TestMode.NormalRun) throws {
+    func copySafely(destination: URL, ignore: [String] = [".DS_store", "Thumbs.db"], overwrite: Bool = false, tries: Int = 0, maxTries: Int = 5, secBeforeRetry: TimeInterval = 1, testMode : TestMode = TestMode.normalRun) throws {
         let source = self
         
         if overwrite && (destination.isDirectory || destination.isFile) {
@@ -322,7 +323,7 @@ public extension URL {
     }
     
     /// Copying a file "safely", i.e. try to copy it sevaral times if necessary and throw an error if not finally copied.
-    private func fileCopySafely(destination: URL, overwrite: Bool = false, tries: Int = 0, maxTries: Int = 5, secBeforeRetry: TimeInterval = 1, testMode: TestMode = TestMode.NormalRun) throws {
+    private func fileCopySafely(destination: URL, overwrite: Bool = false, tries: Int = 0, maxTries: Int = 5, secBeforeRetry: TimeInterval = 1, testMode: TestMode = TestMode.normalRun) throws {
         if overwrite && destination.isFile {
             try destination.removeSafely(maxTries: maxTries, secBeforeRetry: secBeforeRetry)
         }
@@ -345,7 +346,7 @@ public extension URL {
             }
         }
         
-        if testMode == TestMode.CorruptBackup {
+        if testMode == TestMode.corruptBackup {
             try destination.corrupt()
         }
         
