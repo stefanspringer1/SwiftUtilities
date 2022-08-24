@@ -5,6 +5,18 @@
 import Foundation
 
 /// A wrapper around Set that can passed around by reference.
+public class Referenced<T> {
+    
+    public var data: T
+    
+    public init(data: T) {
+        self.data = data
+    }
+    
+}
+
+/*
+/// A wrapper around Set that can passed around by reference.
 public class ReferencedSet<T: Hashable> {
     
     public var set = Set<T>()
@@ -81,12 +93,12 @@ public class ReferencedDictionary<K: Hashable,V> {
         return dictionary.keys
     }
     
-}
+}*/
 
 /// A map of reference-type that has pairs as keys.
 public class ReferencedDictionaryForPairs<K1: Hashable,K2: Hashable,V> {
     
-    private var dictionary = [K1:ReferencedDictionary<K2,V>]()
+    private var dictionary = [K1:Referenced<Dictionary<K2,V>>]()
     
     public init() {}
     
@@ -94,12 +106,12 @@ public class ReferencedDictionaryForPairs<K1: Hashable,K2: Hashable,V> {
     
     public func put(key1: K1, key2: K2, value: V?) {
         let indexForKey1 = dictionary[key1] ?? {
-            let newIndex = ReferencedDictionary<K2,V>()
+            let newIndex = Referenced<Dictionary<K2,V>>(data: [K2:V]())
             dictionary[key1] = newIndex
             return newIndex
         }()
-        indexForKey1[key2] = value
-        if indexForKey1.isEmpty {
+        indexForKey1.data[key2] = value
+        if indexForKey1.data.isEmpty {
             dictionary[key1] = nil
         }
     }
@@ -111,7 +123,7 @@ public class ReferencedDictionaryForPairs<K1: Hashable,K2: Hashable,V> {
         }
         
         get {
-            return dictionary[key1]?[key2]
+            return dictionary[key1]?.data[key2]
         }
         
     }
