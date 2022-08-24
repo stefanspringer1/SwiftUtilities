@@ -9,7 +9,7 @@ public class Referenced<T> {
     
     public var referenced: T
     
-    public init(for referenced: T) {
+    public init(_ referenced: T) {
         self.referenced = referenced
     }
     
@@ -26,7 +26,7 @@ public class ReferencedDictionaryForPairs<K1: Hashable,K2: Hashable,V> {
     
     public func put(key1: K1, key2: K2, value: V?) {
         let indexForKey1 = dictionary[key1] ?? {
-            let newIndex = Referenced(for: [K2:V]())
+            let newIndex = Referenced([K2:V]())
             dictionary[key1] = newIndex
             return newIndex
         }()
