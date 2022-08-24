@@ -36,9 +36,7 @@ public class ReferencedArray<T: Any> {
         return array.popLast()
     }
     
-    public func last() -> T? {
-        return array.last
-    }
+    public var  last: T? { array.last }
     
     public func getAll() -> [T] {
         return array
