@@ -46,9 +46,8 @@ public class ReferencedArray<T: Any> {
     
 }
 
-
 /// A wrapper around Dictionary that can passed around by reference.
-public class Index<K: Hashable,V> {
+public class ReferencedDictionary<K: Hashable,V> {
     
     public var dictionary = [K:V]()
     
@@ -89,7 +88,7 @@ public class Index<K: Hashable,V> {
 /// A map of reference-type that has pairs as keys.
 public class PairedIndex<K1: Hashable,K2: Hashable,V> {
     
-    private var dictionary = [K1:Index<K2,V>]()
+    private var dictionary = [K1:ReferencedDictionary<K2,V>]()
     
     public init() {}
     
@@ -97,7 +96,7 @@ public class PairedIndex<K1: Hashable,K2: Hashable,V> {
     
     public func put(key1: K1, key2: K2, value: V?) {
         let indexForKey1 = dictionary[key1] ?? {
-            let newIndex = Index<K2,V>()
+            let newIndex = ReferencedDictionary<K2,V>()
             dictionary[key1] = newIndex
             return newIndex
         }()
