@@ -275,8 +275,8 @@ public extension URL {
         return notRemovableFiles as! [URL]
     }
     
-    /// Make a relative path relative to the argument as base, assuming `self` starts with the path to base.
-    func makePathRelative(to base: URL) throws -> [String] {
+    /// Find the components of the relative path relative to the argument as base, assuming `self` starts with the path to base.
+    func relativePathComponents(to base: URL) throws -> [String] {
         let basePath = base.pathComponents
         let selfPath = self.pathComponents
         guard basePath == Array(selfPath[..<basePath.count]) else {
@@ -307,7 +307,7 @@ public extension URL {
                     if fileURL.isFile {
                         let fileName = fileURL.lastPathComponent
                         if !ignore.contains(fileName) {
-                            let relativePath = try fileURL.makePathRelative(to: self)
+                            let relativePath = try fileURL.relativePathComponents(to: self)
                             let dest = URL(pathComponents: destination.pathComponents + relativePath)
                             var dir = dest
                             dir.deleteLastPathComponent()
