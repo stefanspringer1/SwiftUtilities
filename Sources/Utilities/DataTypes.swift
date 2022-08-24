@@ -32,6 +32,10 @@ public class ReferencedArray<T: Any> {
         array.append(value)
     }
     
+    public func popLast() -> T? {
+        return array.popLast()
+    }
+    
     public func getAll() -> [T] {
         return array
     }
