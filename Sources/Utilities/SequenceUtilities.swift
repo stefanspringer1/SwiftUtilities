@@ -7,6 +7,7 @@ import Foundation
 public extension Sequence {
     
     /// Async version of for each.
+    @available(macOS 10.15.0, *)
     func forEachAsync (
         _ operation: (Element) async -> Void
     ) async {
@@ -16,6 +17,7 @@ public extension Sequence {
     }
     
     /// Async version of for each (throwing).
+    @available(macOS 10.15.0, *)
     func forEachAsync (
         _ operation: (Element) async throws -> Void
     ) async rethrows {
@@ -25,6 +27,7 @@ public extension Sequence {
     }
     
     /// Async version of for map.
+    @available(macOS 10.15.0, *)
     func mapAsync<T>(
         _ transform: (Element) async -> T
     ) async -> [T] {
@@ -38,6 +41,7 @@ public extension Sequence {
     }
     
     /// Async version of for map (throwing).
+    @available(macOS 10.15.0, *)
     func mapAsync<T>(
         _ transform: (Element) async throws -> T
     ) async rethrows -> [T] {
