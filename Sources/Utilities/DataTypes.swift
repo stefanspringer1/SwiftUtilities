@@ -48,4 +48,19 @@ public class ReferencedDictionaryForPairs<K1: Hashable,K2: Hashable,V> {
         
     }
     
+    public var leftKeys: Dictionary<K1, Referenced<Dictionary<K2, V>>>.Keys { dictionary.keys }
+    
+    public func rightKeys(forLeftKey leftKey: K1) -> Dictionary<K2, V>.Keys? {
+        return dictionary[leftKey]?.referenced.keys
+    }
+    
+    public var rightKeys: Set<K2> {
+        var keys = Set<K2>()
+        leftKeys.forEach { leftKey in
+            rightKeys(forLeftKey: leftKey)?.forEach { rightKey in
+                keys.insert(rightKey)
+            }
+        }
+        return keys
+    }
 }
