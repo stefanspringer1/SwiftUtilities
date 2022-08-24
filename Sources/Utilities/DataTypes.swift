@@ -7,7 +7,7 @@ import Foundation
 /// A wrapper around Set that can passed around by reference.
 public class ReferencedSet<T: Hashable> {
     
-    private var set = Set<T>()
+    public var set = Set<T>()
     
     public init() {}
     
@@ -24,7 +24,7 @@ public class ReferencedSet<T: Hashable> {
 /// A wrapper around Array that can passed around by reference.
 public class ReferencedArray<T: Any> {
     
-    private var array = [T]()
+    public var array = [T]()
     
     public init() {}
     
@@ -34,6 +34,10 @@ public class ReferencedArray<T: Any> {
     
     public func popLast() -> T? {
         return array.popLast()
+    }
+    
+    public func last() -> T? {
+        return array.last
     }
     
     public func getAll() -> [T] {
@@ -46,40 +50,38 @@ public class ReferencedArray<T: Any> {
 /// A wrapper around Dictionary that can passed around by reference.
 public class Index<K: Hashable,V> {
     
-    private var _dictionary = [K:V]()
-    
-    public var dictionary: [K:V] { _dictionary }
+    public var dictionary = [K:V]()
     
     public func forEach(_ body: ((key: K, value: V)) throws -> Void) rethrows {
-        try _dictionary.forEach{ (key,value) in try body((key,value)) }
+        try dictionary.forEach{ (key,value) in try body((key,value)) }
     }
     
     public func forEach(_ body: ((key: K, value: V)) -> Void) {
-        _dictionary.forEach{ (key,value) in body((key,value)) }
+        dictionary.forEach{ (key,value) in body((key,value)) }
     }
     
     public init() {}
     
-    public var isEmpty: Bool { _dictionary.isEmpty }
+    public var isEmpty: Bool { dictionary.isEmpty }
     
     public func put(key: K, value: V) {
-        _dictionary[key] = value
+        dictionary[key] = value
     }
     
     public subscript(key: K) -> V? {
         
         set {
-            _dictionary[key] = newValue
+            dictionary[key] = newValue
         }
         
         get {
-            return _dictionary[key]
+            return dictionary[key]
         }
         
     }
     
     public var keys: Dictionary<K, V>.Keys {
-        return _dictionary.keys
+        return dictionary.keys
     }
     
 }
