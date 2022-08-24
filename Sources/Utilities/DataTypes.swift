@@ -64,3 +64,41 @@ public class ReferencedDictionaryForPairs<K1: Hashable,K2: Hashable,V> {
         return keys
     }
 }
+
+/// An `Index` can hold several values for one key.
+public class Index<K: Hashable,V: Hashable> {
+    
+    private var dictionary = [K:Referenced<Set<V>>]()
+    
+    public init() {}
+    
+    public var isEmpty: Bool { dictionary.isEmpty }
+    
+    public func put(key: K, value: V) {
+        let setForKey = dictionary[key] ?? {
+            let newSet = Referenced(Set<V>())
+            dictionary[key] = newSet
+            return newSet
+        }()
+        setForKey.referenced.insert(value)
+    }
+    
+    public func remove(forKey key: K, value: V) {
+        if let setForKey = dictionary[key] {
+            setForKey.referenced.remove(value)
+        }
+    }
+    
+    public func removeAll(forKey key: K, value: V) {
+        dictionary[key] = nil
+    }
+    
+    public subscript(key: K) -> Set<V>? {
+        
+        get {
+            return dictionary[key]?.referenced
+        }
+        
+    }
+    
+}
