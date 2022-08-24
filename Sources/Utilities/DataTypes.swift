@@ -86,7 +86,7 @@ public class ReferencedDictionary<K: Hashable,V> {
 }
 
 /// A map of reference-type that has pairs as keys.
-public class PairedIndex<K1: Hashable,K2: Hashable,V> {
+public class ReferencedDictionaryForPairs<K1: Hashable,K2: Hashable,V> {
     
     private var dictionary = [K1:ReferencedDictionary<K2,V>]()
     
