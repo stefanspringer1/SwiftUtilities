@@ -116,7 +116,7 @@ public extension StringProtocol {
     /// If the substring is not found, the whole string is returned.
     func after(substring: String) -> String {
         if let range = self.range(of: substring) {
-            return String(self[range.upperBound..<self.endIndex].dropFirst())
+            return String(self[range.upperBound..<self.endIndex])
         }
         else {
             return String(self)
