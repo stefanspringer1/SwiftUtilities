@@ -208,18 +208,6 @@ public extension String {
         }
     }
     
-    /// Substring of a string after a ceratin string occurs.
-    ///
-    /// If the substring is not found, the whole string is returned.
-    func after(substring: String) -> String {
-        if let range = self.range(of: substring) {
-            return String(self[range.lowerBound..<self.endIndex].dropFirst().dropLast())
-        }
-        else {
-            return self
-        }
-    }
-    
     /// If the string is empty, return nil, else return self.
     var nonEmptyOrNil: String? {
         self.isEmpty ? nil : self
