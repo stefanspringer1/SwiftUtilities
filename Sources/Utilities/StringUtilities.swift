@@ -111,12 +111,12 @@ public extension StringProtocol {
         }
     }
     
-    /// Substring of a string after a ceratin string occurs.
+    /// Substring of a string after a certain string occurs.
     ///
     /// If the substring is not found, the whole string is returned.
     func after(substring: String) -> String {
         if let range = self.range(of: substring) {
-            return String(self[range.lowerBound..<self.endIndex].dropFirst().dropLast())
+            return String(self[range.upperBound..<self.endIndex].dropFirst())
         }
         else {
             return String(self)
