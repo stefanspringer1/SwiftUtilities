@@ -457,5 +457,13 @@ public class WritableFile {
             try self.close()
         }
     }
+    
+    public func flush() throws {
+        if #available(macOS 10.15, *) {
+            try fileHandle?.synchronize()
+        } else {
+            fileHandle?.synchronizeFile()
+        }
+    }
 
 }
