@@ -100,20 +100,20 @@ public func centimeters(fromText _text: String?) -> Double? {
 
 /// Get the percent value from " ... % ".
 public func percents(fromText _text: String?) -> Double? {
-    guard let text = _text?.trim() else { return nil }
+    guard let text = _text?.trimming() else { return nil }
     if text.hasSuffix("%") {
-        return Double(text.dropLast())
+        return Double(text.dropLast().trimming())
     }
     else {
         return nil
     }
 }
 
-/// Get the percent value from " ... * ".
-public func relativeValues(fromText _text: String?) -> Double? {
-    guard let text = _text?.trim() else { return nil }
+/// Get the relative value from " ... * ".
+public func relativeValue(fromText _text: String?) -> Double? {
+    guard let text = _text?.trimming() else { return nil }
     if text.hasSuffix("*") {
-        return Double(text.dropLast())
+        return Double(text.dropLast().trimming())
     }
     else {
         return nil
