@@ -121,18 +121,18 @@ public func relativeValue(fromText _text: String?) -> Double? {
 }
 
 /// Get the textual representation for a centimeters value with a certain unit.
-public func text(forCentimeters centimeters: Double, usingUnit unit: UnitOfLength? = nil, digits: Int? = nil) -> String {
+public func text(forCentimeters centimeters: Double, usingUnit unit: UnitOfLength? = nil, digits: Int = 3, zeroDigits: Int = 0) -> String {
     var factor: Double = 1
     var unitText = "cm"
     if let unit = unit {
         factor = unit.factorFromCentimeters
         unitText = unit.rawValue
     }
-    if let digits = digits {
+    if zeroDigits == 0 {
         return String(format: "%.\(digits)f", factor == 1 ? centimeters: centimeters / factor) + unitText
     }
     else {
-        return String(format: "%.3f", factor == 1 ? centimeters: centimeters / factor) + unitText
+        return String(format: "%.\(digits - zeroDigits)f", factor == 1 ? centimeters: centimeters / factor) + String(repeating: "0", count: zeroDigits) + unitText
     }
 }
 
