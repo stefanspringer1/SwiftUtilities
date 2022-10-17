@@ -61,95 +61,93 @@ public func getCharacterClasses() -> CharacterClasses {
     // above:
     // ------
     
-    do {
-        let codePoints = UCCodePoints(
-            // ---- ranges:
-            [
-                0x0300...0x0315, 0x031A...0x031B, 0x033D...0x0344, 0x034A...0x034C,
-                0x0350...0x0352, 0x0357...0x0358, 0x035D...0x035E, 0x0360...0x0361,
-                0x0363...0x036F, 0xFE20...0xFE26, 0xFE2E...0xFE2F, 0x0483...0x0487,
-                0x2DE0...0x2DFF, 0xA674...0xA67D, 0xA69E...0xA69E,
-            ],
-            // ---- single codepoints:
-            [
-                0x0346, 0x035B, 0xA66F, 0x1E08F,
-            ]
-        )
-        
-        codePoints.forEach {
-            characterClasses.add(.ACCENTS, .COMBINING, .COMBINING_ABOVE, toCodePoint: $0)
-        }
-        
-        characterClasses.codePoints[.COMBINING_ABOVE] = codePoints
+    let combiningAbove = UCCodePoints(
+        // ---- ranges:
+        [
+            0x0300...0x0315, 0x031A...0x031B, 0x033D...0x0344, 0x034A...0x034C,
+            0x0350...0x0352, 0x0357...0x0358, 0x035D...0x035E, 0x0360...0x0361,
+            0x0363...0x036F, 0xFE20...0xFE26, 0xFE2E...0xFE2F, 0x0483...0x0487,
+            0x2DE0...0x2DFF, 0xA674...0xA67D, 0xA69E...0xA69E,
+        ],
+        // ---- single codepoints:
+        [
+            0x0346, 0x035B, 0xA66F, 0x1E08F,
+        ]
+    )
+    
+    combiningAbove.forEach {
+        characterClasses.add(.ACCENTS, .COMBINING, .COMBINING_ABOVE, toCodePoint: $0)
     }
+    
+    characterClasses.codePoints[.COMBINING_ABOVE] = combiningAbove
     
     // ------
     // below:
     // ------
     
-    do {
-        let codePoints = UCCodePoints(
-            // ---- ranges:
-            [
-                0x0316...0x0319, 0x031C...0x0333, 0x0339...0x033C, 0x0347...0x0349,
-                0x034D...0x034E, 0x0353...0x0356, 0x0359...0x035A, 0xFE27...0xFE2D,
-            ],
-            // ---- single codepoints:
-            [
-                0x0345, 0x035C, 0x035F, 0x0362,
-            ]
-        )
-        
-        codePoints.forEach {
-            characterClasses.add(.ACCENTS, .COMBINING, .COMBINING_BELOW, toCodePoint: $0)
-        }
-        
-        characterClasses.codePoints[.COMBINING_BELOW] = codePoints
+    let combiningBelow = UCCodePoints(
+        // ---- ranges:
+        [
+            0x0316...0x0319, 0x031C...0x0333, 0x0339...0x033C, 0x0347...0x0349,
+            0x034D...0x034E, 0x0353...0x0356, 0x0359...0x035A, 0xFE27...0xFE2D,
+        ],
+        // ---- single codepoints:
+        [
+            0x0345, 0x035C, 0x035F, 0x0362,
+        ]
+    )
+    
+    combiningBelow.forEach {
+        characterClasses.add(.ACCENTS, .COMBINING, .COMBINING_BELOW, toCodePoint: $0)
     }
+    
+    characterClasses.codePoints[.COMBINING_BELOW] = combiningBelow
     
     // ------
     // middle:
     // ------
     
-    do {
-        let codePoints = UCCodePoints(
-            // ---- ranges:
-            [
-                0x0334...0x0338, 0x0488...0x0489, 0xA670...0xA672,
-            ],
-            // ---- single codepoints:
-            [
-                // -
-            ]
-        )
-        
-        codePoints.forEach {
-            characterClasses.add(.ACCENTS, .COMBINING, .COMBINING_MIDDLE, toCodePoint: $0)
-        }
-        
-        characterClasses.codePoints[.COMBINING_MIDDLE] = codePoints
+    let combiningMiddle = UCCodePoints(
+        // ---- ranges:
+        [
+            0x0334...0x0338, 0x0488...0x0489, 0xA670...0xA672,
+        ],
+        // ---- single codepoints:
+        [
+            // -
+        ]
+    )
+    
+    combiningMiddle.forEach {
+        characterClasses.add(.ACCENTS, .COMBINING, .COMBINING_MIDDLE, toCodePoint: $0)
     }
+    
+    characterClasses.codePoints[.COMBINING_MIDDLE] = combiningMiddle
     
     // --------------------------
     // combining grapheme joiner:
     // --------------------------
     
-    do {
-        let codePoints = UCCodePoints(
-            // ---- ranges:
-            [
-                // -
-            ],
-            // ---- single codepoints:
-            [
-                0x034F,
-            ]
-        )
-        
-        codePoints.forEach {
-            characterClasses.add(.COMBINING, toCodePoint: $0)
-        }
+    let combiningGraphemeJoiner = UCCodePoints(
+        // ---- ranges:
+        [
+            // -
+        ],
+        // ---- single codepoints:
+        [
+            0x034F,
+        ]
+    )
+    
+    combiningGraphemeJoiner.forEach {
+        characterClasses.add(.COMBINING, toCodePoint: $0)
     }
+    
+    // --------------
+    // all combining:
+    // --------------
+    
+    characterClasses.codePoints[.COMBINING] = combiningAbove + combiningBelow + combiningMiddle + combiningGraphemeJoiner
     
     // ------------------------------------------------------------------------
     // Greek Letters:
@@ -159,73 +157,75 @@ public func getCharacterClasses() -> CharacterClasses {
     // uppercase:
     // ----------
     
-    do {
-        let codePoints = UCCodePoints(
-            // ---- ranges:
-            [
-                // Greek:
-                0x0388...0x03AB,
-                
-                // mathematical Greek:
-                0x1D6A8...0x1D6C0, // bold
-                0x1D6E2...0x1D6FA, // italic
-                0x1D726...0x1D734, // bold italic
-                0x1D756...0x1D76E, // sans-serif bold
-                0x1D790...0x1D7A8, // sans-serif bold italic
-            ],
-            // ---- single codepoints:
-            [
-                // Greek:
-                0x0370, 0x0372, 0x0376, 0x037F, 0x0386, 0x03CF, 0x03F4, 0x03F7,
-                0x03F9, 0x03FA, 0x03FD, 0x03FE, 0x03FF,
-                
-                // mathematical Greek:
-                // -
-            ]
-        )
-        
-        codePoints.forEach {
-            characterClasses.add(.GREEK_LETTERS, .UPPERCASE_GREEK_LETTERS, toCodePoint: $0)
-        }
-        
-        characterClasses.codePoints[.UPPERCASE_GREEK_LETTERS] = codePoints
+    let uppercaseGreek = UCCodePoints(
+        // ---- ranges:
+        [
+            // Greek:
+            0x0388...0x03AB,
+            
+            // mathematical Greek:
+            0x1D6A8...0x1D6C0, // bold
+            0x1D6E2...0x1D6FA, // italic
+            0x1D726...0x1D734, // bold italic
+            0x1D756...0x1D76E, // sans-serif bold
+            0x1D790...0x1D7A8, // sans-serif bold italic
+        ],
+        // ---- single codepoints:
+        [
+            // Greek:
+            0x0370, 0x0372, 0x0376, 0x037F, 0x0386, 0x03CF, 0x03F4, 0x03F7,
+            0x03F9, 0x03FA, 0x03FD, 0x03FE, 0x03FF,
+            
+            // mathematical Greek:
+            // -
+        ]
+    )
+    
+    uppercaseGreek.forEach {
+        characterClasses.add(.GREEK_LETTERS, .UPPERCASE_GREEK_LETTERS, toCodePoint: $0)
     }
+    
+    characterClasses.codePoints[.UPPERCASE_GREEK_LETTERS] = uppercaseGreek
     
     // ----------
     // lowercase:
     // ----------
     
-    do {
-        let codePoints = UCCodePoints(
-            // ---- ranges:
-            [
-                // Greek:
-                0x037B...0x037D, 0x03AC...0x03CE,
-                
-                // mathematical Greek:
-                0x1D6C1...0x1D6E1, // bold
-                0x1D6FB...0x1D71B, // italic
-                0x1D735...0x1D755, // bold italic
-                0x1D76F...0x1D78F, // sans-serif bold
-                0x1D7A9...0x1D7C9, // sans-serif bold italic
-            ],
-            // ---- single codepoints:
-            [
-                // Greek:
-                0x0371, 0x0373, 0x0377, 0x0390, 0x03D9, 0x03DB, 0x03DD, 0x03DF,
-                0x03E1, 0x03F8, 0x03FB,
-                
-                // mathematical Greek:
-                // -
-            ]
-        )
-        
-        codePoints.forEach {
-            characterClasses.add(.GREEK_LETTERS, .LOWERCASE_GREEK_LETTERS, toCodePoint: $0)
-        }
-        
-        characterClasses.codePoints[.LOWERCASE_GREEK_LETTERS] = codePoints
+    let lowercaseGreek = UCCodePoints(
+        // ---- ranges:
+        [
+            // Greek:
+            0x037B...0x037D, 0x03AC...0x03CE,
+            
+            // mathematical Greek:
+            0x1D6C1...0x1D6E1, // bold
+            0x1D6FB...0x1D71B, // italic
+            0x1D735...0x1D755, // bold italic
+            0x1D76F...0x1D78F, // sans-serif bold
+            0x1D7A9...0x1D7C9, // sans-serif bold italic
+        ],
+        // ---- single codepoints:
+        [
+            // Greek:
+            0x0371, 0x0373, 0x0377, 0x0390, 0x03D9, 0x03DB, 0x03DD, 0x03DF,
+            0x03E1, 0x03F8, 0x03FB,
+            
+            // mathematical Greek:
+            // -
+        ]
+    )
+    
+    lowercaseGreek.forEach {
+        characterClasses.add(.GREEK_LETTERS, .LOWERCASE_GREEK_LETTERS, toCodePoint: $0)
     }
+    
+    characterClasses.codePoints[.LOWERCASE_GREEK_LETTERS] = lowercaseGreek
+    
+    // ----------
+    // all Greek:
+    // ----------
+    
+    characterClasses.codePoints[.GREEK_LETTERS] = uppercaseGreek + lowercaseGreek
     
     // ------------------------------------------------------------------------
     // Mathematical Letters:
@@ -1126,6 +1126,10 @@ final public class UCCodePoints {
     func forEach(operation: (UInt32) -> ()) {
         ranges.forEach { for single in $0 { operation(single) } }
         singles.forEach(operation)
+    }
+    
+    public static func +(lhs: UCCodePoints, rhs: UCCodePoints) -> UCCodePoints {
+        UCCodePoints(lhs.ranges + rhs.ranges, lhs.singles + rhs.singles)
     }
 }
 
