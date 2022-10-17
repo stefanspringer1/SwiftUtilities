@@ -1101,10 +1101,11 @@ public class CharacterClasses {
     }
 }
 
-public struct UCCodePoints {
+final public class UCCodePoints {
     
     public let ranges: [ClosedRange<UInt32>]
     public let singles: [UInt32]
+    private var _regex: String? = nil
 
     init(_ ranges: [ClosedRange<UInt32>], _ singles: [UInt32]) {
         self.ranges = ranges
@@ -1112,10 +1113,14 @@ public struct UCCodePoints {
     }
     
     var regex: String {
-        var ss = [String]()
-        ranges.forEach { range in ss.append("\\u\(String(format:"%04X", range.lowerBound))-\\u\(String(format:"%04X", range.upperBound))") }
-        singles.forEach { single in ss.append("\\u\(String(format:"%04X", single))") }
-        return ss.joined()
+        return _regex ?? {
+            var ss = [String]()
+            ranges.forEach { range in ss.append("\\u\(String(format:"%04X", range.lowerBound))-\\u\(String(format:"%04X", range.upperBound))") }
+            singles.forEach { single in ss.append("\\u\(String(format:"%04X", single))") }
+            let theRegex = ss.joined()
+            _regex = theRegex
+            return theRegex
+        }()
     }
     
     func forEach(operation: (UInt32) -> ()) {
