@@ -1095,6 +1095,10 @@ public class CharacterClasses {
             combinedClasses[scalar.value] ?? CharacterClass.EMPTY.asCombinedCharacterClass
         }
     }
+    
+    public func codePoints(forClass theClass: CharacterClass) -> UCCodePoints? {
+        return codePoints[theClass]
+    }
 }
 
 public struct UCCodePoints {
