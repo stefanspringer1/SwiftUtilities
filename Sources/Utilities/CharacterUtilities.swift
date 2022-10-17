@@ -36,6 +36,7 @@ public enum CharacterClass: CombinedCharacterClass {
     case PUNCTUATION                        = 0b00000010000000000000000000000000
     case LEFT_RIGHT_ARROWS                  = 0b00000100000000000000000000000000
     case SPACES                             = 0b00001000000000000000000000000000
+    case CYRILLIC                           = 0b00010000000000000000000000000000
     case ALL                                = 0b11111111111111111111111111111111
     
 }
@@ -65,11 +66,12 @@ public func getCharacterClasses() -> CharacterClasses {
         [
             0x0300...0x0315, 0x031A...0x031B, 0x033D...0x0344, 0x034A...0x034C,
             0x0350...0x0352, 0x0357...0x0358, 0x035D...0x035E, 0x0360...0x0361,
-            0x0363...0x036F,
+            0x0363...0x036F, 0xFE20...0xFE26, 0xFE2E...0xFE2F, 0x0483...0x0487,
+            0x2DE0...0x2DFF, 0xA674...0xA67D, 0xA69E...0xA69E,
         ],
         // ---- single codepoints:
         [
-            0x0346, 0x035B,
+            0x0346, 0x035B, 0xA66F, 0x1E08F,
         ]
     )
         .forEach {
@@ -84,7 +86,7 @@ public func getCharacterClasses() -> CharacterClasses {
         // ---- ranges:
         [
             0x0316...0x0319, 0x031C...0x0333, 0x0339...0x033C, 0x0347...0x0349,
-            0x034D...0x034E, 0x0353...0x0356, 0x0359...0x035A
+            0x034D...0x034E, 0x0353...0x0356, 0x0359...0x035A, 0xFE27...0xFE2D,
         ],
         // ---- single codepoints:
         [
@@ -102,7 +104,7 @@ public func getCharacterClasses() -> CharacterClasses {
     UCCodePoints(
         // ---- ranges:
         [
-            0x0334...0x0338,
+            0x0334...0x0338, 0x0488...0x0489, 0xA670...0xA672,
         ],
         // ---- single codepoints:
         [
@@ -904,6 +906,24 @@ public func getCharacterClasses() -> CharacterClasses {
     )
         .forEach {
             characterClasses.add(.SPACES, toCodePoint: $0)
+        }
+    
+    // ------------------------------------------------------------------------
+    // Cyrillic:
+    // ------------------------------------------------------------------------
+    
+    UCCodePoints(
+        // ---- ranges:
+        [
+            0x0400...0x0482, 0x048A...0x04FF, 0x0500...0x052F, 0xA640...0xA66E, 0xA67E...0xA69D, 0x1C80...0x1C88, 0x1E030...0x1E06D,
+        ],
+        // ---- single codepoints:
+        [
+            0x1D2B, 0x1D78, 0xA673,
+        ]
+    )
+        .forEach {
+            characterClasses.add(.CYRILLIC, toCodePoint: $0)
         }
     
     return characterClasses
