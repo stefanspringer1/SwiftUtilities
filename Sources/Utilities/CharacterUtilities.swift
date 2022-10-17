@@ -1112,7 +1112,7 @@ final public class UCCodePoints {
         self.singles = singles
     }
     
-    var regex: String {
+    public var regex: String {
         return _regex ?? {
             var ss = [String]()
             ranges.forEach { range in ss.append("\\u\(String(format:"%04X", range.lowerBound))-\\u\(String(format:"%04X", range.upperBound))") }
