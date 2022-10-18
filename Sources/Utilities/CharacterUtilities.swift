@@ -1121,11 +1121,20 @@ public func getCharacterClasses() -> CharacterClasses {
 public class CharacterClasses {
     var combinedClasses = [UCCodePoint:CombinedCharacterClass]()
     var codePoints = [CharacterClass:UCCodePoints]()
+    var classLiterals = [CharacterClass:String]()
+    
+    public func classLiteral(forCharacterClass characterClass: CharacterClass) -> String {
+        return classLiterals[characterClass] ?? {
+            let literal = "\\{\(String(describing: characterClass))}"
+            classLiterals[characterClass] = literal
+            return literal
+        }()
+    }
     
     public func replaceClasses(inRegex _regex: String) -> String {
         var regex = _regex
         for characterClass in CharacterClass.allCases {
-            regex = regex.replacingOccurrences(of: "\\{\(String(describing: characterClass))}", with: codePoints[characterClass]?.regex ?? "")
+            regex = regex.replacingOccurrences(of: classLiteral(forCharacterClass: characterClass), with: codePoints[characterClass]?.regex ?? "")
         }
         return regex
     }
