@@ -37,6 +37,8 @@ public enum CharacterClass: CombinedCharacterClass {
     case LEFT_RIGHT_ARROWS                  = 0b00000100000000000000000000000000
     case SPACES                             = 0b00001000000000000000000000000000
     case CYRILLIC                           = 0b00010000000000000000000000000000
+    case ACCENTED                           = 0b00100000000000000000000000000000
+    case TRIVIAL_SPACES                     = 0b01000000000000000000000000000000
     case ALL                                = 0b11111111111111111111111111111111
     
 }
@@ -655,132 +657,105 @@ public func getCharacterClasses() -> CharacterClasses {
     // digit:
     // ------
     
-    do {
-        let codePoints = UCCodePoints(
-            // ---- ranges:
-            [
-                0x0030...0x0039,
-            ],
-            // ---- single codepoints:
-            [
-                // -
-            ]
-        )
-        
-        codePoints.forEach {
-            characterClasses.add(.DIGIT, toCodePoint: $0)
-        }
+    let digits = UCCodePoints(
+        // ---- ranges:
+        [
+            0x0030...0x0039,
+        ],
+        // ---- single codepoints:
+        [
+            // -
+        ]
+    )
+    
+    digits.forEach {
+        characterClasses.add(.DIGIT, toCodePoint: $0)
     }
     
     // --------------------
     // double-struck digit:
     // --------------------
     
-    do {
-        let codePoints = UCCodePoints(
-            // ---- ranges:
-            [
-                0x1D7D8...0x1D7E1,
-            ],
-            // ---- single codepoints:
-            [
-                // -
-            ]
-        )
-        
-        codePoints.forEach {
-            characterClasses.add(.MATHEMATICAL, .DOUBLE_STRUCK, .DIGIT, toCodePoint: $0)
-        }
+    let doubleStruckDigits = UCCodePoints(
+        // ---- ranges:
+        [
+            0x1D7D8...0x1D7E1,
+        ],
+        // ---- single codepoints:
+        [
+            // -
+        ]
+    )
+    
+    doubleStruckDigits.forEach {
+        characterClasses.add(.MATHEMATICAL, .DOUBLE_STRUCK, .DIGIT, toCodePoint: $0)
     }
     
     // -----------------
     // sans-serif digit:
     // -----------------
     
-    do {
-        let codePoints = UCCodePoints(
-            // ---- ranges:
-            [
-                0x1D7E2...0x1D7EB,
-            ],
-            // ---- single codepoints:
-            [
-                // -
-            ]
-        )
-        
-        codePoints.forEach {
-            characterClasses.add(.MATHEMATICAL, .SANSSERIF, .DIGIT, toCodePoint: $0)
-        }
+    let sansSerifDigits = UCCodePoints(
+        // ---- ranges:
+        [
+            0x1D7E2...0x1D7EB,
+        ],
+        // ---- single codepoints:
+        [
+            // -
+        ]
+    )
+    
+    sansSerifDigits.forEach {
+        characterClasses.add(.MATHEMATICAL, .SANSSERIF, .DIGIT, toCodePoint: $0)
     }
     
     // ----------------------
     // sans-serif bold digit:
     // ----------------------
     
-    do {
-        let codePoints = UCCodePoints(
-            // ---- ranges:
-            [
-                0x1D7EC...0x1D7F5,
-            ],
-            // ---- single codepoints:
-            [
-                // -
-            ]
-        )
-        
-        codePoints.forEach {
-            characterClasses.add(.MATHEMATICAL, .SANSSERIF, .BOLD, .DIGIT, toCodePoint: $0)
-        }
+    let sansSerifBoldDigits = UCCodePoints(
+        // ---- ranges:
+        [
+            0x1D7EC...0x1D7F5,
+        ],
+        // ---- single codepoints:
+        [
+            // -
+        ]
+    )
+    
+    sansSerifBoldDigits.forEach {
+        characterClasses.add(.MATHEMATICAL, .SANSSERIF, .BOLD, .DIGIT, toCodePoint: $0)
     }
     
     // ----------------
     // monospace digit:
     // ----------------
     
-    do {
-        let codePoints = UCCodePoints(
-            // ---- ranges:
-            [
-                0x1D7F6...0x1D7FF,
-            ],
-            // ---- single codepoints:
-            [
-                // -
-            ]
-        )
+    let monospaceDigits = UCCodePoints(
+        // ---- ranges:
+        [
+            0x1D7F6...0x1D7FF,
+        ],
+        // ---- single codepoints:
+        [
+            // -
+        ]
+    )
         
-        codePoints.forEach {
-            characterClasses.add(.MATHEMATICAL, .MONOSPACE, .DIGIT, toCodePoint: $0)
-        }
+    monospaceDigits.forEach {
+        characterClasses.add(.MATHEMATICAL, .MONOSPACE, .DIGIT, toCodePoint: $0)
     }
     
-    // ------------------------------------------------------------------------
-    // Digits:
-    // ------------------------------------------------------------------------
+    // ----------------
+    // all digits:
+    // ----------------
     
-    // mathematical characters are added separately!
-    
-    do {
-        let codePoints = UCCodePoints(
-            // ---- ranges:
-            [
-                0x0030...0x0039,
-            ],
-            // ---- single codepoints:
-            [
-                // -
-            ]
-        )
-        
-        codePoints.forEach {
-            characterClasses.add(.DIGIT, toCodePoint: $0)
-        }
-    }
+    characterClasses.codePoints[.DIGIT] = digits + doubleStruckDigits + sansSerifDigits + sansSerifBoldDigits + monospaceDigits
     
     // ------------------------------------------------------------------------
-    // Large Operators:
+    // large operators:
     // ------------------------------------------------------------------------
     
     do {
@@ -799,10 +774,12 @@ public func getCharacterClasses() -> CharacterClasses {
         codePoints.forEach {
             characterClasses.add(.LARGE_OPERATORS, toCodePoint: $0)
         }
+        
+        characterClasses.codePoints[.LARGE_OPERATORS] = codePoints
     }
     
     // ------------------------------------------------------------------------
-    // Binary Operations:
+    // binary operations:
     // ------------------------------------------------------------------------
 
     // TODO: might be augmented
@@ -825,10 +802,12 @@ public func getCharacterClasses() -> CharacterClasses {
         codePoints.forEach {
             characterClasses.add(.BINARY_OPERATIONS, toCodePoint: $0)
         }
+        
+        characterClasses.codePoints[.BINARY_OPERATIONS] = codePoints
     }
     
     // ------------------------------------------------------------------------
-    // Relations:
+    // relations:
     // ------------------------------------------------------------------------
 
     // TODO: might be augmented
@@ -853,10 +832,12 @@ public func getCharacterClasses() -> CharacterClasses {
         codePoints.forEach {
             characterClasses.add(.RELATIONS, toCodePoint: $0)
         }
+        
+        characterClasses.codePoints[.RELATIONS] = codePoints
     }
     
     // ------------------------------------------------------------------------
-    // Negated Relations:
+    // negated relations:
     // ------------------------------------------------------------------------
 
     // TODO: might be augmented
@@ -878,10 +859,12 @@ public func getCharacterClasses() -> CharacterClasses {
         codePoints.forEach {
             characterClasses.add(.NEGATED_RELATIONS, toCodePoint: $0)
         }
+        
+        characterClasses.codePoints[.NEGATED_RELATIONS] = codePoints
     }
     
     // ------------------------------------------------------------------------
-    // Arrows:
+    // arrows:
     // ------------------------------------------------------------------------
 
     // TODO: might be augmented
@@ -902,10 +885,12 @@ public func getCharacterClasses() -> CharacterClasses {
         codePoints.forEach {
             characterClasses.add(.ARROWS, toCodePoint: $0)
         }
+        
+        characterClasses.codePoints[.ARROWS] = codePoints
     }
     
     // ------------------------------------------------------------------------
-    // Opening Delimiters:
+    // opening delimiters:
     // ------------------------------------------------------------------------
 
     // TODO: might be augmented
@@ -927,10 +912,12 @@ public func getCharacterClasses() -> CharacterClasses {
         codePoints.forEach {
             characterClasses.add(.OPENING_DELIMITERS, toCodePoint: $0)
         }
+        
+        characterClasses.codePoints[.OPENING_DELIMITERS] = codePoints
     }
     
     // ------------------------------------------------------------------------
-    // Closing Delimiters:
+    // closing delimiters:
     // ------------------------------------------------------------------------
 
     // TODO: might be augmented
@@ -956,7 +943,7 @@ public func getCharacterClasses() -> CharacterClasses {
     }
     
     // ------------------------------------------------------------------------
-    // Punctuations:
+    // punctuations:
     // ------------------------------------------------------------------------
 
     // TODO: might be augmented
@@ -965,7 +952,7 @@ public func getCharacterClasses() -> CharacterClasses {
         let codePoints = UCCodePoints(
             // ---- ranges:
             [
-                0x0021...0x0027, 0x002C...0x002F, 0x003A...0x003B, 0x2010...0x206F, 0x2E00...0x2E52
+                0x0021...0x0027, 0x002C...0x002F, 0x003A...0x003B, 0x2010...0x206F, 0x2E00...0x2E52,
                 
                 // "PUNCUATION" according to charmaps:
                 /*
@@ -979,7 +966,7 @@ public func getCharacterClasses() -> CharacterClasses {
             ],
             // ---- single codepoints:
             [
-                0x005C
+                0x005C,
                 
                 // "PUNCUATION" according to charmaps:
                 /*
@@ -1002,7 +989,7 @@ public func getCharacterClasses() -> CharacterClasses {
     }
     
     // ------------------------------------------------------------------------
-    // Left-right arrows:
+    // left-right arrows:
     // ------------------------------------------------------------------------
     
     // TODO: might be augmented
@@ -1028,7 +1015,7 @@ public func getCharacterClasses() -> CharacterClasses {
     }
     
     // ------------------------------------------------------------------------
-    // Spaces:
+    // trivial spaces:
     // ------------------------------------------------------------------------
     
     // TODO: might be augmented
@@ -1037,7 +1024,32 @@ public func getCharacterClasses() -> CharacterClasses {
         let codePoints = UCCodePoints(
             // ---- ranges:
             [
-                0x2000...0x200B
+                // -
+            ],
+            // ---- single codepoints:
+            [
+                0x0009, 0x0020, 0x000A, 0x000D, 0x0020,
+            ]
+        )
+        
+        codePoints.forEach {
+            characterClasses.add(.TRIVIAL_SPACES, toCodePoint: $0)
+        }
+        
+        characterClasses.codePoints[.TRIVIAL_SPACES] = codePoints
+    }
+    
+    // ------------------------------------------------------------------------
+    // spaces:
+    // ------------------------------------------------------------------------
+    
+    // TODO: might be augmented
+    
+    do {
+        let codePoints = UCCodePoints(
+            // ---- ranges:
+            [
+                0x2000...0x200B,
             ],
             // ---- single codepoints:
             [
@@ -1053,7 +1065,7 @@ public func getCharacterClasses() -> CharacterClasses {
     }
     
     // ------------------------------------------------------------------------
-    // Cyrillic:
+    // cyrillic:
     // ------------------------------------------------------------------------
     
     do {
@@ -1073,6 +1085,31 @@ public func getCharacterClasses() -> CharacterClasses {
         }
         
         characterClasses.codePoints[.CYRILLIC] = codePoints
+    }
+    
+    // ------------------------------------------------------------------------
+    // accented:
+    // ------------------------------------------------------------------------
+    
+    // TODO: might be augmented
+    
+    do {
+        let codePoints = UCCodePoints(
+            // ---- ranges:
+            [
+                0x0100...0x024F,
+            ],
+            // ---- single codepoints:
+            [
+                // -
+            ]
+        )
+        
+        codePoints.forEach {
+            characterClasses.add(.ACCENTED, toCodePoint: $0)
+        }
+        
+        characterClasses.codePoints[.ACCENTED] = codePoints
     }
     
     return characterClasses
