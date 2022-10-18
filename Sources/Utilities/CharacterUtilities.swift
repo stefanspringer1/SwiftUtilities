@@ -5,7 +5,7 @@
 import Foundation
 
 /// The "CharacterClass" can be used to see to which class a character belongs to.
-public enum CharacterClass: CombinedCharacterClass {
+public enum CharacterClass: CombinedCharacterClass, CaseIterable {
     
     case EMPTY                              = 0b00000000000000000000000000000000
     case ACCENTS                            = 0b00000000000000000000000000000001
@@ -41,7 +41,7 @@ public enum CharacterClass: CombinedCharacterClass {
     case TRIVIAL_SPACES                     = 0b01000000000000000000000000000000
     case NONTRIVIAL_SPACES                  = 0b10000000000000000000000000000000
     case ALL                                = 0b11111111111111111111111111111111
-    
+
 }
 
 public extension CharacterClass {
@@ -1121,6 +1121,14 @@ public func getCharacterClasses() -> CharacterClasses {
 public class CharacterClasses {
     var combinedClasses = [UCCodePoint:CombinedCharacterClass]()
     var codePoints = [CharacterClass:UCCodePoints]()
+    
+    public func replaceClasses(inRegex _regex: String) -> String {
+        var regex = _regex
+        for characterClass in CharacterClass.allCases {
+            regex = regex.replacingOccurrences(of: "\\{\(String(reflecting: characterClass))}", with: codePoints[characterClass]?.regex ?? "")
+        }
+        return regex
+    }
     
     func add(_ classes: CharacterClass..., toCodePoint codePoint: UCCodePoint) {
         var combinedClass = combinedClasses[codePoint] ?? 0
