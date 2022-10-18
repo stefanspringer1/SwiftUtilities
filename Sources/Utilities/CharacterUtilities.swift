@@ -1125,7 +1125,7 @@ public class CharacterClasses {
     public func replaceClasses(inRegex _regex: String) -> String {
         var regex = _regex
         for characterClass in CharacterClass.allCases {
-            regex = regex.replacingOccurrences(of: "\\{\(String(reflecting: characterClass))}", with: codePoints[characterClass]?.regex ?? "")
+            regex = regex.replacingOccurrences(of: "\\{\(String(describing: characterClass))}", with: codePoints[characterClass]?.regex ?? "")
         }
         return regex
     }
