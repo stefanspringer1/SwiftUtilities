@@ -39,6 +39,7 @@ public enum CharacterClass: CombinedCharacterClass {
     case CYRILLIC                           = 0b00010000000000000000000000000000
     case ACCENTED                           = 0b00100000000000000000000000000000
     case TRIVIAL_SPACES                     = 0b01000000000000000000000000000000
+    case NONTRIVIAL_SPACES                  = 0b10000000000000000000000000000000
     case ALL                                = 0b11111111111111111111111111111111
     
 }
@@ -1018,51 +1019,51 @@ public func getCharacterClasses() -> CharacterClasses {
     // trivial spaces:
     // ------------------------------------------------------------------------
     
-    // TODO: might be augmented
+    let trivialSpaces = UCCodePoints(
+        // ---- ranges:
+        [
+            // -
+        ],
+        // ---- single codepoints:
+        [
+            0x0009, 0x0020, 0x000A, 0x000D, 0x0020,
+        ]
+    )
     
-    do {
-        let codePoints = UCCodePoints(
-            // ---- ranges:
-            [
-                // -
-            ],
-            // ---- single codepoints:
-            [
-                0x0009, 0x0020, 0x000A, 0x000D, 0x0020,
-            ]
-        )
-        
-        codePoints.forEach {
-            characterClasses.add(.TRIVIAL_SPACES, toCodePoint: $0)
-        }
-        
-        characterClasses.codePoints[.TRIVIAL_SPACES] = codePoints
+    trivialSpaces.forEach {
+        characterClasses.add(.SPACES, .TRIVIAL_SPACES, toCodePoint: $0)
     }
     
+    characterClasses.codePoints[.TRIVIAL_SPACES] = trivialSpaces
+    
     // ------------------------------------------------------------------------
-    // spaces:
+    // non-trivial spaces:
     // ------------------------------------------------------------------------
     
     // TODO: might be augmented
     
-    do {
-        let codePoints = UCCodePoints(
-            // ---- ranges:
-            [
-                0x2000...0x200B,
-            ],
-            // ---- single codepoints:
-            [
-                0x0009, 0x0020, 0x000A, 0x000D, 0x0020, 0x00A0, 0x202F, 0x205F, 0x3000, 0xFEFF,
-            ]
-        )
-        
-        codePoints.forEach {
-            characterClasses.add(.SPACES, toCodePoint: $0)
-        }
-        
-        characterClasses.codePoints[.SPACES] = codePoints
+    let nontrivialSpaces = UCCodePoints(
+        // ---- ranges:
+        [
+            0x2000...0x200B,
+        ],
+        // ---- single codepoints:
+        [
+            0x00A0, 0x202F, 0x205F, 0x3000, 0xFEFF,
+        ]
+    )
+    
+    nontrivialSpaces.forEach {
+        characterClasses.add(.SPACES, .NONTRIVIAL_SPACES, toCodePoint: $0)
     }
+    
+    characterClasses.codePoints[.NONTRIVIAL_SPACES] = nontrivialSpaces
+    
+    // ------------------------------------------------------------------------
+    // all spaces:
+    // ------------------------------------------------------------------------
+    
+    characterClasses.codePoints[.SPACES] = trivialSpaces + nontrivialSpaces
     
     // ------------------------------------------------------------------------
     // cyrillic:
