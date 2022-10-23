@@ -1170,8 +1170,8 @@ final public class UCCodePoints {
     public var regex: String {
         return _regex ?? {
             var ss = [String]()
-            ranges.forEach { range in ss.append("\\x{\(String(format:"%04X", range.lowerBound))}-\\x{\(String(format:"%04X", range.upperBound))}") }
-            singles.forEach { single in ss.append("\\x{\(String(format:"%04X", single))}") }
+            ranges.forEach { range in ss.append("\\x{\(String(format:"%X", range.lowerBound))}-\\x{\(String(format:"%X", range.upperBound))}") }
+            singles.forEach { single in ss.append("\\x{\(String(format:"%X", single))}") }
             let theRegex = ss.joined()
             _regex = theRegex
             return theRegex
