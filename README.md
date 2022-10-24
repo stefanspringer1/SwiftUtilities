@@ -16,6 +16,12 @@ Add as dependency of the target:
 .product(name: "Utilities", package: "SwiftUtilities"),
 ```
 
+Add an `import` statement in the source code:
+
+```Swift
+import Utilities
+```
+
 ## API documentation
 
 Build the API documentation using DocC, e.g. in Xcode via the `Product` / `Build Documentation` command. But in the current state of DocC, that documentation will not document any extensions[^1], _so currently you need to look the extensions up in the code._ In the overview below it is noted which types are extended.
