@@ -275,6 +275,16 @@ public extension URL {
         return notRemovableFiles as! [URL]
     }
     
+    /// Return the path without the extension plus the extension.
+    var baseAndExtension: (URL,Substring?) {
+        var components = self.pathComponents
+        guard let fileName = components.last else { return (self,nil) }
+        guard let lastDot = fileName.lastIndex(of: ".") else { return (self,nil) }
+        let fileExtension = fileName.suffix(from: lastDot).dropFirst()
+        components[components.count-1] = String(fileName.prefix(upTo: lastDot))
+        return (URL(pathComponents: components),fileExtension)
+    }
+    
     /// Find the components of the relative path relative to the argument as base, assuming `self` starts with the path to base.
     func relativePathComponents(to base: URL) throws -> [String] {
         let basePath = base.pathComponents
