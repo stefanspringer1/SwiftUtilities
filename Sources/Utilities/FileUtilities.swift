@@ -264,7 +264,7 @@ public extension URL {
     /// The pattern will will enclosed by a beginning `^` and a closing `$` before its application.
     func removeRecursivelyForce(pattern: String, tries: Int = 0, maxTries: Int = 5, secBeforeRetry: TimeInterval = 1) throws -> [URL] {
         let files = try self.files(withPattern: pattern, findRecursively: true)
-        let notRemovableFiles = files.compactMap{ file -> URL? in
+        let notRemovableFiles = files.filter { $0.isFile }.compactMap{ file -> URL? in
             do {
                 try file.removeSafely()
                 return nil
