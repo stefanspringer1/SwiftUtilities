@@ -263,16 +263,20 @@ public extension URL {
     ///
     /// The pattern will will enclosed by a beginning `^` and a closing `$` before its application.
     func removeRecursivelyForce(pattern: String, tries: Int = 0, maxTries: Int = 5, secBeforeRetry: TimeInterval = 1) throws -> [URL] {
-        let files = try FileManager.default.contentsOfDirectory(at: self, includingPropertiesForKeys: nil, options: FileManager.DirectoryEnumerationOptions.skipsHiddenFiles)
-        let notRemovableFiles = files.map{ file -> URL? in
+        let files = try self.files(withPattern: pattern, findRecursively: true)
+        let notRemovableFiles = files.compactMap{ file -> URL? in
             do {
                 try file.removeSafely()
                 return nil
             } catch {
                 return file
             }
-        }.filter { $0 != nil }
-        return notRemovableFiles as! [URL]
+        }
+        
+        if notRemovableFiles.isEmpty {
+            try FileManager.default.removeItem(at: self)
+        }
+        return notRemovableFiles as [URL]
     }
     
     /// Find the components of the relative path relative to the argument as base, assuming `self` starts with the path to base.
