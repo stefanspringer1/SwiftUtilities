@@ -64,7 +64,7 @@ public func makeURL(fromPath path: String?) -> URL? {
 ///
 /// For the actual temporary directory, ".\<application name>" and then "temp" are used
 /// as subdirectories (replace "<application name>" by the application name).
-public func getGeneralTemporaryFolder(applicationName: String) -> URL {
+public func getGeneralTemporaryFolder(applicationName: String) throws -> URL {
     var tempFolder: URL? = nil
     if platform() == Platform.WindowsIntel {
         if let tempEnv = ProcessInfo.processInfo.environment["TEMP"] {
@@ -78,13 +78,21 @@ public func getGeneralTemporaryFolder(applicationName: String) -> URL {
         tempFolder?.appendPathComponent("temp")
     }
     
-    return tempFolder!
+    guard let tempFolder = tempFolder else {
+        throw ErrorWithDescription("Cound not find your systems temp folder.")
+    }
+    
+    if !tempFolder.isDirectory {
+        try FileManager.default.createDirectory(at: tempFolder, withIntermediateDirectories: true)
+    }
+    
+    return tempFolder
 }
 
 /// Generate and return a temporary folder using an application name, using as grandparent directory the according argument
 /// or completely continues as in `getGeneralTemporaryFolder(applicationName:)`.
-public func generateTemporaryFolderForProcess(applicationName: String, temporaryFolder: String? = nil) -> URL {
-    return (makeURL(fromPath: temporaryFolder) ?? getGeneralTemporaryFolder(applicationName: applicationName)).appendingPathComponent("\(applicationName)_" + UUID().description)
+public func generateTemporaryFolderForProcess(applicationName: String, temporaryFolder: String? = nil) throws -> URL {
+    return try (getGeneralTemporaryFolder(applicationName: applicationName)).appendingPathComponent("\(applicationName)_" + UUID().description)
 }
 
 /// Get the path separator of the current platform ("/" or "\\").
