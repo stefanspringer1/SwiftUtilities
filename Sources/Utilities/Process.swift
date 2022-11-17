@@ -10,8 +10,11 @@ public func runProgram(
     arguments: [String],
     currentDirectoryURL: URL,
     standardOutHandler: @escaping (String) -> (),
-    errorOutHandler: @escaping (String) -> ()
+    errorOutHandler: @escaping (String) -> (),
+    commandLineDebugHandler: ((String) -> ())? = nil
 ) {
+    commandLineDebugHandler?("in [\(currentDirectoryURL)]: \"\(executableURL.osPath)\" \(arguments.map{"\"\($0)\""}.joined(separator: " ")) (environment: \(environment?.description ?? "not set")")
+    
     let process = Process()
     
     process.executableURL = executableURL
