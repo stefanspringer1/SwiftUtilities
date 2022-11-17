@@ -70,8 +70,12 @@ public func runProgram(
     let outputEncoding: String.Encoding = platform() == .WindowsIntel ? .windowsCP1252 : .utf8
     process.terminationHandler = { process in
         group.wait()
-        String(data: tempStdOutStorage, encoding: outputEncoding)!.split(separator: "\n").forEach { line in standardOutHandler(String(line)) }
-        String(data: tempStdErrStorage, encoding: outputEncoding)!.split(separator: "\n").forEach { line in errorOutHandler(String(line)) }
+        if let stdOutText = String(data: tempStdOutStorage, encoding: outputEncoding) {
+            stdOutText.split(separator: "\n").forEach { line in standardOutHandler(String(line)) }
+        }
+        if let stdErrText = String(data: tempStdErrStorage, encoding: outputEncoding) {
+            stdErrText.split(separator: "\n").forEach { line in errorOutHandler(String(line)) }
+        }
     }
     process.waitUntilExit()
 }
