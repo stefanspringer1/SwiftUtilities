@@ -9,6 +9,7 @@ public func runProgram(
     environment: [String:String]? = nil,
     arguments: [String],
     currentDirectoryURL: URL,
+    qualityOfService: QualityOfService? = nil,
     standardOutHandler: @escaping (String) -> (),
     errorOutHandler: @escaping (String) -> (),
     commandLineDebugHandler: ((String) -> ())? = nil
@@ -26,6 +27,10 @@ public func runProgram(
     process.arguments = arguments
     
     process.currentDirectoryURL = currentDirectoryURL
+    
+    if let qualityOfService = qualityOfService {
+        process.qualityOfService = qualityOfService
+    }
     
     let group = DispatchGroup()
     
