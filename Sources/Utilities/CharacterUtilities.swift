@@ -74,7 +74,7 @@ public func getCharacterClasses() -> CharacterClasses {
         ],
         // ---- single codepoints:
         [
-            0x0346, 0x035B, 0xA66F, 0x1E08F,
+            0x20DB, 0x20DC, 0x0346, 0x035B, 0xA66F, 0x1E08F,
         ]
     )
     
