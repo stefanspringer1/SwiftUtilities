@@ -763,7 +763,6 @@ public func getCharacterClasses() -> CharacterClasses {
         let codePoints = UCCodePoints(
             // ---- ranges:
             [
-                
                 0x220F...0x2211, 0x222B...0x2233, 0x22C0...0x22C3, 0x2A00...0x2A1E,
             ],
             // ---- single codepoints:
