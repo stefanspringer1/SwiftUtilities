@@ -120,6 +120,6 @@ public func getGeneralTemporaryFolder(applicationName: String) throws -> URL {
 
 /// Generate and return a temporary folder using an application name, using as grandparent directory the according argument
 /// or completely continues as in `getGeneralTemporaryFolder(applicationName:)`.
-public func generateTemporaryFolderForProcess(applicationName: String, temporaryFolder: String? = nil) throws -> URL {
-    return try (getGeneralTemporaryFolder(applicationName: applicationName)).appendingPathComponent(temporaryFolder ?? "\(applicationName)_" + UUID().description)
+public func generateTemporaryFolderForProcess(applicationName: String, temporaryFolderName: String? = nil) throws -> URL {
+    return try (getGeneralTemporaryFolder(applicationName: applicationName)).appendingPathComponent(temporaryFolderName ?? "\(applicationName)_" + UUID().description)
 }
