@@ -1202,6 +1202,9 @@ public func getCharacterClasses() -> CharacterClasses {
                 0x1D507...0x1D50A, 0x1D50D...0x1D514, 0x1D516...0x1D51C, 0x1D51E...0x1D539, 0x1D53B...0x1D53E, 0x1D540...0x1D544,
                 0x1D54A...0x1D550,
                 
+                // mathematical italic Greek:
+                0x1D6E2...0x1D71B,
+                
                 // private use:
                 0xE000...0xF8FF, 0xF0000...0xFFFFD, 0x100000...0x10FFFD,
             ],
