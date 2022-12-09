@@ -67,7 +67,7 @@ public func runProgram(
     
     process.launch()
     
-    let outputEncoding: String.Encoding = platform() == .WindowsIntel ? .windowsCP1252 : .utf8
+    let outputEncoding: String.Encoding = platform.os == .Windows ? .windowsCP1252 : .utf8
     process.terminationHandler = { process in
         group.wait()
         if let stdOutText = String(data: tempStdOutStorage, encoding: outputEncoding) {

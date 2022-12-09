@@ -4,46 +4,75 @@
 
 import Foundation
 
-/// An enumeration of possible platforms.
-public enum Platform {
-    case macOSIntel
-    case macOSARM
-    case LinuxIntel
-    case WindowsIntel
-    case Unknown
-    public var description: String? {
-        switch self {
-        case .macOSARM: return "macOS.ARM"
-        case .macOSIntel: return "macOS.Intel"
-        case .LinuxIntel: return "RedHat7.Intel" //TODO: Fix mismatch.
-        case .WindowsIntel: return "Windows.Intel"
-        case .Unknown: return nil
-        }
+/// An operating system.
+public enum OS {
+    
+    case macOS
+    case iOS
+    case watchOS
+    case tvOS
+    case Linux
+    case Windows
+    
+    // The current operating system.
+    public static var current: OS {
+        #if os(macOS)
+            return .macOS
+        #endif
+        #if os(iOS)
+            return .iOS
+        #endif
+        #if os(watchOS)
+            return .watchOS
+        #endif
+        #if os(tvOS)
+            return .tvOS
+        #endif
+        #if os(Linux)
+            return .Linux
+        #endif
+        #if os(Windows)
+            return .Windows
+        #endif
     }
 }
 
-/// Get the current platform.
-public func platform() -> Platform {
-    #if os(macOS)
-        #if arch(x86_64)
-            return Platform.macOSIntel
-        #else
-            return Platform.macOSARM
+/// An architecture.
+public enum Architecture {
+    
+    case i386
+    case x86_64
+    case arm
+    case arm64
+    
+    // The current architecture.
+    public static var current: Architecture {
+        #if arch(i386)
+            return .i386
         #endif
-    #elseif os(Linux)
         #if arch(x86_64)
-            return Platform.LinuxIntel
-        #else
-            return Platform.Unknown
+            return .x86_64
         #endif
-    #else
-        #if arch(x86_64)
-            return Platform.WindowsIntel
-        #else
-            return Platform.Unknown
+        #if arch(arm)
+            return .arm
         #endif
-    #endif
+        #if arch(arm64)
+            return .arm64
+        #endif
+    }
 }
+
+/// A platform = OS + architecture.
+public struct Platform {
+    let os: OS
+    let architecture: Architecture
+}
+
+/// The current platform.
+public let platform = Platform(os: OS.current, architecture: Architecture.current)
+
+/// The path separator of the current platform ("/" or "\\").
+public let pathSeparator = platform.os == .Windows ? "\\" : "/"
 
 /// Make an optional URL from an optional path.
 public func makeURL(fromPath path: String?) -> URL? {
@@ -65,15 +94,15 @@ public func makeURL(fromPath path: String?) -> URL? {
 /// For the actual temporary directory, ".\<application name>" and then "temp" are used
 /// as subdirectories (replace "<application name>" by the application name).
 public func getGeneralTemporaryFolder(applicationName: String) throws -> URL {
+    
     var tempFolder: URL? = nil
-    if platform() == Platform.WindowsIntel {
+    if platform.os == .Windows {
         if let tempEnv = ProcessInfo.processInfo.environment["TEMP"] {
             tempFolder = URL(fileURLWithPath: tempEnv)
         }
-    } else if ([Platform.LinuxIntel, Platform.macOSARM, Platform.macOSIntel]).contains(platform()) {
-        if #available(macOS 10.12, *) {
-            tempFolder = FileManager.default.homeDirectoryForCurrentUser
-        }
+    }
+    else {
+        tempFolder = FileManager.default.homeDirectoryForCurrentUser
         tempFolder?.appendPathComponent(".\(applicationName)")
         tempFolder?.appendPathComponent("temp")
     }
@@ -92,10 +121,5 @@ public func getGeneralTemporaryFolder(applicationName: String) throws -> URL {
 /// Generate and return a temporary folder using an application name, using as grandparent directory the according argument
 /// or completely continues as in `getGeneralTemporaryFolder(applicationName:)`.
 public func generateTemporaryFolderForProcess(applicationName: String, temporaryFolder: String? = nil) throws -> URL {
-    return try (getGeneralTemporaryFolder(applicationName: applicationName)).appendingPathComponent("\(applicationName)_" + UUID().description)
-}
-
-/// Get the path separator of the current platform ("/" or "\\").
-public func pathSeparator() -> String {
-    return platform() == Platform.WindowsIntel ? "\\" : "/"
+    return try (getGeneralTemporaryFolder(applicationName: applicationName)).appendingPathComponent(temporaryFolder ?? "\(applicationName)_" + UUID().description)
 }

@@ -128,7 +128,7 @@ public extension URL {
     /// Get the path as used on the current platform (with separator either `/` or `\` between the path components).
     var osPath: String {
         get {
-            self.path.replacingOccurrences(of: "/", with: pathSeparator())
+            self.path.replacingOccurrences(of: "/", with: pathSeparator)
         }
     }
     
