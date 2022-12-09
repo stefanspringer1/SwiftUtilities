@@ -64,8 +64,8 @@ public enum Architecture {
 
 /// A platform = OS + architecture.
 public struct Platform {
-    let os: OS
-    let architecture: Architecture
+    public let os: OS
+    public let architecture: Architecture
 }
 
 /// The current platform.
