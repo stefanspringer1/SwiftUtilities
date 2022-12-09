@@ -98,7 +98,7 @@ public func getGeneralTemporaryFolder(applicationName: String) throws -> URL {
     var tempFolder: URL? = nil
     if platform.os == .macOS || platform.os == .Linux {
         tempFolder = FileManager.default.homeDirectoryForCurrentUser
-        tempFolder?.appendPathComponent(".\(applicationName)")
+        tempFolder?.appendPathComponent(applicationName)
         tempFolder?.appendPathComponent("temp")
     }
     else if platform.os == .Windows {
