@@ -96,19 +96,19 @@ public func makeURL(fromPath path: String?) -> URL? {
 public func getGeneralTemporaryFolder(applicationName: String) throws -> URL {
     
     var tempFolder: URL? = nil
-    if platform.os == .Windows {
-        if let tempEnv = ProcessInfo.processInfo.environment["TEMP"] {
-            tempFolder = URL(fileURLWithPath: tempEnv)
-        }
-    }
-    else {
+    if platform.os == .macOS || platform.os == .Linux {
         tempFolder = FileManager.default.homeDirectoryForCurrentUser
         tempFolder?.appendPathComponent(".\(applicationName)")
         tempFolder?.appendPathComponent("temp")
     }
+    else if platform.os == .Windows {
+        if let tempEnv = ProcessInfo.processInfo.environment["TEMP"] {
+            tempFolder = URL(fileURLWithPath: tempEnv)
+        }
+    }
     
     guard let tempFolder = tempFolder else {
-        throw ErrorWithDescription("Cound not find your systems temp folder.")
+        throw ErrorWithDescription("Cound not find your systems temporary folder.")
     }
     
     if !tempFolder.isDirectory {
