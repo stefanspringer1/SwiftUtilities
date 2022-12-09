@@ -8,16 +8,17 @@ import Foundation
 public enum CharacterClass: CombinedCharacterClass, CaseIterable {
     
     case EMPTY                              = 0b00000000000000000000000000000000
-    case _UNUSED1_                          = 0b00000000000000000000000000000001
-    case _UNUSED2_                          = 0b00000000000000000000000000000010
+    case SMALL_LATIN_LETTERS                = 0b00000000000000000000000000000001
+    case CAPITAL_LATIN_LETTERS              = 0b00000000000000000000000000000010
+    case LATIN_LETTERS                      = 0b00000000000000000000000000000011 // do not insert characters directly into this class, use SMALL_LATIN_LETTERS or CAPITAL_LATIN_LETTERS
     case COMBINING_ABOVE                    = 0b00000000000000000000000000000100
     case COMBINING_BELOW                    = 0b00000000000000000000000000001000
     case COMBINING_MIDDLE                   = 0b00000000000000000000000000010000
     case COMBINING                          = 0b00000000000000000000000000011100 // do not insert characters directly into this class, use COMBINING_ABOVE, COMBINING_BELOW, or COMBINING_MIDDLE
-    case _UNUSED3_                          = 0b00000000000000000000000000100000
-    case LOWERCASE_GREEK_LETTERS            = 0b00000000000000000000000001000000
-    case UPPERCASE_GREEK_LETTERS            = 0b00000000000000000000000010000000
-    case GREEK_LETTERS                      = 0b00000000000000000000000011000000 // do not insert characters directly into this class, use LOWERCASE_GREEK_LETTERS or UPPERCASE_GREEK_LETTERS
+    case _UNUSED1_                          = 0b00000000000000000000000000100000
+    case SMALL_GREEK_LETTERS                = 0b00000000000000000000000001000000
+    case CAPITAL_GREEK_LETTERS              = 0b00000000000000000000000010000000
+    case GREEK_LETTERS                      = 0b00000000000000000000000011000000 // do not insert characters directly into this class, use SMALL_GREEK_LETTERS or CAPITAL_GREEK_LETTERS
     case MATHEMATICAL                       = 0b00000000000000000000000100000000
     case ROMAN                              = 0b00000000000000000000001000000000
     case ITALIC                             = 0b00000000000000000000010000000000
@@ -37,7 +38,7 @@ public enum CharacterClass: CombinedCharacterClass, CaseIterable {
     case CLOSING_DELIMITERS                 = 0b00000001000000000000000000000000
     case PUNCTUATION                        = 0b00000010000000000000000000000000
     case LEFT_RIGHT_ARROWS                  = 0b00000100000000000000000000000000
-    case _UNUSED4_                          = 0b00001000000000000000000000000000
+    case _UNUSED2_                          = 0b00001000000000000000000000000000
     case CYRILLIC                           = 0b00010000000000000000000000000000
     case ACCENTED                           = 0b00100000000000000000000000000000
     case TRIVIAL_SPACES                     = 0b01000000000000000000000000000000
@@ -59,6 +60,58 @@ public extension CharacterClass {
 public func getCharacterClasses() -> CharacterClasses {
     let characterClasses = CharacterClasses()
 
+    // ------------------------------------------------------------------------
+    // Latin Letters:
+    // ------------------------------------------------------------------------
+    
+    // ------
+    // small:
+    // ------
+    
+    let smallLatinLetters = UCCodePoints(
+        // ---- ranges:
+        [
+            0x0061...0x007A,
+        ],
+        // ---- single codepoints:
+        [
+            // -
+        ]
+    )
+    
+    smallLatinLetters.forEach {
+        characterClasses.add(.SMALL_LATIN_LETTERS, toCodePoint: $0)
+    }
+    
+    characterClasses.codePoints[.SMALL_LATIN_LETTERS] = smallLatinLetters
+    
+    // --------
+    // capital:
+    // --------
+    
+    let capitalLatinLetters = UCCodePoints(
+        // ---- ranges:
+        [
+            0x0041...0x005A,
+        ],
+        // ---- single codepoints:
+        [
+            // -
+        ]
+    )
+    
+    capitalLatinLetters.forEach {
+        characterClasses.add(.CAPITAL_LATIN_LETTERS, toCodePoint: $0)
+    }
+    
+    characterClasses.codePoints[.CAPITAL_LATIN_LETTERS] = capitalLatinLetters
+    
+    // ------------------
+    // all Latin letters:
+    // ------------------
+    
+    characterClasses.codePoints[.LATIN_LETTERS] = smallLatinLetters + capitalLatinLetters
+    
     // ------------------------------------------------------------------------
     // Combining Diacritical Marks:
     // ------------------------------------------------------------------------
@@ -82,7 +135,7 @@ public func getCharacterClasses() -> CharacterClasses {
     )
     
     combiningAbove.forEach {
-        characterClasses.add(.COMBINING, .COMBINING_ABOVE, toCodePoint: $0)
+        characterClasses.add(.COMBINING_ABOVE, toCodePoint: $0)
     }
     
     characterClasses.codePoints[.COMBINING_ABOVE] = combiningAbove
@@ -104,7 +157,7 @@ public func getCharacterClasses() -> CharacterClasses {
     )
     
     combiningBelow.forEach {
-        characterClasses.add(.COMBINING, .COMBINING_BELOW, toCodePoint: $0)
+        characterClasses.add(.COMBINING_BELOW, toCodePoint: $0)
     }
     
     characterClasses.codePoints[.COMBINING_BELOW] = combiningBelow
@@ -125,7 +178,7 @@ public func getCharacterClasses() -> CharacterClasses {
     )
     
     combiningMiddle.forEach {
-        characterClasses.add(.COMBINING, .COMBINING_MIDDLE, toCodePoint: $0)
+        characterClasses.add(.COMBINING_MIDDLE, toCodePoint: $0)
     }
     
     characterClasses.codePoints[.COMBINING_MIDDLE] = combiningMiddle
@@ -169,10 +222,10 @@ public func getCharacterClasses() -> CharacterClasses {
     )
     
     uppercaseGreek.forEach {
-        characterClasses.add(.GREEK_LETTERS, .UPPERCASE_GREEK_LETTERS, toCodePoint: $0)
+        characterClasses.add(.CAPITAL_GREEK_LETTERS, toCodePoint: $0)
     }
     
-    characterClasses.codePoints[.UPPERCASE_GREEK_LETTERS] = uppercaseGreek
+    characterClasses.codePoints[.CAPITAL_GREEK_LETTERS] = uppercaseGreek
     
     // ----------
     // lowercase:
@@ -203,10 +256,10 @@ public func getCharacterClasses() -> CharacterClasses {
     )
     
     lowercaseGreek.forEach {
-        characterClasses.add(.GREEK_LETTERS, .LOWERCASE_GREEK_LETTERS, toCodePoint: $0)
+        characterClasses.add(.SMALL_GREEK_LETTERS, toCodePoint: $0)
     }
     
-    characterClasses.codePoints[.LOWERCASE_GREEK_LETTERS] = lowercaseGreek
+    characterClasses.codePoints[.SMALL_GREEK_LETTERS] = lowercaseGreek
     
     // ----------
     // all Greek:
@@ -1014,7 +1067,7 @@ public func getCharacterClasses() -> CharacterClasses {
     )
     
     trivialSpaces.forEach {
-        characterClasses.add(.SPACES, .TRIVIAL_SPACES, toCodePoint: $0)
+        characterClasses.add(.TRIVIAL_SPACES, toCodePoint: $0)
     }
     
     characterClasses.codePoints[.TRIVIAL_SPACES] = trivialSpaces
@@ -1037,7 +1090,7 @@ public func getCharacterClasses() -> CharacterClasses {
     )
     
     nontrivialSpaces.forEach {
-        characterClasses.add(.SPACES, .NONTRIVIAL_SPACES, toCodePoint: $0)
+        characterClasses.add(.NONTRIVIAL_SPACES, toCodePoint: $0)
     }
     
     characterClasses.codePoints[.NONTRIVIAL_SPACES] = nontrivialSpaces
@@ -1199,11 +1252,11 @@ public extension String {
     }
     
     func isUppercaseGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
-        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.UPPERCASE_GREEK_LETTERS) }
+        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.CAPITAL_GREEK_LETTERS) }
     }
     
     func isLowercaseGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
-        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.LOWERCASE_GREEK_LETTERS) }
+        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.SMALL_GREEK_LETTERS) }
     }
     
 }
