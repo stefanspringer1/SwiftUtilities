@@ -8,14 +8,16 @@ import Foundation
 public enum CharacterClass: CombinedCharacterClass, CaseIterable {
     
     case EMPTY                              = 0b00000000000000000000000000000000
-    case ACCENTS                            = 0b00000000000000000000000000000001
-    case COMBINING                          = 0b00000000000000000000000000000010
+    case _UNUSED1_                          = 0b00000000000000000000000000000001
+    case _UNUSED2_                          = 0b00000000000000000000000000000010
     case COMBINING_ABOVE                    = 0b00000000000000000000000000000100
     case COMBINING_BELOW                    = 0b00000000000000000000000000001000
     case COMBINING_MIDDLE                   = 0b00000000000000000000000000010000
-    case GREEK_LETTERS                      = 0b00000000000000000000000000100000
+    case COMBINING                          = 0b00000000000000000000000000011100 // do not insert characters directly into this class, use COMBINING_ABOVE, COMBINING_BELOW, or COMBINING_MIDDLE
+    case _UNUSED3_                          = 0b00000000000000000000000000100000
     case LOWERCASE_GREEK_LETTERS            = 0b00000000000000000000000001000000
     case UPPERCASE_GREEK_LETTERS            = 0b00000000000000000000000010000000
+    case GREEK_LETTERS                      = 0b00000000000000000000000011000000 // do not insert characters directly into this class, use LOWERCASE_GREEK_LETTERS or UPPERCASE_GREEK_LETTERS
     case MATHEMATICAL                       = 0b00000000000000000000000100000000
     case ROMAN                              = 0b00000000000000000000001000000000
     case ITALIC                             = 0b00000000000000000000010000000000
@@ -35,11 +37,12 @@ public enum CharacterClass: CombinedCharacterClass, CaseIterable {
     case CLOSING_DELIMITERS                 = 0b00000001000000000000000000000000
     case PUNCTUATION                        = 0b00000010000000000000000000000000
     case LEFT_RIGHT_ARROWS                  = 0b00000100000000000000000000000000
-    case SPACES                             = 0b00001000000000000000000000000000
+    case _UNUSED4_                          = 0b00001000000000000000000000000000
     case CYRILLIC                           = 0b00010000000000000000000000000000
     case ACCENTED                           = 0b00100000000000000000000000000000
     case TRIVIAL_SPACES                     = 0b01000000000000000000000000000000
     case NONTRIVIAL_SPACES                  = 0b10000000000000000000000000000000
+    case SPACES                             = 0b11000000000000000000000000000000 // do not insert characters directly into this class, use TRIVIAL_SPACES or NONTRIVIAL_SPACES
     case ALL                                = 0b11111111111111111111111111111111
 
 }
@@ -79,7 +82,7 @@ public func getCharacterClasses() -> CharacterClasses {
     )
     
     combiningAbove.forEach {
-        characterClasses.add(.ACCENTS, .COMBINING, .COMBINING_ABOVE, toCodePoint: $0)
+        characterClasses.add(.COMBINING, .COMBINING_ABOVE, toCodePoint: $0)
     }
     
     characterClasses.codePoints[.COMBINING_ABOVE] = combiningAbove
@@ -101,7 +104,7 @@ public func getCharacterClasses() -> CharacterClasses {
     )
     
     combiningBelow.forEach {
-        characterClasses.add(.ACCENTS, .COMBINING, .COMBINING_BELOW, toCodePoint: $0)
+        characterClasses.add(.COMBINING, .COMBINING_BELOW, toCodePoint: $0)
     }
     
     characterClasses.codePoints[.COMBINING_BELOW] = combiningBelow
@@ -122,35 +125,16 @@ public func getCharacterClasses() -> CharacterClasses {
     )
     
     combiningMiddle.forEach {
-        characterClasses.add(.ACCENTS, .COMBINING, .COMBINING_MIDDLE, toCodePoint: $0)
+        characterClasses.add(.COMBINING, .COMBINING_MIDDLE, toCodePoint: $0)
     }
     
     characterClasses.codePoints[.COMBINING_MIDDLE] = combiningMiddle
-    
-    // --------------------------
-    // combining grapheme joiner:
-    // --------------------------
-    
-    let combiningGraphemeJoiner = UCCodePoints(
-        // ---- ranges:
-        [
-            // -
-        ],
-        // ---- single codepoints:
-        [
-            0x034F,
-        ]
-    )
-    
-    combiningGraphemeJoiner.forEach {
-        characterClasses.add(.COMBINING, toCodePoint: $0)
-    }
     
     // --------------
     // all combining:
     // --------------
     
-    characterClasses.codePoints[.COMBINING] = combiningAbove + combiningBelow + combiningMiddle + combiningGraphemeJoiner
+    characterClasses.codePoints[.COMBINING] = combiningAbove + combiningBelow + combiningMiddle
     
     // ------------------------------------------------------------------------
     // Greek Letters:
