@@ -108,7 +108,7 @@ public func getGeneralTemporaryFolder(applicationName: String) throws -> URL {
     }
     
     guard let tempFolder = tempFolder else {
-        throw ErrorWithDescription("Cound not find your temporary folder.")
+        throw ErrorWithDescription("Could not find your temporary folder.")
     }
     
     if !tempFolder.isDirectory {
