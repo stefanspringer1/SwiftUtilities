@@ -91,7 +91,7 @@ public extension StringProtocol {
     /// Replace all text matching a certain certain regular expression.
     ///
     /// Use lookarounds (e.g. lookaheads) to avoid having to apply your regular expression several times.
-    func replacing(regex: String, by theReplacement: String) -> String {
+    func replacing(regex: String, with theReplacement: String) -> String {
         var result: String = ""
         autoreleasepool {
             result = self.replacingOccurrences(of: regex, with: theReplacement, options: .regularExpression, range: nil)
@@ -175,7 +175,7 @@ public extension String {
     /// Replace all text matching a certain certain regular expression.
     ///
     /// Use lookarounds (e.g. lookaheads) to avoid having to apply your regular expression several times.
-    func replacing(regex: String, by theReplacement: String) -> String {
+    func replacing(regex: String, with theReplacement: String) -> String {
         var result = self
         autoreleasepool {
             result = self.replacingOccurrences(of: regex, with: theReplacement, options: .regularExpression, range: nil)
