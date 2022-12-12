@@ -118,14 +118,25 @@ public func getTemporaryFolder(forApplication applicationName: String) throws ->
     return tempFolder
 }
 
-/// Generate and return a temporary folder using an application name, using as grandparent directory the according argument
+/// Return a temporary folder using an application name, using as grandparent directory the according argument
 /// or completely continues as in `getGeneralTemporaryFolder(applicationName:)`.
-public func generateTemporaryFolderForProcess(
+/// The folder will not be created.
+public func determineTemporaryFolderForProcess(
     forApplication applicationName: String,
     usingTemporaryFolderForApplication temporaryFolderForApplication: URL? = nil
 ) throws -> URL {
     let temporaryFolderForProcess = try (temporaryFolderForApplication ?? getTemporaryFolder(forApplication: applicationName))
         .appendingPathComponent("\(applicationName)_\(formattedTime(forFilename: true))_\(UUID())")
+    if temporaryFolderForProcess.isFolder || isFile.temporaryFolderForProcess.isFolder {
+        throw Exc
+    }
+}
+
+public func generateTemporaryFolderForProcess(
+    forApplication applicationName: String,
+    usingTemporaryFolderForApplication temporaryFolderForApplication: URL? = nil
+) throws -> URL {
+    let temporaryFolderForProcess = try determineTemporaryFolderForProcess(forApplication: applicationName, usingTemporaryFolderForApplication: temporaryFolderForApplication)
     try FileManager.default.createDirectory(at: temporaryFolderForProcess, withIntermediateDirectories: false)
     return temporaryFolderForProcess
 }
