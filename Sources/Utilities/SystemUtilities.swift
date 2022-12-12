@@ -95,19 +95,19 @@ public func makeURL(fromPath path: String?) -> URL? {
 /// as subdirectories (replace "<application name>" by the application name).
 public func getGeneralTemporaryFolder(applicationName: String) throws -> URL {
     
-    var tempFolder: URL? = nil
+    var generalTemporaryFolder: URL? = nil
     if platform.os == .macOS || platform.os == .Linux {
-        tempFolder = FileManager.default.homeDirectoryForCurrentUser
-        tempFolder?.appendPathComponent(".\(applicationName)")
-        tempFolder?.appendPathComponent("temp")
+        generalTemporaryFolder = FileManager.default.homeDirectoryForCurrentUser
+        generalTemporaryFolder?.appendPathComponent(".\(applicationName)")
+        generalTemporaryFolder?.appendPathComponent("temp")
     }
     else if platform.os == .Windows {
         if let tempEnv = ProcessInfo.processInfo.environment["TEMP"] {
-            tempFolder = URL(fileURLWithPath: tempEnv)
+            generalTemporaryFolder = URL(fileURLWithPath: tempEnv)
         }
     }
     
-    guard let tempFolder = tempFolder else {
+    guard let tempFolder = generalTemporaryFolder else {
         throw ErrorWithDescription("Could not find your temporary folder.")
     }
     
@@ -120,6 +120,8 @@ public func getGeneralTemporaryFolder(applicationName: String) throws -> URL {
 
 /// Generate and return a temporary folder using an application name, using as grandparent directory the according argument
 /// or completely continues as in `getGeneralTemporaryFolder(applicationName:)`.
-public func determineTemporaryFolderForProcess(applicationName: String, generalTemporaryFolder: URL? = nil) throws -> URL {
-    return try (generalTemporaryFolder ?? getGeneralTemporaryFolder(applicationName: applicationName)).appendingPathComponent("\(applicationName)_" + UUID().description)
+public func generateTemporaryFolderForProcess(applicationName: String, generalTemporaryFolder: URL? = nil) throws -> URL {
+    let temporaryFolderForProcess = try (generalTemporaryFolder ?? getGeneralTemporaryFolder(applicationName: applicationName)).appendingPathComponent("\(applicationName)_" + UUID().description)
+    try FileManager.default.createDirectory(at: temporaryFolderForProcess, withIntermediateDirectories: true)
+    return temporaryFolderForProcess
 }
