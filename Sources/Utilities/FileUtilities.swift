@@ -132,10 +132,9 @@ public extension URL {
         }
     }
     
-    /// Check if it is a directory.
-    var isDirectory: Bool {
-        // use a new instance so we are not using cached values:
-        (try? URL(fileURLWithPath: self.path).resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
+    /// Check if a file or directory exists.
+    var exists: Bool {
+        FileManager.default.fileExists(atPath: self.osPath)
     }
     
     /// Check if it is a file.
@@ -144,6 +143,12 @@ public extension URL {
         (try? URL(fileURLWithPath: self.path).resourceValues(forKeys:[.isRegularFileKey]))?.isRegularFile == true
     }
 
+    /// Check if it is a directory.
+    var isDirectory: Bool {
+        // use a new instance so we are not using cached values:
+        (try? URL(fileURLWithPath: self.path).resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
+    }
+    
     /// Check if it its path an absolute one.
     var isAbsolute: Bool {
         path.isAbsolutePath
