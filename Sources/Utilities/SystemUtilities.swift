@@ -126,6 +126,6 @@ public func generateTemporaryFolderForProcess(
 ) throws -> URL {
     let temporaryFolderForProcess = try (temporaryFolderForApplication ?? getTemporaryFolder(forApplication: applicationName))
         .appendingPathComponent("\(applicationName)_\(formattedTime(forFilename: true))_\(UUID())")
-    try FileManager.default.createDirectory(at: temporaryFolderForProcess, withIntermediateDirectories: true)
+    try FileManager.default.createDirectory(at: temporaryFolderForProcess, withIntermediateDirectories: false)
     return temporaryFolderForProcess
 }
