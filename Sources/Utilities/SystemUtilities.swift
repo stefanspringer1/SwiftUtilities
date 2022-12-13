@@ -33,6 +33,7 @@ public func makeURL(fromPath path: String?) -> URL? {
 public func getTemporaryFolder(forApplication applicationName: String) throws -> URL {
     
     var generalTemporaryFolder: URL? = nil
+    
     #if os(macOS) || os(Linux)
     generalTemporaryFolder = FileManager.default.homeDirectoryForCurrentUser
     generalTemporaryFolder?.appendPathComponent(".\(applicationName)")
