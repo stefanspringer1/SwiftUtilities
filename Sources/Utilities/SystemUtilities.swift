@@ -4,75 +4,12 @@
 
 import Foundation
 
-/// An operating system.
-public enum OS {
-    
-    case macOS
-    case iOS
-    case watchOS
-    case tvOS
-    case Linux
-    case Windows
-    
-    // The current operating system.
-    public static var current: OS {
-        #if os(macOS)
-            return .macOS
-        #endif
-        #if os(iOS)
-            return .iOS
-        #endif
-        #if os(watchOS)
-            return .watchOS
-        #endif
-        #if os(tvOS)
-            return .tvOS
-        #endif
-        #if os(Linux)
-            return .Linux
-        #endif
-        #if os(Windows)
-            return .Windows
-        #endif
-    }
-}
-
-/// An architecture.
-public enum Architecture {
-    
-    case i386
-    case x86_64
-    case arm
-    case arm64
-    
-    // The current architecture.
-    public static var current: Architecture {
-        #if arch(i386)
-            return .i386
-        #endif
-        #if arch(x86_64)
-            return .x86_64
-        #endif
-        #if arch(arm)
-            return .arm
-        #endif
-        #if arch(arm64)
-            return .arm64
-        #endif
-    }
-}
-
-/// A platform = OS + architecture.
-public struct Platform {
-    public let os: OS
-    public let architecture: Architecture
-}
-
-/// The current platform.
-public let platform = Platform(os: OS.current, architecture: Architecture.current)
-
 /// The path separator of the current platform ("/" or "\\").
-public let pathSeparator = platform.os == .Windows ? "\\" : "/"
+#if os(Windows)
+public let pathSeparator = "\\"
+#else
+public let pathSeparator = "/"
+#endif
 
 /// Make an optional URL from an optional path.
 public func makeURL(fromPath path: String?) -> URL? {
@@ -96,16 +33,15 @@ public func makeURL(fromPath path: String?) -> URL? {
 public func getTemporaryFolder(forApplication applicationName: String) throws -> URL {
     
     var generalTemporaryFolder: URL? = nil
-    if platform.os == .macOS || platform.os == .Linux {
-        generalTemporaryFolder = FileManager.default.homeDirectoryForCurrentUser
-        generalTemporaryFolder?.appendPathComponent(".\(applicationName)")
-        generalTemporaryFolder?.appendPathComponent("temp")
+    #if os(macOS) || os(Linux)
+    generalTemporaryFolder = FileManager.default.homeDirectoryForCurrentUser
+    generalTemporaryFolder?.appendPathComponent(".\(applicationName)")
+    generalTemporaryFolder?.appendPathComponent("temp")
+    #elseif os(Windows)
+    if let tempEnv = ProcessInfo.processInfo.environment["TEMP"] {
+        generalTemporaryFolder = URL(fileURLWithPath: tempEnv)
     }
-    else if platform.os == .Windows {
-        if let tempEnv = ProcessInfo.processInfo.environment["TEMP"] {
-            generalTemporaryFolder = URL(fileURLWithPath: tempEnv)
-        }
-    }
+    #endif
     
     guard let tempFolder = generalTemporaryFolder else {
         throw ErrorWithDescription("Could not find your temporary directory.")
