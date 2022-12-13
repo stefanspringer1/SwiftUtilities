@@ -105,8 +105,7 @@ public extension StringProtocol {
     func until(_ substring: String) -> String? {
         if let range = self.range(of: substring) {
             return String(self[self.startIndex..<range.lowerBound])
-        }
-        else {
+        } else {
             return nil
         }
     }
@@ -117,8 +116,7 @@ public extension StringProtocol {
     func after(_ substring: String) -> String? {
         if let range = self.range(of: substring) {
             return String(self[range.upperBound..<self.endIndex])
-        }
-        else {
+        } else {
             return nil
         }
     }
@@ -189,8 +187,7 @@ public extension String {
     func until(substring: String) -> String {
         if let range = self.range(of: substring) {
             return String(self[self.startIndex..<range.lowerBound])
-        }
-        else {
+        } else {
             return self
         }
     }

@@ -103,8 +103,7 @@ public func percents(fromText _text: String?) -> Double? {
     guard let text = _text?.trimming() else { return nil }
     if text.hasSuffix("%") {
         return Double(text.dropLast().trimming())
-    }
-    else {
+    } else {
         return nil
     }
 }
@@ -114,8 +113,7 @@ public func relativeValue(fromText _text: String?) -> Double? {
     guard let text = _text?.trimming() else { return nil }
     if text.hasSuffix("*") {
         return Double(text.dropLast().trimming())
-    }
-    else {
+    } else {
         return nil
     }
 }
@@ -130,8 +128,7 @@ public func text(forCentimeters centimeters: Double, usingUnit unit: UnitOfLengt
     }
     if zeroDigits == 0 {
         return String(format: "%.\(digits)f", factor == 1 ? centimeters: centimeters / factor) + unitText
-    }
-    else {
+    } else {
         return String(format: "%.\(digits - zeroDigits)f", factor == 1 ? centimeters: centimeters / factor) + String(repeating: "0", count: zeroDigits) + unitText
     }
 }
@@ -140,8 +137,7 @@ public func text(forCentimeters centimeters: Double, usingUnit unit: UnitOfLengt
 public func text(forStars stars: Double, digits: Int = 3) -> String {
     if stars == floor(stars) {
         return String(Int(stars)) + "*"
-    }
-    else {
+    } else {
         var numberText = Substring(String(format: "%.\(digits)f", stars))
         while numberText.hasSuffix("0") {
             numberText = numberText.dropLast()

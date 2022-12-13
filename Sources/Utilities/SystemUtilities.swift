@@ -15,8 +15,7 @@ public let pathSeparator = "/"
 public func makeURL(fromPath path: String?) -> URL? {
     if let path = path {
         return URL(fileURLWithPath: path)
-    }
-    else {
+    } else {
         return nil
     }
 }

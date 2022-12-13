@@ -53,13 +53,11 @@ public func readSimplePropertiesList(path: String, errorHandler: ((String) -> ()
                                     .trimmingCharacters(in: .whitespaces)
                             )
                     }
-                }
-                else {
+                } else {
                     let errorMessage = "\(path):\(lineNumber):E: missing equal sign"
                     if let theErrorHandler = errorHandler {
                         theErrorHandler(errorMessage)
-                    }
-                    else {
+                    } else {
                         print(errorMessage)
                     }
                 }
@@ -70,8 +68,7 @@ public func readSimplePropertiesList(path: String, errorHandler: ((String) -> ()
         let errorMessage = "\(path):E: \(error.localizedDescription)"
         if let theErrorHandler = errorHandler {
             theErrorHandler(errorMessage)
-        }
-        else {
+        } else {
             print(errorMessage)
         }
     }
@@ -100,8 +97,7 @@ public func writeSimplePropertiesList(properties: [String:String], path: String,
         if fileHandle == nil
         {
             throw ErrorWithDescription("\(path):E: could not open file for writing")
-        }
-        else
+        } else
         {
             if let theTitle = title {
                 try fileHandle!.write("# \(theTitle)\(lineEnding)")
@@ -110,8 +106,7 @@ public func writeSimplePropertiesList(properties: [String:String], path: String,
                 let caseInsensitive = $0.compare($1, options: .caseInsensitive)
                 if caseInsensitive == ComparisonResult.orderedSame {
                     return $0.compare($1) == .orderedAscending
-                }
-                else {
+                } else {
                  return caseInsensitive == .orderedAscending
                 }
             }.forEach { key in
@@ -125,8 +120,7 @@ public func writeSimplePropertiesList(properties: [String:String], path: String,
         let errorMessage = "\(path):E: \(error.localizedDescription)"
         if let theErrorHandler = errorHandler {
             theErrorHandler(errorMessage)
-        }
-        else {
+        } else {
             print(errorMessage)
         }
     }

@@ -91,8 +91,7 @@ public extension URL {
                 }
                 return match != nil
                 //return file.lastPathComponent.contains(regex: pattern) // if you do this instead here, memory usage will go up!
-            }
-            else {
+            } else {
                 return false
             }
         }
@@ -110,16 +109,14 @@ public extension URL {
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 try FileManager.default.contentsOfDirectory(at: self, includingPropertiesForKeys: propertiesForKeys, options: options).forEach { fileURL in
                     if try toAdd(file: fileURL, pattern: pattern) {
                         files.append(fileURL)
                     }
                 }
             }
-        }
-        else if try toAdd(file: self, pattern: pattern) {
+        } else if try toAdd(file: self, pattern: pattern) {
             files.append(self)
         }
         return files
@@ -230,8 +227,7 @@ public extension URL {
             if isFile {
                 if tries < maxTries {
                     Thread.sleep(forTimeInterval: secBeforeRetry)
-                }
-                else {
+                } else {
                     throw CopyError.fileExistsError("There already exists a file at \(self.description).")
                 }
             }
@@ -256,8 +252,7 @@ public extension URL {
             if isDirectory {
                 if tries < maxTries {
                     Thread.sleep(forTimeInterval: secBeforeRetry)
-                }
-                else {
+                } else {
                     throw CopyError.directoryExistsError(self.description + " still exists after " + tries.description + " to remove it")
                 }
             }
@@ -420,13 +415,11 @@ public class WritableFile {
             if append {
                 if #available(macOS 10.15.4, *) {
                     try fileHandle?.seekToEnd()
-                }
-                else {
+                } else {
                     throw ErrorWithDescription("wrong macOS version for \(#function)")
                 }
             }
-        }
-        else {
+        } else {
             throw ErrorWithDescription("could not open \(path) \(append ? "to append" : "to write")")
         }
     }
