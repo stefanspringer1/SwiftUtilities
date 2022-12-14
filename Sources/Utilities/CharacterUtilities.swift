@@ -1205,6 +1205,9 @@ public func getCharacterClasses() -> CharacterClasses {
                 // mathematical italic Greek:
                 0x1D6E2...0x1D71B,
                 
+                // MATHEMATICAL ITALIC SMALL DOTLESS ...:
+                0x1D6A4...0x1D6A5,
+                
                 // private use:
                 0xE000...0xF8FF, 0xF0000...0xFFFFD, 0x100000...0x10FFFD,
             ],
