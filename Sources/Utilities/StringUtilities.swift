@@ -88,6 +88,9 @@ public extension StringProtocol {
         return match != nil
     }
     
+    /// Test if a text only consists of whitespace.
+    var isWhitespace: Bool { contains(regex: #"^\s*$"#) }
+    
     /// Replace all text matching a certain certain regular expression.
     ///
     /// Use lookarounds (e.g. lookaheads) to avoid having to apply your regular expression several times.
@@ -169,6 +172,9 @@ public extension String {
         }
         return match != nil
     }
+    
+    /// Test if a text only consists of whitespace.
+    var isWhitespace: Bool { contains(regex: #"^\s*$"#) }
     
     /// Replace all text matching a certain certain regular expression.
     ///
