@@ -391,6 +391,26 @@ public extension URL {
         try self.copySafely(destination: destination, overwrite: overwrite, tries: 0, maxTries: maxTries, secBeforeRetry: secBeforeRetry)
         try self.removeSafely()
     }
+    
+    /// Append a text line to a file:
+    func append(text: String) throws {
+        let fileHandle = try FileHandle(forWritingTo: self)
+        defer {
+            fileHandle.closeFile()
+        }
+        fileHandle.seekToEndOfFile()
+        if let data = text.data(using: String.Encoding.utf8) {
+            fileHandle.write(data)
+        }
+        else {
+            throw ErrorWithDescription("could not get data to write to \(self.osPath)")
+        }
+    }
+    
+    /// Append a line of text to a file:
+    func append(line: String, lineBreak: String = "\n") throws {
+        try self.append(text: line + lineBreak)
+    }
 
 }
 
