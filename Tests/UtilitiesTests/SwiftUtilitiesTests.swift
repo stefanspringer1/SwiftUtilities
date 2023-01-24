@@ -16,6 +16,12 @@ final class UtilitiesTests: XCTestCase {
         case substring(_ value: String.SubSequence)
     }
     
+    @available(macOS 13.0, *)
+    func testDataDirectory() throws {
+        let dataFolder = try determineDataFolder(withSubPathComponents: ["a", "b", "c"])
+        print(dataFolder.osPath)
+    }
+    
     /*
     func embraceCombinations(n: Int, m: Int, l: Int)  {
         let base0 = randomString(length: n)

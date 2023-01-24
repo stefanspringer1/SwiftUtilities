@@ -28,6 +28,7 @@ public func makeURL(fromPath path: String?) -> URL? {
 ///
 /// On Windows, use the value of the environment variable APPDATA as
 /// the starting point for appending the components.
+@available(macOS 13.0, *)
 public func determineDataFolder(withSubPathComponents subPathComponents: [String]) throws -> URL {
     
     var generalDataFolder: URL? = nil
@@ -50,7 +51,7 @@ public func determineDataFolder(withSubPathComponents subPathComponents: [String
     dataFolder = generalDataFolder
     if let firstPathComponent = subPathComponents.first {
         dataFolder = dataFolder?.appendingPathComponent(".\(firstPathComponent)")
-        dataFolder = dataFolder?.appendingPathComponents(subPathComponents.dropFirst())
+        dataFolder = dataFolder?.appending(components: subPathComponents.dropFirst())
     }
     #elseif os(Windows)
     dataFolder = generalDataFolder.appendingPathComponents(subPathComponents)
@@ -65,6 +66,7 @@ public func determineDataFolder(withSubPathComponents subPathComponents: [String
 
 /// Create and return a data folder using path components as subpath.
 /// See the documentation for `getDataFolder(withComponents:)`.
+@available(macOS 13.0, *)
 public func generateDataFolder(withSubPathComponents subPathComponents: [String]) throws -> URL {
     let dataFolder = try determineDataFolder(withSubPathComponents: subPathComponents)
     try FileManager.default.createDirectory(at: dataFolder, withIntermediateDirectories: true)
