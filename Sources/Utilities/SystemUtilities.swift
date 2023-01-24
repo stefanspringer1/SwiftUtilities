@@ -20,7 +20,7 @@ public func makeURL(fromPath path: String?) -> URL? {
     }
 }
 
-/// Generate and return a data folder using path components as subpath.
+/// Return a data folder URL using path components as subpath.
 ///
 /// On macOS and Linux, use the home folder of the user as
 /// the starting point for appending the components, but the first
@@ -28,7 +28,7 @@ public func makeURL(fromPath path: String?) -> URL? {
 ///
 /// On Windows, use the value of the environment variable APPDATA as
 /// the starting point for appending the components.
-public func getDataFolder(withComponents components: [String], supposeExisting: Bool = false) throws -> URL {
+public func determineDataFolder(withComponents components: [String]) throws -> URL {
     
     var generalDataFolder: URL? = nil
     
@@ -60,14 +60,14 @@ public func getDataFolder(withComponents components: [String], supposeExisting: 
         throw ErrorWithDescription("Could not find your temporary directory.")
     }
     
-    if !supposeExisting && !dataFolder.isDirectory {
-        try FileManager.default.createDirectory(at: dataFolder, withIntermediateDirectories: true)
-    }
-    
-    if !dataFolder.isDirectory {
-        throw ErrorWithDescription("Could not find your temporary directory \(dataFolder.osPath).")
-    }
-    
+    return dataFolder
+}
+
+/// Create and return a data folder using path components as subpath.
+/// See the documentation for `getDataFolder(withComponents:)`.
+public func generateDataFolder(withComponents components: [String]) throws -> URL {
+    let dataFolder = try determineDataFolder(withComponents: components)
+    try FileManager.default.createDirectory(at: dataFolder, withIntermediateDirectories: true)
     return dataFolder
 }
 
