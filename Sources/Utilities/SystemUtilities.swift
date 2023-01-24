@@ -28,7 +28,7 @@ public func makeURL(fromPath path: String?) -> URL? {
 ///
 /// On Windows, use the value of the environment variable APPDATA as
 /// the starting point for appending the components.
-public func determineDataFolder(withComponents components: [String]) throws -> URL {
+public func determineDataFolder(withSubPathComponents subPathComponents: [String]) throws -> URL {
     
     var generalDataFolder: URL? = nil
     
@@ -48,16 +48,16 @@ public func determineDataFolder(withComponents components: [String]) throws -> U
     
     #if os(macOS) || os(Linux)
     dataFolder = generalDataFolder
-    if let firstPathComponent = components.first {
+    if let firstPathComponent = subPathComponents.first {
         dataFolder = dataFolder?.appendingPathComponent(".\(firstPathComponent)")
-        dataFolder = dataFolder?.appendingPathComponents(components.dropFirst())
+        dataFolder = dataFolder?.appendingPathComponents(subPathComponents.dropFirst())
     }
     #elseif os(Windows)
-    dataFolder = generalDataFolder.appendingPathComponents(path)
+    dataFolder = generalDataFolder.appendingPathComponents(subPathComponents)
     #endif
     
     guard let dataFolder else {
-        throw ErrorWithDescription("Could not find your temporary directory.")
+        throw ErrorWithDescription("Could not find the data directory with sub path \(subPathComponents.joined(separator: pathSeparator)).")
     }
     
     return dataFolder
@@ -65,8 +65,8 @@ public func determineDataFolder(withComponents components: [String]) throws -> U
 
 /// Create and return a data folder using path components as subpath.
 /// See the documentation for `getDataFolder(withComponents:)`.
-public func generateDataFolder(withComponents components: [String]) throws -> URL {
-    let dataFolder = try determineDataFolder(withComponents: components)
+public func generateDataFolder(withSubPathComponents subPathComponents: [String]) throws -> URL {
+    let dataFolder = try determineDataFolder(withSubPathComponents: subPathComponents)
     try FileManager.default.createDirectory(at: dataFolder, withIntermediateDirectories: true)
     return dataFolder
 }
