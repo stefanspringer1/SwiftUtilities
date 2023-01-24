@@ -20,6 +20,53 @@ public func makeURL(fromPath path: String?) -> URL? {
     }
 }
 
+/// Generate and return a data folder using path components as subpath.
+///
+/// On macOS and Linux, use the home folder of the user as
+/// the starting point for appending the components, but the first
+/// path part to append get a leading dot.
+///
+/// On Windows, use the value of the environment variable APPDATA as
+/// the starting point for appending the components.
+public func getDataFolder(withComponents components: [String]) throws -> URL {
+    
+    var generalDataFolder: URL? = nil
+    
+    #if os(macOS) || os(Linux)
+    generalDataFolder = FileManager.default.homeDirectoryForCurrentUser
+    #elseif os(Windows)
+    if let appDataEnv = ProcessInfo.processInfo.environment["APPDATA"] {
+        generalDataFolder = URL(fileURLWithPath: appDataEnv)
+    }
+    #endif
+    
+    guard let generalDataFolder else {
+        throw ErrorWithDescription("Could not find the general data directory of your system.")
+    }
+    
+    var dataFolder: URL? = nil
+    
+    #if os(macOS) || os(Linux)
+    dataFolder = generalDataFolder
+    if let firstPathComponent = components.first {
+        dataFolder = dataFolder?.appendingPathComponent(".\(firstPathComponent)")
+        dataFolder = dataFolder?.appendingPathComponents(components.dropFirst())
+    }
+    #elseif os(Windows)
+    dataFolder = generalDataFolder.appendingPathComponents(path)
+    #endif
+    
+    guard let dataFolder else {
+        throw ErrorWithDescription("Could not find your temporary directory.")
+    }
+    
+    if !dataFolder.isDirectory {
+        try FileManager.default.createDirectory(at: dataFolder, withIntermediateDirectories: true)
+    }
+    
+    return dataFolder
+}
+
 /// Generate and return a temporary folder using an application name.
 ///
 /// On Windows, use the value of the environment variable TEMP
@@ -31,27 +78,27 @@ public func makeURL(fromPath path: String?) -> URL? {
 /// as subdirectories (replace "<application name>" by the application name).
 public func getTemporaryFolder(forApplication applicationName: String) throws -> URL {
     
-    var generalTemporaryFolder: URL? = nil
+    var temporaryFolder: URL? = nil
     
     #if os(macOS) || os(Linux)
-    generalTemporaryFolder = FileManager.default.homeDirectoryForCurrentUser
-    generalTemporaryFolder?.appendPathComponent(".\(applicationName)")
-    generalTemporaryFolder?.appendPathComponent("temp")
+    temporaryFolder = FileManager.default.homeDirectoryForCurrentUser
+    temporaryFolder?.appendPathComponent(".\(applicationName)")
+    temporaryFolder?.appendPathComponent("temp")
     #elseif os(Windows)
     if let tempEnv = ProcessInfo.processInfo.environment["TEMP"] {
-        generalTemporaryFolder = URL(fileURLWithPath: tempEnv)
+        temporaryFolder = URL(fileURLWithPath: tempEnv)
     }
     #endif
     
-    guard let tempFolder = generalTemporaryFolder else {
+    guard let temporaryFolder else {
         throw ErrorWithDescription("Could not find your temporary directory.")
     }
     
-    if !tempFolder.isDirectory {
-        try FileManager.default.createDirectory(at: tempFolder, withIntermediateDirectories: true)
+    if !temporaryFolder.isDirectory {
+        try FileManager.default.createDirectory(at: temporaryFolder, withIntermediateDirectories: true)
     }
     
-    return tempFolder
+    return temporaryFolder
 }
 
 /// Return a temporary folder using an application name, using as grandparent directory the according argument

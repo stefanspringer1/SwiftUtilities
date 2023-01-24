@@ -184,6 +184,20 @@ public extension URL {
         return URL(pathComponents: components)
     }
     
+    /// Append path components.
+    func appendingPathComponents(_ pathComponents: [String]) -> URL {
+        var components = self.pathComponents
+        components.append(contentsOf: pathComponents)
+        return URL(pathComponents: components)
+    }
+    
+    /// Append path components.
+    func appendingPathComponents(_ pathComponents: ArraySlice<String>) -> URL {
+        var components = self.pathComponents
+        components.append(contentsOf: pathComponents)
+        return URL(pathComponents: components)
+    }
+    
     /// Add a postifx between the basename and the extension, separated by `.`, and
     /// maybe another additional extension.
     func adding(postfix: String?, withAdditionalExtension additionalExtension: String? = nil) -> URL {
