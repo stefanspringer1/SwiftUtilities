@@ -28,7 +28,7 @@ public func makeURL(fromPath path: String?) -> URL? {
 ///
 /// On Windows, use the value of the environment variable APPDATA as
 /// the starting point for appending the components.
-public func getDataFolder(withComponents components: [String]) throws -> URL {
+public func getDataFolder(withComponents components: [String], supposeExisting: Bool = false) throws -> URL {
     
     var generalDataFolder: URL? = nil
     
@@ -60,8 +60,12 @@ public func getDataFolder(withComponents components: [String]) throws -> URL {
         throw ErrorWithDescription("Could not find your temporary directory.")
     }
     
-    if !dataFolder.isDirectory {
+    if !supposeExisting && !dataFolder.isDirectory {
         try FileManager.default.createDirectory(at: dataFolder, withIntermediateDirectories: true)
+    }
+    
+    if !dataFolder.isDirectory {
+        throw ErrorWithDescription("Could not find your temporary directory \(dataFolder.osPath).")
     }
     
     return dataFolder
