@@ -84,7 +84,7 @@ public enum UnitOfLength: String, CaseIterable, CustomStringConvertible {
 public func centimeters(fromText _text: String?) -> Double? {
     guard let text = _text else { return nil }
     guard let firstChar = text.unicodeScalars.first(where: { scalar in
-        (scalar >= U_LATIN_CAPITAL_LETTER_a && scalar <= U_LATIN_CAPITAL_LETTER_z) ||
+        (scalar >= U_LATIN_SMALL_LETTER_A && scalar <= U_LATIN_SMALL_LETTER_Z) ||
         (scalar >= U_LATIN_CAPITAL_LETTER_A && scalar <= U_LATIN_CAPITAL_LETTER_Z)
     }
     ) else { return nil }

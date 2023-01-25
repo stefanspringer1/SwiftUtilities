@@ -1364,8 +1364,8 @@ public extension UnicodeScalar {
 
 public let U_LATIN_CAPITAL_LETTER_A = UnicodeScalar(0x0041)!
 public let U_LATIN_CAPITAL_LETTER_Z = UnicodeScalar(0x005A)!
-public let U_LATIN_CAPITAL_LETTER_a = UnicodeScalar(0x0061)!
-public let U_LATIN_CAPITAL_LETTER_z = UnicodeScalar(0x007A)!
+public let U_LATIN_SMALL_LETTER_A = UnicodeScalar(0x0061)!
+public let U_LATIN_SMALL_LETTER_Z = UnicodeScalar(0x007A)!
 
 public let U_LEFT_CURLY_BRACKET = UnicodeScalar(0x007B)!
 public let U_RIGHT_CURLY_BRACKET = UnicodeScalar(0x007D)!
