@@ -1351,6 +1351,11 @@ public extension String {
         return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.SMALL_GREEK_LETTERS) }
     }
     
+    func isRelation(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        let scalars = self.unicodeScalars
+        return scalars.count == 1 && characterClasses[scalars.first!].contains(.RELATIONS || .NEGATED_RELATIONS)
+    }
+    
 }
 
 public extension UnicodeScalar {
