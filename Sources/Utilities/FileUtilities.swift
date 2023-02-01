@@ -146,6 +146,13 @@ public extension URL {
         (try? URL(fileURLWithPath: self.path).resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
     }
     
+    /// Check if it is an empty directory.
+    var isEmpty: Bool {
+        guard isDirectory else { return false }
+        var enumerator = FileManager.default.enumerator(at: self, includingPropertiesForKeys: nil)?.makeIterator()
+        return enumerator?.next() == nil
+    }
+    
     /// Check if it its path an absolute one.
     var isAbsolute: Bool {
         path.isAbsolutePath
