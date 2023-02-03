@@ -185,27 +185,22 @@ public extension URL {
     }
     
     /// Append path components.
-    @available(macOS 13.0, *)
-    func appending(components: String...) -> URL {
-        var newURL = self
-        components.forEach { newURL.append(component: $0) }
-        return newURL
+    func appending(components newComponents: String...) -> URL {
+        return self.appending(components: newComponents)
     }
     
     /// Append path components.
-    @available(macOS 13.0, *)
-    func appending(components: [String]) -> URL {
-        var newURL = self
-        components.forEach { newURL.append(component: $0) }
-        return newURL
+    func appending(components newComponents: [String]) -> URL {
+        var components = self.pathComponents
+        components.append(contentsOf: newComponents)
+        return URL(pathComponents: components)
     }
     
     /// Append path components.
-    @available(macOS 13.0, *)
-    func appending(components: ArraySlice<String>) -> URL {
-        var newURL = self
-        components.forEach { newURL.append(component: $0) }
-        return newURL
+    func appending(components newComponents: ArraySlice<String>) -> URL {
+        var components = self.pathComponents
+        components.append(contentsOf: newComponents)
+        return URL(pathComponents: components)
     }
     
     /// Add a postifx between the basename and the extension, separated by `.`, and
