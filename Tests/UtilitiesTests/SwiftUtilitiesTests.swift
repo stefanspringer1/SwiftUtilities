@@ -22,6 +22,11 @@ final class UtilitiesTests: XCTestCase {
         print(dataFolder.osPath)
     }
     
+    func testAppendingToURL() throws {
+        let url = URL(fileURLWithPath: "/tmp/haha")
+        XCTAssertEqual(url.appending(components: "a", "b", "c").path, "/tmp/haha/a/b/c")
+    }
+    
     /*
     func embraceCombinations(n: Int, m: Int, l: Int)  {
         let base0 = randomString(length: n)
