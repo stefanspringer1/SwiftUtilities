@@ -1365,6 +1365,45 @@ public extension CharacterClass {
 
 public extension String {
     
+    func isCombining(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.COMBINING) }
+    }
+    
+    func isGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.GREEK_LETTERS) }
+    }
+    
+    func isCapitalGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.CAPITAL_GREEK_LETTERS) }
+    }
+    
+    func isSmallGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.SMALL_GREEK_LETTERS) }
+    }
+    
+    func isRelation(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        let scalars = self.unicodeScalars
+        return scalars.count == 1 && characterClasses[scalars.first!].contains(.RELATIONS || .NEGATED_RELATIONS)
+    }
+    
+    func isBinaryOperator(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        let scalars = self.unicodeScalars
+        return scalars.count == 1 && characterClasses[scalars.first!].contains(.BINARY_OPERATIONS)
+    }
+    
+    func isPostfixOperator(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        let scalars = self.unicodeScalars
+        return scalars.count == 1 && characterClasses[scalars.first!].contains(.POSTFIX_OPERATORS)
+    }
+    
+}
+
+public extension Character {
+    
+    func isCombining(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.COMBINING) }
+    }
+    
     func isGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
         return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.GREEK_LETTERS) }
     }
