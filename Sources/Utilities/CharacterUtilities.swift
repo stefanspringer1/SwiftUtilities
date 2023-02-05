@@ -1382,6 +1382,16 @@ public extension String {
         return scalars.count == 1 && characterClasses[scalars.first!].contains(.RELATIONS || .NEGATED_RELATIONS)
     }
     
+    func isBinaryOperator(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        let scalars = self.unicodeScalars
+        return scalars.count == 1 && characterClasses[scalars.first!].contains(.BINARY_OPERATIONS)
+    }
+    
+    func isPostfixOperator(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        let scalars = self.unicodeScalars
+        return scalars.count == 1 && characterClasses[scalars.first!].contains(.POSTFIX_OPERATORS)
+    }
+    
 }
 
 public extension UnicodeScalar {
