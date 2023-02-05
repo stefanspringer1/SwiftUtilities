@@ -1413,6 +1413,7 @@ public let U_PRIME = UnicodeScalar(0x2032)!
 public let U_DOUBLE_PRIME = UnicodeScalar(0x2033)!
 public let U_TRIPLE_PRIME = UnicodeScalar(0x2034)!
 public let U_QUADRUPLE_PRIME = UnicodeScalar(0x2057)!
+public let U_REVERSED_PRIME = UnicodeScalar(0x2035)!
 
 public let U_VULGAR_FRACTION_ONE_SEVENTH = UnicodeScalar(0x2150)!
 public let U_VULGAR_FRACTION_ONE_NINTH = UnicodeScalar(0x2151)!
