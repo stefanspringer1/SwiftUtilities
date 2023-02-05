@@ -7,43 +7,44 @@ import Foundation
 /// The "CharacterClass" can be used to see to which class a character belongs to.
 public enum CharacterClass: CombinedCharacterClass, CaseIterable {
     
-    case EMPTY                 = 0b00000000000000000000000000000000
-    case CAPITAL_LATIN_LETTERS = 0b00000000000000000000000000000001
-    case SMALL_LATIN_LETTERS   = 0b00000000000000000000000000000010
-    case LATIN_LETTERS         = 0b00000000000000000000000000000011 // do not insert characters directly into this class, use SMALL_LATIN_LETTERS or CAPITAL_LATIN_LETTERS
-    case COMBINING_ABOVE       = 0b00000000000000000000000000000100
-    case COMBINING_BELOW       = 0b00000000000000000000000000001000
-    case COMBINING_MIDDLE      = 0b00000000000000000000000000010000
-    case COMBINING             = 0b00000000000000000000000000011100 // do not insert characters directly into this class, use COMBINING_ABOVE, COMBINING_BELOW, or COMBINING_MIDDLE
-    case ISO_8859_1            = 0b00000000000000000000000000100000
-    case CAPITAL_GREEK_LETTERS = 0b00000000000000000000000001000000
-    case SMALL_GREEK_LETTERS   = 0b00000000000000000000000010000000
-    case GREEK_LETTERS         = 0b00000000000000000000000011000000 // do not insert characters directly into this class, use SMALL_GREEK_LETTERS or CAPITAL_GREEK_LETTERS
-    case MATHEMATICAL          = 0b00000000000000000000000100000000
-    case ROMAN                 = 0b00000000000000000000001000000000
-    case ITALIC                = 0b00000000000000000000010000000000
-    case BOLD                  = 0b00000000000000000000100000000000
-    case SCRIPT                = 0b00000000000000000001000000000000
-    case GOTHIC                = 0b00000000000000000010000000000000
-    case SANSSERIF             = 0b00000000000000000100000000000000
-    case MONOSPACE             = 0b00000000000000001000000000000000
-    case DOUBLE_STRUCK         = 0b00000000000000010000000000000000
-    case DIGIT                 = 0b00000000000000100000000000000000
-    case LARGE_OPERATORS       = 0b00000000000001000000000000000000
-    case BINARY_OPERATIONS     = 0b00000000000010000000000000000000
-    case RELATIONS             = 0b00000000000100000000000000000000
-    case NEGATED_RELATIONS     = 0b00000000001000000000000000000000
-    case ARROWS                = 0b00000000010000000000000000000000
-    case OPENING_DELIMITERS    = 0b00000000100000000000000000000000
-    case CLOSING_DELIMITERS    = 0b00000001000000000000000000000000
-    case PUNCTUATION           = 0b00000010000000000000000000000000
-    case LEFT_RIGHT_ARROWS     = 0b00000100000000000000000000000000
-    case CYRILLIC              = 0b00001000000000000000000000000000
-    case ACCENTED              = 0b00010000000000000000000000000000
-    case TRIVIAL_SPACES        = 0b00100000000000000000000000000000
-    case NONTRIVIAL_SPACES     = 0b01000000000000000000000000000000
-    case SPACES                = 0b01100000000000000000000000000000 // do not insert characters directly into this class, use TRIVIAL_SPACES or NONTRIVIAL_SPACES
-    case ARBORTEXT_SPACE_BUG   = 0b10000000000000000000000000000000 // the Arbortext editor falsely sets a space between those characters and a combining character
+    case EMPTY                 = 0b000000000000000000000000000000000
+    case CAPITAL_LATIN_LETTERS = 0b000000000000000000000000000000001
+    case SMALL_LATIN_LETTERS   = 0b000000000000000000000000000000010
+    case LATIN_LETTERS         = 0b000000000000000000000000000000011 // do not insert characters directly into this class, use SMALL_LATIN_LETTERS or CAPITAL_LATIN_LETTERS
+    case COMBINING_ABOVE       = 0b000000000000000000000000000000100
+    case COMBINING_BELOW       = 0b000000000000000000000000000001000
+    case COMBINING_MIDDLE      = 0b000000000000000000000000000010000
+    case COMBINING             = 0b000000000000000000000000000011100 // do not insert characters directly into this class, use COMBINING_ABOVE, COMBINING_BELOW, or COMBINING_MIDDLE
+    case ISO_8859_1            = 0b000000000000000000000000000100000
+    case CAPITAL_GREEK_LETTERS = 0b000000000000000000000000001000000
+    case SMALL_GREEK_LETTERS   = 0b000000000000000000000000010000000
+    case GREEK_LETTERS         = 0b000000000000000000000000011000000 // do not insert characters directly into this class, use SMALL_GREEK_LETTERS or CAPITAL_GREEK_LETTERS
+    case MATHEMATICAL          = 0b000000000000000000000000100000000
+    case ROMAN                 = 0b000000000000000000000001000000000
+    case ITALIC                = 0b000000000000000000000010000000000
+    case BOLD                  = 0b000000000000000000000100000000000
+    case SCRIPT                = 0b000000000000000000001000000000000
+    case GOTHIC                = 0b000000000000000000010000000000000
+    case SANSSERIF             = 0b000000000000000000100000000000000
+    case MONOSPACE             = 0b000000000000000001000000000000000
+    case DOUBLE_STRUCK         = 0b000000000000000010000000000000000
+    case DIGIT                 = 0b000000000000000100000000000000000
+    case LARGE_OPERATORS       = 0b000000000000001000000000000000000
+    case BINARY_OPERATIONS     = 0b000000000000010000000000000000000
+    case RELATIONS             = 0b000000000000100000000000000000000
+    case NEGATED_RELATIONS     = 0b000000000001000000000000000000000
+    case ARROWS                = 0b000000000010000000000000000000000
+    case OPENING_DELIMITERS    = 0b000000000100000000000000000000000
+    case CLOSING_DELIMITERS    = 0b000000001000000000000000000000000
+    case PUNCTUATION           = 0b000000010000000000000000000000000
+    case LEFT_RIGHT_ARROWS     = 0b000000100000000000000000000000000
+    case CYRILLIC              = 0b000001000000000000000000000000000
+    case ACCENTED              = 0b000010000000000000000000000000000
+    case TRIVIAL_SPACES        = 0b000100000000000000000000000000000
+    case NONTRIVIAL_SPACES     = 0b001000000000000000000000000000000
+    case SPACES                = 0b001100000000000000000000000000000 // do not insert characters directly into this class, use TRIVIAL_SPACES or NONTRIVIAL_SPACES
+    case POSTFIX_OPERATORS     = 0b010000000000000000000000000000000
+    case ARBORTEXT_SPACE_BUG   = 0b100000000000000000000000000000000 // the Arbortext editor falsely sets a space between those characters and a combining character
     case ALL                   = 0b11111111111111111111111111111111
 
 }
@@ -842,7 +843,7 @@ public func getCharacterClasses() -> CharacterClasses {
     // binary operations:
     // ------------------------------------------------------------------------
 
-    // TODO: might be augmented
+    // might be augmented
     
     do {
         let codePoints = UCCodePoints(
@@ -867,10 +868,35 @@ public func getCharacterClasses() -> CharacterClasses {
     }
     
     // ------------------------------------------------------------------------
+    // postfix operators:
+    // ------------------------------------------------------------------------
+
+    // might be augmented
+    
+    do {
+        let codePoints = UCCodePoints(
+            // ---- ranges:
+            [
+                0x2032...0x2037,
+            ],
+            // ---- single codepoints:
+            [
+                0x2057,
+            ]
+        )
+        
+        codePoints.forEach {
+            characterClasses.add(.POSTFIX_OPERATORS, toCodePoint: $0)
+        }
+        
+        characterClasses.codePoints[.POSTFIX_OPERATORS] = codePoints
+    }
+    
+    // ------------------------------------------------------------------------
     // relations:
     // ------------------------------------------------------------------------
 
-    // TODO: might be augmented
+    // might be augmented
     
     do {
         let codePoints = UCCodePoints(
@@ -900,7 +926,7 @@ public func getCharacterClasses() -> CharacterClasses {
     // negated relations:
     // ------------------------------------------------------------------------
 
-    // TODO: might be augmented
+    // might be augmented
     
     do {
         let codePoints = UCCodePoints(
@@ -927,7 +953,7 @@ public func getCharacterClasses() -> CharacterClasses {
     // arrows:
     // ------------------------------------------------------------------------
 
-    // TODO: might be augmented
+    // might be augmented
     
     do {
         let codePoints = UCCodePoints(
@@ -953,7 +979,7 @@ public func getCharacterClasses() -> CharacterClasses {
     // opening delimiters:
     // ------------------------------------------------------------------------
 
-    // TODO: might be augmented
+    // might be augmented
     
     do {
         let codePoints = UCCodePoints(
@@ -980,7 +1006,7 @@ public func getCharacterClasses() -> CharacterClasses {
     // closing delimiters:
     // ------------------------------------------------------------------------
 
-    // TODO: might be augmented
+    // might be augmented
     
     do {
         let codePoints = UCCodePoints(
@@ -1006,7 +1032,7 @@ public func getCharacterClasses() -> CharacterClasses {
     // punctuations:
     // ------------------------------------------------------------------------
 
-    // TODO: might be augmented
+    // might be augmented
     
     do {
         let codePoints = UCCodePoints(
@@ -1052,7 +1078,7 @@ public func getCharacterClasses() -> CharacterClasses {
     // left-right arrows:
     // ------------------------------------------------------------------------
     
-    // TODO: might be augmented
+    // might be augmented
     
     do {
         let codePoints = UCCodePoints(
@@ -1099,7 +1125,7 @@ public func getCharacterClasses() -> CharacterClasses {
     // non-trivial spaces:
     // ------------------------------------------------------------------------
     
-    // TODO: might be augmented
+    // might be augmented
     
     let nontrivialSpaces = UCCodePoints(
         // ---- ranges:
@@ -1151,7 +1177,7 @@ public func getCharacterClasses() -> CharacterClasses {
     // accented:
     // ------------------------------------------------------------------------
     
-    // TODO: might be augmented
+    // might be augmented
     
     do {
         let codePoints = UCCodePoints(
@@ -1318,7 +1344,7 @@ final public class UCCodePoints {
 
 public typealias UCCodePoint = UInt32
 
-public typealias CombinedCharacterClass = UInt32
+public typealias CombinedCharacterClass = UInt64
 
 public extension CombinedCharacterClass {
     
