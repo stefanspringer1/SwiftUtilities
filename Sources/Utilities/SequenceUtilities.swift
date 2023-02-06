@@ -59,4 +59,6 @@ public extension Sequence {
         return try self.prefix(while: condition)
     }
     
+    var count: Int { self.reduce(0) { acc, row in acc + 1 } }
+    
 }
