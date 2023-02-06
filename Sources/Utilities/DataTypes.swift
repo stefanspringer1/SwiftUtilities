@@ -102,3 +102,35 @@ public class Index<K: Hashable,V: Hashable> {
     }
     
 }
+
+/// An `Index` can hold several values for one key.
+public class IndexWithNonHashableValues<K: Hashable,V> {
+    
+    private var dictionary = [K:Referenced<[V]>]()
+    
+    public init() {}
+    
+    public var isEmpty: Bool { dictionary.isEmpty }
+    
+    public func put(key: K, value: V) {
+        let setForKey = dictionary[key] ?? {
+            let newSet = Referenced([V]())
+            dictionary[key] = newSet
+            return newSet
+        }()
+        setForKey.referenced.append(value)
+    }
+    
+    public func removeAll(forKey key: K, value: V) {
+        dictionary[key] = nil
+    }
+    
+    public subscript(key: K) -> [V]? {
+        
+        get {
+            return dictionary[key]?.referenced
+        }
+        
+    }
+    
+}
