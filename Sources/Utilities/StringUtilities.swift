@@ -110,7 +110,7 @@ public extension StringProtocol {
                     searchRange = match.upperBound..<searchRange.upperBound
                 }
                 else {
-                    skippingRest = 0
+                    skippingRest = -1
                 }
             }
         }
@@ -224,7 +224,7 @@ public extension String {
                     searchRange = match.upperBound..<searchRange.upperBound
                 }
                 else {
-                    skippingRest = 0
+                    skippingRest = -1
                 }
             }
         }

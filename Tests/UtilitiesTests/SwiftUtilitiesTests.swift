@@ -32,32 +32,52 @@ final class UtilitiesTests: XCTestCase {
         // String:
         do {
             let text = "Count 123 and be 456 happy 789."
-            let allText = text.startIndex..<text.endIndex
+            let empty = text.startIndex..<text.startIndex
             
             do {
-                let range = text.firstOccurrence(ofRegex: #"\d+"#) ?? allText
-                XCTAssertEqual(text[range.lowerBound..<range.upperBound], "123")
+                let range = text.firstOccurrence(ofRegex: #"not there"#) ?? empty
+                XCTAssertEqual(String(text[range.lowerBound..<range.upperBound]), "")
             }
             
             do {
-                let range = text.firstOccurrence(ofRegex: #"\d+"#, skipping: 2) ?? allText
-                XCTAssertEqual(text[range.lowerBound..<range.upperBound], "789")
+                let range = text.firstOccurrence(ofRegex: #"\d+"#) ?? empty
+                XCTAssertEqual(String(text[range.lowerBound..<range.upperBound]), "123")
+            }
+            
+            do {
+                let range = text.firstOccurrence(ofRegex: #"\d+"#, skipping: 2) ?? empty
+                XCTAssertEqual(String(text[range.lowerBound..<range.upperBound]), "789")
+            }
+            
+            do {
+                let range = text.firstOccurrence(ofRegex: #"\d+"#, skipping: 10) ?? empty
+                XCTAssertEqual(String(text[range.lowerBound..<range.upperBound]), "")
             }
         }
         
         // Substring:
         do {
             let text = "Count 123 and be 456 happy 789.".dropLast()
-            let allText = text.startIndex..<text.endIndex
+            let empty = text.startIndex..<text.startIndex
             
             do {
-                let range = text.firstOccurrence(ofRegex: #"\d+"#) ?? allText
-                XCTAssertEqual(text[range.lowerBound..<range.upperBound], "123")
+                let range = text.firstOccurrence(ofRegex: #"not there"#) ?? empty
+                XCTAssertEqual(String(text[range.lowerBound..<range.upperBound]), "")
             }
             
             do {
-                let range = text.firstOccurrence(ofRegex: #"\d+"#, skipping: 2) ?? allText
-                XCTAssertEqual(text[range.lowerBound..<range.upperBound], "789")
+                let range = text.firstOccurrence(ofRegex: #"\d+"#) ?? empty
+                XCTAssertEqual(String(text[range.lowerBound..<range.upperBound]), "123")
+            }
+            
+            do {
+                let range = text.firstOccurrence(ofRegex: #"\d+"#, skipping: 2) ?? empty
+                XCTAssertEqual(String(text[range.lowerBound..<range.upperBound]), "789")
+            }
+            
+            do {
+                let range = text.firstOccurrence(ofRegex: #"\d+"#, skipping: 10) ?? empty
+                XCTAssertEqual(String(text[range.lowerBound..<range.upperBound]), "")
             }
         }
     }
