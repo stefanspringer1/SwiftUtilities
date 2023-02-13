@@ -27,6 +27,41 @@ final class UtilitiesTests: XCTestCase {
         XCTAssertEqual(url.appending(components: "a", "b", "c").path, "/tmp/haha/a/b/c")
     }
     
+    func testOccurrenceOfRegex() throws {
+        
+        // String:
+        do {
+            let text = "Count 123 and be 456 happy 789."
+            let allText = text.startIndex..<text.endIndex
+            
+            do {
+                let range = text.firstOccurrence(ofRegex: #"\d+"#) ?? allText
+                XCTAssertEqual(text[range.lowerBound..<range.upperBound], "123")
+            }
+            
+            do {
+                let range = text.firstOccurrence(ofRegex: #"\d+"#, skipping: 2) ?? allText
+                XCTAssertEqual(text[range.lowerBound..<range.upperBound], "789")
+            }
+        }
+        
+        // Substring:
+        do {
+            let text = "Count 123 and be 456 happy 789.".dropLast()
+            let allText = text.startIndex..<text.endIndex
+            
+            do {
+                let range = text.firstOccurrence(ofRegex: #"\d+"#) ?? allText
+                XCTAssertEqual(text[range.lowerBound..<range.upperBound], "123")
+            }
+            
+            do {
+                let range = text.firstOccurrence(ofRegex: #"\d+"#, skipping: 2) ?? allText
+                XCTAssertEqual(text[range.lowerBound..<range.upperBound], "789")
+            }
+        }
+    }
+    
     /*
     func embraceCombinations(n: Int, m: Int, l: Int)  {
         let base0 = randomString(length: n)

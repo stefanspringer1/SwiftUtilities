@@ -88,6 +88,35 @@ public extension StringProtocol {
         return match != nil
     }
     
+    /// Find first occurrence of a regex.
+    func firstOccurrence(ofRegex regex: String) -> Range<String.Index>? {
+        var match: Range<String.Index>?
+        autoreleasepool {
+            match = self.range(of: regex, options: .regularExpression)
+        }
+        return match
+    }
+    
+    /// Find first occurrence of a regex after skipping n occurrences of it.
+    func firstOccurrence(ofRegex regex: String, skipping: Int) -> Range<String.Index>? {
+        var match: Range<String.Index>?
+        var searchRange = self.startIndex..<self.endIndex
+        var skippingRest = skipping
+        autoreleasepool {
+            while skippingRest >= 0 {
+                match = self.range(of: regex, options: .regularExpression, range: searchRange)
+                if let match {
+                    skippingRest -= 1
+                    searchRange = match.upperBound..<searchRange.upperBound
+                }
+                else {
+                    skippingRest = 0
+                }
+            }
+        }
+        return match
+    }
+    
     /// Test if a text only consists of whitespace.
     var isWhitespace: Bool { contains(regex: #"^\s*$"#) }
     
@@ -171,6 +200,35 @@ public extension String {
             match = self.range(of: regex, options: .regularExpression)
         }
         return match != nil
+    }
+    
+    /// Find first occurrence of a regex.
+    func firstOccurrence(ofRegex regex: String) -> Range<String.Index>? {
+        var match: Range<String.Index>?
+        autoreleasepool {
+            match = self.range(of: regex, options: .regularExpression)
+        }
+        return match
+    }
+    
+    /// Find first occurrence of a regex after skipping n occurrences of it.
+    func firstOccurrence(ofRegex regex: String, skipping: Int) -> Range<String.Index>? {
+        var match: Range<String.Index>?
+        var searchRange = self.startIndex..<self.endIndex
+        var skippingRest = skipping
+        autoreleasepool {
+            while skippingRest >= 0 {
+                match = self.range(of: regex, options: .regularExpression, range: searchRange)
+                if let match {
+                    skippingRest -= 1
+                    searchRange = match.upperBound..<searchRange.upperBound
+                }
+                else {
+                    skippingRest = 0
+                }
+            }
+        }
+        return match
     }
     
     /// Test if a text only consists of whitespace.
