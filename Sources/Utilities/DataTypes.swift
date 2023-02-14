@@ -15,10 +15,10 @@ public class Referenced<T> {
     
 }
 
-/// A map of reference-type that has pairs as keys.
-public class ReferencedDictionaryForPairs<K1: Hashable,K2: Hashable,V> {
+/// A map of reference-type that has keys on two levels.
+public class TieredDictionary<K1: Hashable,K2: Hashable,V> {
     
-    private var dictionary = [K1:Referenced<Dictionary<K2,V>>]()
+    private var dictionary = [K1:Referenced<[K2:V]>]()
     
     public init() {}
     
@@ -44,6 +44,14 @@ public class ReferencedDictionaryForPairs<K1: Hashable,K2: Hashable,V> {
         
         get {
             return dictionary[key1]?.referenced[key2]
+        }
+        
+    }
+    
+    public subscript(key1: K1) -> [K2:V]? {
+        
+        get {
+            return dictionary[key1]?.referenced
         }
         
     }
