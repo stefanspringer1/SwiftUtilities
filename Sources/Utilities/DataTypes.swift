@@ -48,10 +48,10 @@ public class TieredDictionary<K1: Hashable,K2: Hashable,V> {
         
     }
     
-    public subscript(key1: K1) -> [K2:V]? {
+    public subscript(key1: K1) -> Referenced<[K2:V]>? {
         
         get {
-            return dictionary[key1]?.referenced
+            return dictionary[key1]
         }
         
     }
