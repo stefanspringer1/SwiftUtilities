@@ -54,7 +54,7 @@ public func determineDataFolder(withSubPathComponents subPathComponents: [String
         dataFolder = dataFolder?.appending(components: subPathComponents.dropFirst())
     }
     #elseif os(Windows)
-    dataFolder = generalDataFolder.appendingPathComponents(subPathComponents)
+    dataFolder = generalDataFolder.appending(components: subPathComponents)
     #endif
     
     guard let dataFolder else {
