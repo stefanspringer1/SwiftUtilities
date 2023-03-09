@@ -205,7 +205,7 @@ public extension URL {
     
     #if os(Linux) || os(Android) || os(Windows)
     /// Append one path component.
-    func appending(component newComponent: ArraySlice<String>) -> URL {
+    func appending(component newComponent: String) -> URL {
         return self.appending(components: newComponent)
     }
     #endif
