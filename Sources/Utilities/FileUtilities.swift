@@ -203,6 +203,13 @@ public extension URL {
         return newURL
     }
     
+    #if os(Linux) || os(Android) || os(Windows)
+    /// Append one path component.
+    func appending(component newComponent: ArraySlice<String>) -> URL {
+        return self.appending(components: newComponent)
+    }
+    #endif
+    
     /// Add a postifx between the basename and the extension, separated by `.`, and
     /// maybe another additional extension.
     func adding(postfix: String?, withAdditionalExtension additionalExtension: String? = nil) -> URL {
