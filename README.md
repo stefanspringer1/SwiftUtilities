@@ -24,7 +24,7 @@ import Utilities
 
 ## API documentation
 
-Build the API documentation using DocC, e.g. in Xcode via the `Product` / `Build Documentation` command. But in the current state of DocC, that documentation will not document any extensions[^1], _so currently you need to look the extensions up in the code._ In the overview below it is noted which types are extended.
+Build the API documentation using DocC, e.g. in Xcode via the `Product` / `Build Documentation` command. Include the `--include-extended-types` option (available since Swift 5.8) for also document extensions to types from other modules: `swift package generate-documentation --include-extended-types`.
 
 [^1]: see the Swift issue [SR-15410](https://github.com/apple/swift-docc/issues/210)
 
