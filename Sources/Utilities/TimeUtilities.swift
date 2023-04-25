@@ -10,7 +10,7 @@ import Foundation
 ///
 /// `forFilename` indicates if the result is to be used as the part of a file name,
 ///  it then only contains characters being allowed in a file names on all
-///  eligible platforms, and it also does not contain any whitespace (the setting incudes `avoidSpace = true`).
+///  eligible platforms, and it also does not contain any whitespace (the setting forces `avoidSpace: true`).
 func formattedTime(avoidSpace: Bool = false, forFilename: Bool = false) -> String {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSZZZZZ"
