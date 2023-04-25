@@ -6,13 +6,22 @@ import Foundation
 
 /// Get a string representation of the current time.
 ///
+/// `avoidSpace` avoid space by setting an `T` after the date instead of a space.
+///
 /// `forFilename` indicates if the result is to be used as the part of a file name,
 ///  it then only contains characters being allowed in a file names on all
-///  eligible platforms, and it also does not contain any whitespace.
-public func formattedTime(forFilename: Bool = false) -> String {
+///  eligible platforms, and it also does not contain any whitespace (the setting incudes `avoidSpace = true`).
+func formattedTime(avoidSpace: Bool = false, forFilename: Bool = false) -> String {
     let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy-MM-dd\(forFilename ? "_" : " ")HH\(forFilename ? "_" : ":")mm\(forFilename ? "_" : ":")ss\(forFilename ? "_" : ".")SSSZZZZZ"
-    return formatter.string(from: Date())
+    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSZZZZZ"
+    var result = formatter.string(from: Date())
+    if avoidSpace || forFilename {
+        result = result.replacingOccurrences(of: " ", with: "T")
+    }
+    if forFilename {
+        result = result.replacingOccurrences(of: ":", with: "_").replacingOccurrences(of: ".", with: "_")
+    }
+    return result
 }
 
 /// Get the ellapsed seconds since `start`.
