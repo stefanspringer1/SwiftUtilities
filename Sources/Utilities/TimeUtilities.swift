@@ -11,7 +11,7 @@ import Foundation
 ///  eligible platforms, and it also does not contain any whitespace.
 public func formattedTime(forFilename: Bool = false) -> String {
     let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy-MM-dd\(forFilename ? "_" : " ")HH\(forFilename ? "_" : ":")mm\(forFilename ? "_" : ":")ss\(forFilename ? "_" : ".")SSS"
+    formatter.dateFormat = "yyyy-MM-dd\(forFilename ? "_" : " ")HH\(forFilename ? "_" : ":")mm\(forFilename ? "_" : ":")ss\(forFilename ? "_" : ".")SSSZZZZZ"
     return formatter.string(from: Date())
 }
 
