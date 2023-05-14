@@ -236,10 +236,14 @@ public extension URL {
     }
 
     /// Removing a file "safely", i.e. try to remove it sevaral times if necessary and throw an error if not finally removed.
-    func removeSafely(maxTries: Int = 5, secBeforeRetry: TimeInterval = 1) throws {
+    func removeSafely(maxTries: Int = 5, secBeforeRetry: TimeInterval = 1, errorIfNotExists: Bool = true) throws {
         var isFile = self.isFile
         guard isFile else {
-            throw CopyError.notAFileError(self.description + " is not a file")
+            if errorIfNotExists {
+                throw CopyError.notAFileError(self.description + " is not a file")
+            } else {
+                return
+            }
         }
         var tries = 0
         while isFile {
