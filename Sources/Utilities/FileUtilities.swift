@@ -265,10 +265,14 @@ public extension URL {
     }
 
     /// Removing a directory "safely", i.e. try to remove it sevaral times if necessary and throw an error if not finally removed.
-    func removeDirectorySafely(maxTries: Int = 5, secBeforeRetry: TimeInterval = 1) throws {
+    func removeDirectorySafely(maxTries: Int = 5, secBeforeRetry: TimeInterval = 1, errorIfNotExists: Bool = true) throws {
         var isDirectory = self.isDirectory
         guard isDirectory else {
-            throw CopyError.notADirectoryError(self.description + " is not a directory")
+            if errorIfNotExists {
+                throw CopyError.notADirectoryError(self.description + " is not a directory")
+            } else {
+                return
+            }
         }
         var tries = 0
         while isDirectory {
