@@ -78,25 +78,38 @@ public extension URL {
     /// - Parameters:
     ///     - withPattern: Regular expression matching the file name (the pattern will will enclosed by a beginning `^` and
     ///       a closing `$` before its application).
+    ///     - excluding: If not `nil`: Regular expression that must not match the file name (the pattern will will enclosed by a beginning `^` and
+    ///       a closing `$` before its application).
     ///     - recursively: If the search should be done recursively. Else, only direct child files are searched.
     ///
     /// - Returns: The URLs of the found files as array.
-    func files(withPattern _pattern: String, findRecursively: Bool) throws -> [URL] {
+    func files(withPattern _pattern: String, excluding _excludePattern: String? = nil, findRecursively: Bool) throws -> [URL] {
         
-        func toAdd(file: URL, pattern: String) throws -> Bool {
+        let pattern = "^\(_pattern)$"
+        let excludePattern: String?
+        if let _excludePattern {
+            excludePattern = "^\(_excludePattern)$"
+        } else {
+            excludePattern = nil
+        }
+        
+        func toAdd(file: URL) throws -> Bool {
             if file.isFile {
                 var match: Range<String.Index>?
+                var matchExcluded: Range<String.Index>?
                 autoreleasepool {
                     match = file.lastPathComponent.range(of: pattern, options: .regularExpression)
+                    if let excludePattern {
+                        matchExcluded = file.lastPathComponent.range(of: excludePattern, options: .regularExpression)
+                    }
                 }
-                return match != nil
+                return match != nil && matchExcluded == nil
                 //return file.lastPathComponent.contains(regex: pattern) // if you do this instead here, memory usage will go up!
             } else {
                 return false
             }
         }
         
-        let pattern = "^\(_pattern)$"
         var files = [URL]()
         if self.isDirectory {
             let propertiesForKeys: [URLResourceKey] = [.isRegularFileKey, .fileSizeKey]
@@ -104,19 +117,19 @@ public extension URL {
             if findRecursively {
                 if let enumerator = FileManager.default.enumerator(at: self, includingPropertiesForKeys: propertiesForKeys, options: options) {
                     for case let fileURL as URL in enumerator {
-                        if try toAdd(file: fileURL, pattern: pattern) {
+                        if try toAdd(file: fileURL) {
                             files.append(fileURL)
                         }
                     }
                 }
             } else {
                 try FileManager.default.contentsOfDirectory(at: self, includingPropertiesForKeys: propertiesForKeys, options: options).forEach { fileURL in
-                    if try toAdd(file: fileURL, pattern: pattern) {
+                    if try toAdd(file: fileURL) {
                         files.append(fileURL)
                     }
                 }
             }
-        } else if try toAdd(file: self, pattern: pattern) {
+        } else if try toAdd(file: self) {
             files.append(self)
         }
         return files
