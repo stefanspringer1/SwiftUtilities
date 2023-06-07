@@ -272,7 +272,7 @@ public func getCharacterClasses() -> CharacterClasses {
         [
             // Greek:
             0x0371, 0x0373, 0x0377, 0x0390, 0x03D5, 0x03D9, 0x03DB, 0x03DD,
-            0x03DF, 0x03E1, 0x03F8, 0x03FB,
+            0x03DF, 0x03E1, 0x03F1, 0x03F8, 0x03FB,
             
             // mathematical Greek:
             // -
