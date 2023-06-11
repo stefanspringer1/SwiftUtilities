@@ -1348,6 +1348,8 @@ public typealias CombinedCharacterClass = UInt64
 
 public extension CombinedCharacterClass {
     
+    static let EMPTY: CombinedCharacterClass = 0
+    
     func contains(_ characterClass: CharacterClass) -> Bool {
         return self & characterClass.rawValue > 0
     }
