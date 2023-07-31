@@ -36,6 +36,7 @@ Build the API documentation using DocC, e.g. in Xcode via the `Product` / `Build
 - **Errors.swift:** Definition of a basic error with desription, and of the usefule operator `?!`.
 - **FileUtilities.swift:** Some definitions to be useful when working with files, e.g. `URL.files(withPattern:findRecursively:)` to find files. _Contains extensions of `FileHandle`, `URL`, `[URL]`, and `String`._
 - **Lengths.swift:** Some definitions useful when working with lengths (e.g. in layouts).
+- **Parallel.swift:** Utilities for parallel execution.
 - **Process.swift:** Definitions useful for running external programs.
 - **Properties.swift:** Some definitions for working with key-value properties lists in files.
 - **SequenceUtilities.swift:** Definitions useful when working with sequences. _Contains extensions of `Sequence`._
