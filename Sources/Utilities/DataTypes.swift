@@ -101,6 +101,10 @@ public class Index<K: Hashable,V: Hashable> {
         dictionary[key] = nil
     }
     
+    var keys: Dictionary<K, Referenced<Set<V>>>.Keys {
+        return dictionary.keys
+    }
+    
     public subscript(key: K) -> Set<V>? {
         
         get {
