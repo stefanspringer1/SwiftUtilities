@@ -71,6 +71,10 @@ public class TieredDictionary<K1: Hashable,K2: Hashable,V> {
         }
         return keys
     }
+    
+    public func removeAll(keepingCapacity keepCapacity: Bool = false) {
+        dictionary.removeAll(keepingCapacity: keepCapacity)
+    }
 }
 
 /// An `Index` can hold several values for one key.
@@ -113,6 +117,10 @@ public class Index<K: Hashable,V: Hashable> {
         
     }
     
+    public func removeAll(keepingCapacity keepCapacity: Bool = false) {
+        dictionary.removeAll(keepingCapacity: keepCapacity)
+    }
+    
 }
 
 /// An `Index` can hold several values for one key.
@@ -143,6 +151,10 @@ public class IndexWithNonHashableValues<K: Hashable,V> {
             return dictionary[key]?.referenced
         }
         
+    }
+    
+    public func removeAll(keepingCapacity keepCapacity: Bool = false) {
+        dictionary.removeAll(keepingCapacity: keepCapacity)
     }
     
 }
