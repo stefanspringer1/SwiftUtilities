@@ -4,11 +4,18 @@
 
 import Foundation
 
-/// The path separator of the current platform ("/" or "\\").
+/// The file separator of the current platform ("/" or "\\").
 #if os(Windows)
-public let pathSeparator = "\\"
+public let fileSeparator = "\\"
 #else
-public let pathSeparator = "/"
+public let fileSeparator = "/"
+#endif
+
+/// The path separator for collection of paths (":" or ";").
+#if os(Windows)
+public let pathSeparator = ";"
+#else
+public let pathSeparator = ":"
 #endif
 
 /// Make an optional URL from an optional path.
@@ -58,7 +65,7 @@ public func determineDataFolder(withSubPathComponents subPathComponents: [String
     #endif
     
     guard let dataFolder else {
-        throw ErrorWithDescription("Could not find the data directory with sub path \(subPathComponents.joined(separator: pathSeparator)).")
+        throw ErrorWithDescription("Could not find the data directory with sub path \(subPathComponents.joined(separator: fileSeparator)).")
     }
     
     return dataFolder
@@ -131,4 +138,11 @@ public func generateTemporaryFolderForProcess(
     let temporaryFolderForProcess = try determineTemporaryFolderForProcess(forApplication: applicationName, usingTemporaryFolderForApplication: temporaryFolderForApplication)
     try FileManager.default.createDirectory(at: temporaryFolderForProcess, withIntermediateDirectories: false)
     return temporaryFolderForProcess
+}
+
+/// Environment with paths added to environment variable PATH.
+public func environment(withPriorityPaths paths: [String]) -> [String:String] {
+    var environment = ProcessInfo.processInfo.environment
+    environment["PATH"] = [paths.joined(separator: pathSeparator), environment["PATH"]].joined(separator: pathSeparator)
+    return environment
 }
