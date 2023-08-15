@@ -147,10 +147,29 @@ public extension URL {
         FileManager.default.fileExists(atPath: self.osPath)
     }
     
-    /// Check if it is a file.
-    var isFile: Bool {
+    /// Check if it is a regular file, i.e. a file but not a symbolic link.
+    var isRegularFile: Bool {
         // use a new instance so we are not using cached values:
         (try? URL(fileURLWithPath: self.path).resourceValues(forKeys:[.isRegularFileKey]))?.isRegularFile == true
+    }
+    
+    /// Check if it is a symbolic link.
+    var isSymbolicLink: Bool {
+        // use a new instance so we are not using cached values:
+        (try? URL(fileURLWithPath: self.path).resourceValues(forKeys:[.isRegularFileKey]))?.isSymbolicLink == true
+    }
+    
+    /// Check if it is a regular file or a link.
+    var isFile: Bool {
+        // use a new instance so we are not using cached values:
+        guard let resourceValues = (try? URL(fileURLWithPath: self.path).resourceValues(forKeys:[.isRegularFileKey, .isSymbolicLinkKey])) else { return false }
+        return resourceValues.isRegularFile == true || resourceValues.isSymbolicLink == true
+    }
+    
+    /// Check if it is an executable.
+    var isExecutable: Bool {
+        // use a new instance so we are not using cached values:
+        (try? URL(fileURLWithPath: self.path).resourceValues(forKeys:[.isExecutableKey]))?.isExecutable == true
     }
 
     /// Check if it is a directory.
