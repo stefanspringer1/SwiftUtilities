@@ -1398,6 +1398,11 @@ public extension String {
         return scalars.count == 1 && characterClasses[scalars.first!].contains(.POSTFIX_OPERATORS)
     }
     
+    func isPunctuation(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        let scalars = self.unicodeScalars
+        return scalars.count == 1 && characterClasses[scalars.first!].contains(.PUNCTUATION)
+    }
+    
 }
 
 public extension Character {
