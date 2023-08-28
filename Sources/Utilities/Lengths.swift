@@ -81,9 +81,10 @@ public enum UnitOfLength: String, CaseIterable, CustomStringConvertible {
 }
 
 /// Get the "cm" value from a text where a unit is used that occurs in the `UnitOfLength` enumeration.
-public func centimeters(fromText _text: String?) -> Double? {
+/// The second vaue is the original unit used.
+public func centimeters(fromText _text: String?) -> (cm: Double, originalUnit: UnitOfLength?)? {
     guard let text = _text?.trimming() else { return nil }
-    if let number = Double(text), number == 0 { return 0 }
+    if let number = Double(text), number == 0 { return (0,nil) }
     guard let firstChar = text.unicodeScalars.first(where: { scalar in
         (scalar >= U_LATIN_SMALL_LETTER_A && scalar <= U_LATIN_SMALL_LETTER_Z) ||
         (scalar >= U_LATIN_CAPITAL_LETTER_A && scalar <= U_LATIN_CAPITAL_LETTER_Z)
@@ -96,7 +97,7 @@ public func centimeters(fromText _text: String?) -> Double? {
     guard let unit = UnitOfLength.fromString(text[firstCharIndex...].trimmingCharacters(in: .whitespaces)) else { return nil }
     let factor = unit.factorFromCentimeters
     
-    return factor == 1 ? number : number * factor
+    return (factor == 1 ? number : number * factor, unit)
 }
 
 /// Get the percent value from " ... % ".
