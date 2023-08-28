@@ -82,7 +82,7 @@ public enum UnitOfLength: String, CaseIterable, CustomStringConvertible {
 
 /// Get the "cm" value from a text where a unit is used that occurs in the `UnitOfLength` enumeration.
 /// The second vaue is the original unit used.
-public func centimeters(fromText _text: String?) -> (centimeters: Double, originalUnit: UnitOfLength?)? {
+public func centimetersWithOriginalUnit(fromText _text: String?) -> (centimeters: Double, originalUnit: UnitOfLength?)? {
     guard let text = _text?.trimming() else { return nil }
     if let number = Double(text), number == 0 { return (0,nil) }
     guard let firstChar = text.unicodeScalars.first(where: { scalar in
