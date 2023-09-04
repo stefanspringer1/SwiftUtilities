@@ -255,9 +255,11 @@ public extension URL {
     
     /// Test if the files has teh same content as another file.
     func fileEqual(to file: URL) throws -> Bool {
-        let fileA = try Data(contentsOf: self).lazy
-        let fileB = try Data(contentsOf: file).lazy
-        return zip(fileA, fileB).allSatisfy{$0==$1}
+        try autoreleasepool {
+            let fileA = try Data(contentsOf: self).lazy
+            let fileB = try Data(contentsOf: file).lazy
+            return zip(fileA, fileB).allSatisfy{$0==$1}
+        }
     }
     
     /// Create a directory, optionally with certain file attributes.
@@ -429,9 +431,11 @@ public extension URL {
     
     /// For debugging purposes: "corrupting" a file content by changing it.
     private func corrupt() throws {
-        var data = try Data(contentsOf: self)
-        data = data.dropFirst(1)
-        try data.write(to: self)
+        try autoreleasepool {
+            var data = try Data(contentsOf: self)
+            data = data.dropFirst(1)
+            try data.write(to: self)
+        }
     }
     
     /// Ensures that a file is non-empty. Ff it is not a file or is empty, an error is thrown.
