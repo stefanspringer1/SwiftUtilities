@@ -4,6 +4,7 @@
 
 import Foundation
 import ArgumentParser
+import AutoreleasepoolShim
 
 /// This class can be used to print to standard error output using `print("hello", to: &StandardError.instance)`.
 public class StandardError: TextOutputStream {

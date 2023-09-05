@@ -3,6 +3,7 @@
  */
 
 import Foundation
+import AutoreleasepoolShim
 
 public extension String {
     
