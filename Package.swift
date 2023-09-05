@@ -26,6 +26,7 @@ let package = Package(
             name: "Utilities",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                "AutoreleasepoolShim",
             ]
         ),
         .testTarget(
