@@ -7,8 +7,8 @@ public struct ErrorWithDescription: LocalizedError, CustomStringConvertible {
 
     private let message: String
 
-    public init(_ message: String) {
-        self.message = message
+    public init(_ message: String?) {
+        self.message = message ?? "(unkown error))"
     }
     
     public var description: String { message }
