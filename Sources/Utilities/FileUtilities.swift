@@ -411,7 +411,7 @@ public extension URL {
     /// Copying a file or a directory "safely", i.e. try to copy it sevaral times if necessary and throw an error if not finally copied.
     ///
     /// Files with name in `ignore` are ignored. The default for `ignore` is `[".DS_store", "Thumbs.db"]`.
-    func copySafely(destination: URL, ignore: [String] = [".DS_store", "Thumbs.db"], overwrite: Bool = false, tries: Int = 0, maxTries: Int = 5, secBeforeRetry: TimeInterval = 1, testMode : TestMode = TestMode.normalRun) throws {
+    func copySafely(to destination: URL, ignore: [String] = [".DS_store", "Thumbs.db"], overwrite: Bool = false, tries: Int = 0, maxTries: Int = 5, secBeforeRetry: TimeInterval = 1, testMode : TestMode = TestMode.normalRun) throws {
 
         if overwrite && (destination.isDirectory || destination.isFile) {
             try destination.removeSafely()
@@ -439,7 +439,7 @@ public extension URL {
 #if os(Windows) || os(Linux)
         check = true
 #else
-        checkContent = !self.isInternal || (self.volumeName != destination.volumeName)
+        checkContent = !(self.isInternal && destination.isInternal) || (self.volumeName != destination.volumeName)
 #endif
         
         if checkContent {
@@ -478,9 +478,13 @@ public extension URL {
     }
 
     /// Moves a file.
-    func move(destination: URL, overwrite: Bool = false, tries: Int = 0, maxTries: Int = 5, secBeforeRetry: TimeInterval = 1) throws {
-        try self.copySafely(destination: destination, overwrite: overwrite, tries: 0, maxTries: maxTries, secBeforeRetry: secBeforeRetry)
-        try self.removeSafely()
+    func moveSafely(to destination: URL, overwrite: Bool = false, tries: Int = 0, maxTries: Int = 5, secBeforeRetry: TimeInterval = 1) throws {
+        if !self.isInternal || (self.volumeName != destination.deletingLastPathComponent().volumeName) {
+            try self.copySafely(to: destination, overwrite: overwrite, tries: 0, maxTries: maxTries, secBeforeRetry: secBeforeRetry)
+            try self.removeSafely()
+        } else {
+            try FileManager.default.moveItem(at: self, to: destination)
+        }
     }
     
     /// Append a text line to a file:
