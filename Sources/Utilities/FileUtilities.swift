@@ -343,31 +343,35 @@ public extension URL {
             throw CopyError.fileExistsError("The target already exists at \(destination.description).")
         }
         
+        var safeMode = !(self.isFileURL && destination.isFileURL)
 #if os(Windows) || os(Linux)
-        if self.isFile {
-            return try fileCopySafely(destination: destination, overwrite: overwrite, testMode: testMode)
-        } else if source.isDirectory {
-            if let enumerator = FileManager.default.enumerator(at: source, includingPropertiesForKeys: nil) {
-                for case let fileURL as URL in enumerator {
-                    if fileURL.isFile {
-                        let fileName = fileURL.lastPathComponent
-                        if !ignore.contains(fileName) {
-                            let relativePath = try fileURL.relativePathComponents(to: self)
-                            let dest = URL(pathComponents: destination.pathComponents + relativePath)
-                            var dir = dest
-                            dir.deleteLastPathComponent()
-                            try dir.createDirectory()
-                            try fileURL.fileCopySafely(destination: dest, testMode: testMode)
+        safeMode = true
+#endif
+        if safeMode {
+            if self.isFile {
+                return try fileCopySafely(destination: destination, overwrite: overwrite, testMode: testMode)
+            } else if source.isDirectory {
+                if let enumerator = FileManager.default.enumerator(at: source, includingPropertiesForKeys: nil) {
+                    for case let fileURL as URL in enumerator {
+                        if fileURL.isFile {
+                            let fileName = fileURL.lastPathComponent
+                            if !ignore.contains(fileName) {
+                                let relativePath = try fileURL.relativePathComponents(to: self)
+                                let dest = URL(pathComponents: destination.pathComponents + relativePath)
+                                var dir = dest
+                                dir.deleteLastPathComponent()
+                                try dir.createDirectory()
+                                try fileURL.fileCopySafely(destination: dest, testMode: testMode)
+                            }
                         }
                     }
                 }
+            } else {
+                throw CopyError.fileExistsError(self.description)
             }
         } else {
-            throw CopyError.fileExistsError(self.description)
+            try FileManager.default.copyItem(at: self, to: destination)
         }
-#else
-        try FileManager.default.copyItem(at: self, to: destination)
-#endif
         
     }
     
