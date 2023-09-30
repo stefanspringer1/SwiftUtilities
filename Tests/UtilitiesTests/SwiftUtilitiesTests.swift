@@ -83,6 +83,12 @@ final class UtilitiesTests: XCTestCase {
         }
     }
     
+    /*func testXXX() throws {
+        let source = URL(fileURLWithPath: "/Users/stefan/tmp")
+        let target = URL(fileURLWithPath: "/Users/stefan/tmp Kopie")
+        print(try source.isContained(inFileTree: target))
+    }*/
+    
     //func testEnvironmentWithPriorityPaths() {
     //    print(environment(withPriorityPaths: ["a", "b"]))
     //}

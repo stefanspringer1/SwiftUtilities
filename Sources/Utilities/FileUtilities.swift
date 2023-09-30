@@ -72,6 +72,19 @@ extension String {
         public var isAbsolutePath: Bool { contains(regex: #"(\/|[A-Za-z]:).*"#) }
 }
 
+public struct FileCheckFailure: LocalizedError, CustomStringConvertible {
+
+    public let url: URL
+
+    public init(_ url: URL) {
+        self.url = url
+    }
+    
+    public var description: String { "check of file failed: \(url.osPath)" }
+    
+    public var errorDescription: String? { description }
+}
+
 public extension URL {
     
     /// Get files from an URL.
@@ -157,7 +170,7 @@ public extension URL {
     /// Check if it is a symbolic link.
     var isSymbolicLink: Bool {
         // use a new instance so we are not using cached values:
-        (try? URL(fileURLWithPath: self.path).resourceValues(forKeys:[.isRegularFileKey]))?.isSymbolicLink == true
+        (try? URL(fileURLWithPath: self.path).resourceValues(forKeys:[.isSymbolicLinkKey]))?.isSymbolicLink == true
     }
     
     /// Check if it is a regular file or a link.
@@ -177,6 +190,17 @@ public extension URL {
     var isDirectory: Bool {
         // use a new instance so we are not using cached values:
         (try? URL(fileURLWithPath: self.path).resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
+    }
+    
+    /// Check if the file's device is connected to an internal bus.
+    var isInternal: Bool {
+        // use a new instance so we are not using cached values:
+        (try? self.resourceValues(forKeys: [.volumeIsInternalKey]))?.volumeIsInternal == true
+    }
+    
+    /// The name of the file's volume.
+    var volumeName: String? {
+        (try? self.resourceValues(forKeys: [.volumeNameKey]))?.volumeName
     }
     
     /// Check if it is an empty directory.
@@ -254,13 +278,68 @@ public extension URL {
         ].compactMap { $0 }.filter{ !$0.isEmpty }.joined(separator: "."))
     }
     
-    /// Test if the files has teh same content as another file.
-    func fileEqual(to file: URL) throws -> Bool {
+    /// Test if the file has the same content as another file.
+    func hasSameContent(as other: URL) throws -> Bool {
         try autoreleasepool {
-            let fileA = try Data(contentsOf: self).lazy
-            let fileB = try Data(contentsOf: file).lazy
-            return zip(fileA, fileB).allSatisfy{$0==$1}
+            let content1 = try Data(contentsOf: self)
+            let content2 = try Data(contentsOf: other)
+            return content1 == content2
         }
+    }
+    
+    /// Test if the file or directory is contained at another place.
+    /// The success case contains the URL of the other place.
+    /// The failure case contains the URL that is missing or different.
+    /// The names ".DS\_Store" and "Thumbs.db" are ignored by default, else specify ignored names via `ignoringNames:`.
+    func isContained(inFileTree other: URL, ignoringNames ignore: [String] = [".DS_Store", "Thumbs.db"]) throws -> Result<URL,FileCheckFailure> {
+        if self.isFile {
+            if try self.hasSameContent(as: other) {
+                return .success(self)
+            } else {
+                return .failure(FileCheckFailure(self))
+            }
+        } else if self.isDirectory {
+            
+            func otherURL(for url: URL) throws -> URL {
+                other.appending(components: try url.relativePathComponents(to: self))
+            }
+            
+            if let enumerator = FileManager.default.enumerator(at: self, includingPropertiesForKeys: nil) {
+                for case let file as URL in enumerator {
+                    if ignore.contains(file.lastPathComponent) {
+                        continue
+                    }
+                    let otherFile = try otherURL(for: file)
+                    if file.isDirectory {
+                        guard otherFile.isDirectory else { return .failure(FileCheckFailure(otherFile)) }
+                    } else if file.isRegularFile {
+                        guard otherFile.isRegularFile else { return .failure(FileCheckFailure(otherFile)) }
+                        if try !file.hasSameContent(as: otherFile) {
+                            return .failure(FileCheckFailure(file))
+                        }
+                    } else if file.isSymbolicLink {
+                        guard otherFile.isSymbolicLink else { return .failure(FileCheckFailure(otherFile)) }
+                        let fileTarget = file.resolvingSymlinksInPath()
+                        let otherFileTarget = otherFile.resolvingSymlinksInPath()
+                        do {
+                            // assuming link points to inside of directory:
+                            let otherFileTargetShould = try otherURL(for: fileTarget)
+                            if otherFileTargetShould != otherFileTarget {
+                                return .failure(FileCheckFailure(otherFile))
+                            }
+                        } catch {
+                            // link points to outside of directory:
+                            if fileTarget == otherFileTarget {
+                                return .failure(FileCheckFailure(otherFile))
+                            }
+                        }
+                    } else {
+                        return .failure(FileCheckFailure(otherFile)) // "strange" file
+                    }
+                }
+            }
+        }
+        return .success(other)
     }
     
     /// Create a directory, optionally with certain file attributes.
@@ -333,8 +412,7 @@ public extension URL {
     ///
     /// Files with name in `ignore` are ignored. The default for `ignore` is `[".DS_store", "Thumbs.db"]`.
     func copySafely(destination: URL, ignore: [String] = [".DS_store", "Thumbs.db"], overwrite: Bool = false, tries: Int = 0, maxTries: Int = 5, secBeforeRetry: TimeInterval = 1, testMode : TestMode = TestMode.normalRun) throws {
-        let source = self
-        
+
         if overwrite && (destination.isDirectory || destination.isFile) {
             try destination.removeSafely()
         }
@@ -343,50 +421,8 @@ public extension URL {
             throw CopyError.fileExistsError("The target already exists at \(destination.description).")
         }
         
-        var safeMode = !(self.isFileURL && destination.isFileURL)
-#if os(Windows) || os(Linux)
-        safeMode = true
-#endif
-        if safeMode {
-            if self.isFile {
-                return try fileCopySafely(destination: destination, overwrite: overwrite, testMode: testMode)
-            } else if source.isDirectory {
-                if let enumerator = FileManager.default.enumerator(at: source, includingPropertiesForKeys: nil) {
-                    for case let fileURL as URL in enumerator {
-                        if fileURL.isFile {
-                            let fileName = fileURL.lastPathComponent
-                            if !ignore.contains(fileName) {
-                                let relativePath = try fileURL.relativePathComponents(to: self)
-                                let dest = URL(pathComponents: destination.pathComponents + relativePath)
-                                var dir = dest
-                                dir.deleteLastPathComponent()
-                                try dir.createDirectory()
-                                try fileURL.fileCopySafely(destination: dest, testMode: testMode)
-                            }
-                        }
-                    }
-                }
-            } else {
-                throw CopyError.fileExistsError(self.description)
-            }
-        } else {
-            try FileManager.default.copyItem(at: self, to: destination)
-        }
-        
-    }
-    
-    /// Copying a file "safely", i.e. try to copy it sevaral times if necessary and throw an error if not finally copied.
-    private func fileCopySafely(destination: URL, overwrite: Bool = false, tries: Int = 0, maxTries: Int = 5, secBeforeRetry: TimeInterval = 1, testMode: TestMode = TestMode.normalRun) throws {
-        if overwrite && destination.isFile {
-            try destination.removeSafely(maxTries: maxTries, secBeforeRetry: secBeforeRetry)
-        }
-        
-        guard !destination.isFile else {
-            throw CopyError.fileExistsError(destination.description)
-        }
-                
         var tries = 0
-        while !destination.isFile {
+        while !destination.exists {
             do {
                 try FileManager.default.copyItem(at: self, to: destination)
             } catch {
@@ -399,13 +435,17 @@ public extension URL {
             }
         }
         
-        if testMode == TestMode.corruptBackup {
-            try destination.corrupt()
-        }
+        var checkContent: Bool
+#if os(Windows) || os(Linux)
+        check = true
+#else
+        checkContent = !self.isInternal || (self.volumeName != destination.volumeName)
+#endif
         
-        guard try self.fileEqual(to: destination) else {
-            try destination.removeSafely()
-            throw CopyError.differentResultError("\(self.description) and \(destination) are different after copying. removing \(destination).")
+        if checkContent {
+            if case .failure(let failedFile) = try self.isContained(inFileTree: destination) {
+                throw CopyError.differentResultError("the contents of \(self.osPath) and \(destination.osPath) are not equal (check failed on \(failedFile)")
+            }
         }
         
     }
