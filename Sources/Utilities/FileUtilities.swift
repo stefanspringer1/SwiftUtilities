@@ -272,57 +272,28 @@ public extension URL {
 
     /// Removing a file "safely", i.e. try to remove it sevaral times if necessary and throw an error if not finally removed.
     func removeSafely(maxTries: Int = 5, secBeforeRetry: TimeInterval = 1, errorIfNotExists: Bool = true) throws {
-        var isFile = self.isFile
-        guard isFile else {
+        var exists = self.exists
+        guard exists else {
             if errorIfNotExists {
-                throw CopyError.notAFileError(self.description + " is not a file")
+                throw CopyError.notAFileError(self.description + " does not exist")
             } else {
                 return
             }
         }
         var tries = 0
-        while isFile {
+        while exists {
             tries += 1
             do {
                 try FileManager.default.removeItem(at: self)
             } catch {
                 // -
             }
-            isFile = self.isFile
+            exists = self.exists
             if isFile {
                 if tries < maxTries {
                     Thread.sleep(forTimeInterval: secBeforeRetry)
                 } else {
-                    throw CopyError.fileExistsError("There already exists a file at \(self.description).")
-                }
-            }
-        }
-    }
-
-    /// Removing a directory "safely", i.e. try to remove it sevaral times if necessary and throw an error if not finally removed.
-    func removeDirectorySafely(maxTries: Int = 5, secBeforeRetry: TimeInterval = 1, errorIfNotExists: Bool = true) throws {
-        var isDirectory = self.isDirectory
-        guard isDirectory else {
-            if errorIfNotExists {
-                throw CopyError.notADirectoryError(self.description + " is not a directory")
-            } else {
-                return
-            }
-        }
-        var tries = 0
-        while isDirectory {
-            tries += 1
-            do {
-                try FileManager.default.removeItem(at: self)
-            } catch {
-                // -
-            }
-            isDirectory = self.isDirectory
-            if isDirectory {
-                if tries < maxTries {
-                    Thread.sleep(forTimeInterval: secBeforeRetry)
-                } else {
-                    throw CopyError.directoryExistsError(self.description + " still exists after " + tries.description + " to remove it")
+                    throw CopyError.fileExistsError("Removing failed at \(self.description).")
                 }
             }
         }
