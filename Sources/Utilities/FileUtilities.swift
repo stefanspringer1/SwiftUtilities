@@ -368,10 +368,11 @@ public extension URL {
             try destination.removeSafely()
         }
         
-        guard !destination.isDirectory && !destination.isFile else {
-            throw CopyError.fileExistsError("There already is a file or directory at \(destination.description).")
+        guard !destination.exists else {
+            throw CopyError.fileExistsError("The target already exists at \(destination.description).")
         }
         
+#if os(Windows) || os(Linux)
         if self.isFile {
             return try fileCopySafely(destination: destination, overwrite: overwrite, testMode: testMode)
         } else if source.isDirectory {
@@ -393,6 +394,10 @@ public extension URL {
         } else {
             throw CopyError.fileExistsError(self.description)
         }
+#else
+        try FileManager.default.copyItem(at: self, to: destination)
+#endif
+        
     }
     
     /// Copying a file "safely", i.e. try to copy it sevaral times if necessary and throw an error if not finally copied.
