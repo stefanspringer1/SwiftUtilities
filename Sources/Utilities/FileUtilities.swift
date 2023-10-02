@@ -206,7 +206,7 @@ public extension URL {
     /// Check if it is an empty directory.
     var isEmpty: Bool {
         guard isDirectory else { return false }
-        var enumerator = FileManager.default.enumerator(at: self, includingPropertiesForKeys: nil)?.makeIterator()
+        let enumerator = FileManager.default.enumerator(at: self, includingPropertiesForKeys: nil)?.makeIterator()
         return enumerator?.next() == nil
     }
     
@@ -437,7 +437,7 @@ public extension URL {
         
         var checkContent: Bool
 #if os(Windows) || os(Linux)
-        check = true
+        checkContent = true
 #else
         checkContent = !(self.isInternal && destination.isInternal) || (self.volumeName != destination.volumeName)
 #endif
