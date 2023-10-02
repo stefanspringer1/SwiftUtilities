@@ -206,7 +206,7 @@ public extension URL {
     /// Check if it is an empty directory.
     var isEmpty: Bool {
         guard isDirectory else { return false }
-        let enumerator = FileManager.default.enumerator(at: self, includingPropertiesForKeys: nil)?.makeIterator()
+        var enumerator = FileManager.default.enumerator(at: self, includingPropertiesForKeys: nil)?.makeIterator()
         return enumerator?.next() == nil
     }
     
