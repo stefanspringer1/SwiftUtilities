@@ -1464,29 +1464,94 @@ public let MATH_GREEK_RANGE = "\u{1D6A8}-\u{1D7C9}"
 
 public let ALL_GREEK_REGEX = "^[" +  GREEK_LETTER_RANGE + "|" + MATH_GREEK_RANGE + #"]*$"#
 
+// Sigma:
 public let U_GREEK_CAPITAL_LETTER_SIGMA = UnicodeScalar(0x03A3)!
 public let U_MATHEMATICAL_ITALIC_CAPITAL_SIGMA = UnicodeScalar(0x1D6F4)!
+func u_greekCapitalSigma(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_SIGMA } else { U_GREEK_CAPITAL_LETTER_SIGMA } }
+
 public let U_N_ARY_SUMMATION = UnicodeScalar(0x2211)!
 
+// Pi:
 public let U_GREEK_CAPITAL_LETTER_PI = UnicodeScalar(0x03A0)!
 public let U_MATHEMATICAL_ITALIC_CAPITAL_PI = UnicodeScalar(0x1D6F1)!
+func u_greekCapitalPi(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_PI } else { U_GREEK_CAPITAL_LETTER_PI } }
+
 public let U_N_ARY_PRODUCT = UnicodeScalar(0x220F)!
 
+// Alpha:
 public let U_GREEK_CAPITAL_LETTER_ALPHA = UnicodeScalar(0x0391)!
+public let U_MATHEMATICAL_ITALIC_CAPITAL_ALPHA = UnicodeScalar(0x1D6E2)!
+func u_greekCapitalAlpha(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_ALPHA } else { U_GREEK_CAPITAL_LETTER_ALPHA } }
+
+// Beta:
 public let U_GREEK_CAPITAL_LETTER_BETA = UnicodeScalar(0x0392)!
-public let U_GREEK_CAPITAL_LETTER_ETA = UnicodeScalar(0x0397)!
+public let U_MATHEMATICAL_ITALIC_CAPITAL_BETA = UnicodeScalar(0x1D6E3)!
+func u_greekCapitalBeta(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_BETA } else { U_GREEK_CAPITAL_LETTER_BETA } }
+
+// Epsilon:
 public let U_GREEK_CAPITAL_LETTER_EPSILON = UnicodeScalar(0x0395)!
+public let U_MATHEMATICAL_ITALIC_CAPITAL_EPSILON = UnicodeScalar(0x1D6E6)!
+func u_greekCapitalEpsilon(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_EPSILON } else { U_GREEK_CAPITAL_LETTER_EPSILON } }
+
+// Eta:
+public let U_GREEK_CAPITAL_LETTER_ETA = UnicodeScalar(0x0397)!
+public let U_MATHEMATICAL_ITALIC_CAPITAL_ETA = UnicodeScalar(0x1D6E8)!
+func u_greekCapitalEta(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_ETA } else { U_GREEK_CAPITAL_LETTER_ETA } }
+
+// Iota:
 public let U_GREEK_CAPITAL_LETTER_IOTA = UnicodeScalar(0x0399)!
+public let U_MATHEMATICAL_ITALIC_CAPITAL_IOTA = UnicodeScalar(0x1D6EA)!
+func u_greekCapitalIota(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_IOTA } else { U_GREEK_CAPITAL_LETTER_IOTA } }
+
+// Kappa:
 public let U_GREEK_CAPITAL_LETTER_KAPPA = UnicodeScalar(0x039A)!
+public let U_MATHEMATICAL_ITALIC_CAPITAL_KAPPA = UnicodeScalar(0x1D6EB)!
+func u_greekCapitalKappa(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_KAPPA } else { U_GREEK_CAPITAL_LETTER_KAPPA } }
+
+// Chi:
 public let U_GREEK_CAPITAL_LETTER_CHI = UnicodeScalar(0x03A7)!
+public let U_MATHEMATICAL_ITALIC_CAPITAL_CHI = UnicodeScalar(0x1D6F8)!
+func u_greekCapitalChi(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_CHI } else { U_GREEK_CAPITAL_LETTER_CHI } }
+
+// Mu:
 public let U_GREEK_CAPITAL_LETTER_MU = UnicodeScalar(0x039C)!
+public let U_MATHEMATICAL_ITALIC_CAPITAL_MU = UnicodeScalar(0x1D6ED)!
+func u_greekCapitalMu(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_MU } else { U_GREEK_CAPITAL_LETTER_MU } }
+
+// Nu:
 public let U_GREEK_CAPITAL_LETTER_NU = UnicodeScalar(0x039D)!
+public let U_MATHEMATICAL_ITALIC_CAPITAL_NU = UnicodeScalar(0x1D6EE)!
+func u_greekCapitalNu(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_NU } else { U_GREEK_CAPITAL_LETTER_NU } }
+
+// Omicron:
 public let U_GREEK_CAPITAL_LETTER_OMICRON = UnicodeScalar(0x039F)!
+public let U_MATHEMATICAL_ITALIC_CAPITAL_OMICRON = UnicodeScalar(0x1D6F0)!
+func u_greekCapitalOmicron(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_OMICRON  } else { U_GREEK_CAPITAL_LETTER_OMICRON  } }
+
+// omicron:
 public let U_GREEK_SMALL_LETTER_OMICRON = UnicodeScalar(0x03BF)!
+public let U_MATHEMATICAL_ITALIC_SMALL_OMICRON = UnicodeScalar(0x1D70A)!
+func u_greekSmallOmicron(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_SMALL_OMICRON  } else { U_GREEK_SMALL_LETTER_OMICRON  } }
+
+// Rho:
 public let U_GREEK_CAPITAL_LETTER_RHO = UnicodeScalar(0x03A1)!
-public let U_GREEK_CAPITAL_LETTER_TAU = UnicodeScalar(0x03C4)!
+public let U_MATHEMATICAL_ITALIC_CAPITAL_RHO = UnicodeScalar(0x1D6F2)!
+func u_greekCapitalRho(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_RHO  } else { U_GREEK_CAPITAL_LETTER_RHO  } }
+
+// tau:
+public let U_GREEK_SMALL_LETTER_TAU = UnicodeScalar(0x03C4)!
+public let U_MATHEMATICAL_ITALIC_SMALL_TAU = UnicodeScalar(0x1D70F)!
+func u_greekSmallTau(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_SMALL_TAU  } else { U_GREEK_SMALL_LETTER_TAU  } }
+
+// Upsilon:
 public let U_GREEK_CAPITAL_LETTER_UPSILON = UnicodeScalar(0x03A5)!
+public let U_MATHEMATICAL_ITALIC_CAPITAL_UPSILON = UnicodeScalar(0x1D6F6)!
+func u_greekCapitalUpsilon(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_UPSILON  } else { U_GREEK_CAPITAL_LETTER_UPSILON  } }
+
+// Zeta:
 public let U_GREEK_CAPITAL_LETTER_ZETA = UnicodeScalar(0x0396)!
+public let U_MATHEMATICAL_ITALIC_CAPITAL_ZETA = UnicodeScalar(0x1D6E7)!
+func u_greekCapitalZeta(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_ZETA  } else { U_GREEK_CAPITAL_LETTER_ZETA } }
 
 public let U_VULGAR_FRACTION_ONE_QUARTER = UnicodeScalar(0x00BC)!
 public let U_VULGAR_FRACTION_ONE_HALF = UnicodeScalar(0x00BD)!
