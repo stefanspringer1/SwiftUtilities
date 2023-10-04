@@ -1538,6 +1538,11 @@ public let U_GREEK_CAPITAL_LETTER_RHO = UnicodeScalar(0x03A1)!
 public let U_MATHEMATICAL_ITALIC_CAPITAL_RHO = UnicodeScalar(0x1D6F2)!
 public func u_greekCapitalRho(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_RHO  } else { U_GREEK_CAPITAL_LETTER_RHO  } }
 
+// Tau:
+public let U_GREEK_CAPITAL_LETTER_TAU = UnicodeScalar(0x03A4)!
+public let U_MATHEMATICAL_ITALIC_CAPITAL_TAU = UnicodeScalar(0x1D6F5)!
+public func u_greekCapitalTau(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_TAU  } else { U_GREEK_CAPITAL_LETTER_TAU  } }
+
 // tau:
 public let U_GREEK_SMALL_LETTER_TAU = UnicodeScalar(0x03C4)!
 public let U_MATHEMATICAL_ITALIC_SMALL_TAU = UnicodeScalar(0x1D70F)!
