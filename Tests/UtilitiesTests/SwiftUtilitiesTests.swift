@@ -225,4 +225,10 @@ final class UtilitiesTests: XCTestCase {
         XCTAssert(comp.embrace(post: "678").until(substring: "7") != comp)
     }
     */
+    
+    func testTrimming() {
+        XCTAssertEqual("[\(" \n hal lo \n ".trimmingLeft())]", "[hal lo \n ]")
+        XCTAssertEqual("[\(" \n hal lo \n ".trimmingRight())]", "[ \n hal lo]")
+        XCTAssertEqual("[\(" \n hal lo \n ".trimming())]", "[hal lo]")
+    }
 }

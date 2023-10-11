@@ -55,14 +55,14 @@ public extension StringProtocol {
     ///
     /// - Returns: Self with whitespace and newlines removed from left and right.
     func trimming() -> String {
-        return self.trimmingCharacters(in: .whitespacesAndNewlines)
+        return self.trimmingLeft().trimmingRight()
     }
     
     /// Removes whitespace  and newlines from left of self.
     ///
     /// - Returns: Self with whitespace and newlines removed from left.
     func trimmingLeft() -> Self.SubSequence {
-        guard let index = firstIndex(where: { !CharacterSet(charactersIn: String($0)).isSubset(of: .whitespaces) }) else {
+        guard let index = firstIndex(where: { !CharacterSet(charactersIn: String($0)).isSubset(of: .whitespacesAndNewlines) }) else {
             return ""
         }
         return self[index...]
@@ -72,7 +72,7 @@ public extension StringProtocol {
     ///
     /// - Returns: Self with whitespace and newlines removed from right.
     func trimmingRight() -> String {
-        guard let index = lastIndex(where: { !CharacterSet(charactersIn: String($0)).isSubset(of: .whitespaces) }) else {
+        guard let index = lastIndex(where: { !CharacterSet(charactersIn: String($0)).isSubset(of: .whitespacesAndNewlines) }) else {
             return ""
         }
         return String(self[...index])
@@ -173,12 +173,12 @@ public extension String {
     
     /// Trimming all whitespace.
     func trimming() -> String {
-        return self.trimmingCharacters(in: .whitespacesAndNewlines)
+        return self.self.trimmingLeft().trimmingRight()
     }
     
     /// Trimming left whitespace.
     func trimmingLeft() -> String {
-        guard let index = firstIndex(where: { !CharacterSet(charactersIn: String($0)).isSubset(of: .whitespaces) }) else {
+        guard let index = firstIndex(where: { !CharacterSet(charactersIn: String($0)).isSubset(of: .whitespacesAndNewlines) }) else {
             return ""
         }
         return String(self[index...])
@@ -186,7 +186,7 @@ public extension String {
     
     /// Trimming right whitespace.
     func trimmingRight() -> String {
-        guard let index = lastIndex(where: { !CharacterSet(charactersIn: String($0)).isSubset(of: .whitespaces) }) else {
+        guard let index = lastIndex(where: { !CharacterSet(charactersIn: String($0)).isSubset(of: .whitespacesAndNewlines) }) else {
             return ""
         }
         return String(self[...index])
