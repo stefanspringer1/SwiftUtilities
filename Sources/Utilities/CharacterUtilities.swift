@@ -1368,6 +1368,10 @@ public extension CharacterClass {
 
 public extension String {
     
+    func isSpace(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.SPACES) }
+    }
+    
     func isCombining(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
         self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.COMBINING) }
     }
@@ -1408,6 +1412,10 @@ public extension String {
 
 public extension Character {
     
+    func isSpace(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.SPACES) }
+    }
+    
     func isCombining(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
         self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.COMBINING) }
     }
@@ -1446,6 +1454,10 @@ public extension UnicodeScalar {
     /// Check if a character is part of the Private Use Areas of Unicode.
     var isPrivateUse: Bool {
         get { self.value >= 0xE000 && self.value <= 0xF8FF }
+    }
+    
+    func isSpace(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        characterClasses[self].contains(.SPACES)
     }
     
     func isCombining(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
