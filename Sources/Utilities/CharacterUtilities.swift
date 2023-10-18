@@ -1279,7 +1279,7 @@ public class CharacterClasses {
     var classLiterals = [CharacterClass:String]()
     
     public func classLiteral(forCharacterClass characterClass: CharacterClass) -> String {
-        return classLiterals[characterClass] ?? {
+        classLiterals[characterClass] ?? {
             let literal = "\\{\(String(describing: characterClass))}"
             classLiterals[characterClass] = literal
             return literal
@@ -1307,7 +1307,7 @@ public class CharacterClasses {
     }
     
     public func codePoints(forClass theClass: CharacterClass) -> UCCodePoints? {
-        return codePoints[theClass]
+        codePoints[theClass]
     }
 }
 
@@ -1352,36 +1352,36 @@ public extension CombinedCharacterClass {
     static let EMPTY: CombinedCharacterClass = 0
     
     func contains(_ characterClass: CharacterClass) -> Bool {
-        return self & characterClass.rawValue > 0
+        self & characterClass.rawValue > 0
     }
     
     func contains(_ combinedCharacterClass: CombinedCharacterClass) -> Bool {
-        return self & combinedCharacterClass > 0
+        self & combinedCharacterClass > 0
     }
 }
 
 public extension CharacterClass {
     static func || (left: CharacterClass, right: CharacterClass) -> CombinedCharacterClass {
-        return left.rawValue | right.rawValue
+        left.rawValue | right.rawValue
     }
 }
 
 public extension String {
     
     func isCombining(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
-        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.COMBINING) }
+        self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.COMBINING) }
     }
     
     func isGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
-        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.GREEK_LETTERS) }
+        self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.GREEK_LETTERS) }
     }
     
     func isCapitalGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
-        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.CAPITAL_GREEK_LETTERS) }
+        self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.CAPITAL_GREEK_LETTERS) }
     }
     
     func isSmallGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
-        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.SMALL_GREEK_LETTERS) }
+        self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.SMALL_GREEK_LETTERS) }
     }
     
     func isRelation(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
@@ -1409,19 +1409,19 @@ public extension String {
 public extension Character {
     
     func isCombining(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
-        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.COMBINING) }
+        self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.COMBINING) }
     }
     
     func isGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
-        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.GREEK_LETTERS) }
+        self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.GREEK_LETTERS) }
     }
     
     func isCapitalGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
-        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.CAPITAL_GREEK_LETTERS) }
+        self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.CAPITAL_GREEK_LETTERS) }
     }
     
     func isSmallGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
-        return self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.SMALL_GREEK_LETTERS) }
+        self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.SMALL_GREEK_LETTERS) }
     }
     
     func isRelation(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
@@ -1446,6 +1446,34 @@ public extension UnicodeScalar {
     /// Check if a character is part of the Private Use Areas of Unicode.
     var isPrivateUse: Bool {
         get { self.value >= 0xE000 && self.value <= 0xF8FF }
+    }
+    
+    func isCombining(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        characterClasses[self].contains(.COMBINING)
+    }
+    
+    func isGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        characterClasses[self].contains(.GREEK_LETTERS)
+    }
+    
+    func isCapitalGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        characterClasses[self].contains(.CAPITAL_GREEK_LETTERS)
+    }
+    
+    func isSmallGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        characterClasses[self].contains(.SMALL_GREEK_LETTERS)
+    }
+    
+    func isRelation(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        characterClasses[self].contains(.RELATIONS || .NEGATED_RELATIONS)
+    }
+    
+    func isBinaryOperator(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        characterClasses[self].contains(.BINARY_OPERATIONS)
+    }
+    
+    func isPostfixOperator(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        characterClasses[self].contains(.POSTFIX_OPERATORS)
     }
     
 }
