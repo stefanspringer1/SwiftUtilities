@@ -1498,11 +1498,9 @@ public let U_LATIN_SMALL_LETTER_Z = UnicodeScalar(0x007A)!
 public let U_LEFT_CURLY_BRACKET = UnicodeScalar(0x007B)!
 public let U_RIGHT_CURLY_BRACKET = UnicodeScalar(0x007D)!
 
-public let GREEK_LETTER_RANGE = "\u{0391}-\u{03C9}"
+public let STANDARD_GREEK_LETTER_RANGE = "\u{0391}-\u{03C9}\u{03D5}"
 
 public let MATH_GREEK_RANGE = "\u{1D6A8}-\u{1D7C9}"
-
-public let ALL_GREEK_REGEX = "^[" +  GREEK_LETTER_RANGE + "|" + MATH_GREEK_RANGE + #"]*$"#
 
 // Sigma:
 public let U_GREEK_CAPITAL_LETTER_SIGMA = UnicodeScalar(0x03A3)!
