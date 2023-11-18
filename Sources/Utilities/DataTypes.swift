@@ -153,6 +153,10 @@ public class IndexWithNonHashableValues<K: Hashable,V> {
         
     }
     
+    public var keys: Dictionary<K, Referenced<[V]>>.Keys {
+        dictionary.keys
+    }
+    
     public func removeAll(keepingCapacity keepCapacity: Bool = false) {
         dictionary.removeAll(keepingCapacity: keepCapacity)
     }
