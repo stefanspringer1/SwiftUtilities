@@ -1596,6 +1596,9 @@ public let U_GREEK_CAPITAL_LETTER_ZETA = UnicodeScalar(0x0396)!
 public let U_MATHEMATICAL_ITALIC_CAPITAL_ZETA = UnicodeScalar(0x1D6E7)!
 public func u_greekCapitalZeta(usingMathematicalVariant: Bool) -> UnicodeScalar { if usingMathematicalVariant { U_MATHEMATICAL_ITALIC_CAPITAL_ZETA  } else { U_GREEK_CAPITAL_LETTER_ZETA } }
 
+// some operators:
+public let U_PLUS_MINUS_SIGN = UnicodeScalar(0x00B1)!
+
 public let U_VULGAR_FRACTION_ONE_QUARTER = UnicodeScalar(0x00BC)!
 public let U_VULGAR_FRACTION_ONE_HALF = UnicodeScalar(0x00BD)!
 public let U_VULGAR_FRACTION_THREE_QUARTERS = UnicodeScalar(0x00BE)!
