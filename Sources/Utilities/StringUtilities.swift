@@ -54,7 +54,7 @@ public extension StringProtocol {
     /// Removes whitespace  and newlines from left and right of self.
     ///
     /// - Returns: Self with whitespace and newlines removed from left and right.
-    func trimming() -> String {
+    func trimming() -> Self.SubSequence {
         return self.trimmingLeft().trimmingRight()
     }
     
@@ -71,11 +71,11 @@ public extension StringProtocol {
     /// Removes whitespace  and newlines from right of self.
     ///
     /// - Returns: Self with whitespace and newlines removed from right.
-    func trimmingRight() -> String {
+    func trimmingRight() -> Self.SubSequence {
         guard let index = lastIndex(where: { !CharacterSet(charactersIn: String($0)).isSubset(of: .whitespacesAndNewlines) }) else {
             return ""
         }
-        return String(self[...index])
+        return self[...index]
     }
     
     /// Test if a text contains a part matching a certain regular expression.
