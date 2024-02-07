@@ -159,6 +159,16 @@ public extension StringProtocol {
         self.isEmpty ? nil : self
     }
 
+    /// Find parts according to a regex.
+    func parts(matchingRegex regex: String) -> [String] {
+        var parts = [String]()
+        var rest = Substring(self)
+        while let word = rest.firstOccurrence(ofRegex: regex) {
+            parts.append(String(rest[word.lowerBound..<word.upperBound]))
+            rest = rest[word.upperBound...]
+        }
+        return parts
+    }
     
 }
 
