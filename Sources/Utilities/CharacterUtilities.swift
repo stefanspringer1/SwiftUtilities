@@ -881,7 +881,7 @@ public func getCharacterClasses() -> CharacterClasses {
             ],
             // ---- single codepoints:
             [
-                0x2057,
+                0x0021, 0x2057,
             ]
         )
         
