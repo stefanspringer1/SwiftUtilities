@@ -181,27 +181,6 @@ public extension String {
         self = s
     }
     
-    /// Trimming all whitespace.
-    func trimming() -> String {
-        return self.self.trimmingLeft().trimmingRight()
-    }
-    
-    /// Trimming left whitespace.
-    func trimmingLeft() -> String {
-        guard let index = firstIndex(where: { !CharacterSet(charactersIn: String($0)).isSubset(of: .whitespacesAndNewlines) }) else {
-            return ""
-        }
-        return String(self[index...])
-    }
-    
-    /// Trimming right whitespace.
-    func trimmingRight() -> String {
-        guard let index = lastIndex(where: { !CharacterSet(charactersIn: String($0)).isSubset(of: .whitespacesAndNewlines) }) else {
-            return ""
-        }
-        return String(self[...index])
-    }
-    
     /// Test if a text contains a part matching a certain regular expression.
     ///
     /// Use a regular expression of the form "^...$" to test if the whole text matches the expression.
