@@ -210,6 +210,9 @@ public extension StringProtocol {
         return match
     }
     
+    var asString: String {
+        return String(self)
+    }
 }
 
 public extension String {
