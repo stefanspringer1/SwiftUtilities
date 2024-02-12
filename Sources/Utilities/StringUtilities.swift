@@ -135,9 +135,9 @@ public extension StringProtocol {
     /// Substring of a string until a ceratin string occurs.
     ///
     /// If the substring is not found, nil is returned.
-    func until(_ substring: String) -> String? {
+    func until(_ substring: any StringProtocol) -> Self.SubSequence? {
         if let range = self.range(of: substring) {
-            return String(self[self.startIndex..<range.lowerBound])
+            return self[self.startIndex..<range.lowerBound]
         } else {
             return nil
         }
@@ -146,9 +146,9 @@ public extension StringProtocol {
     /// Substring of a string after a certain string occurs.
     ///
     /// If the substring is not found, nil is returned.
-    func after(_ substring: String) -> String? {
+    func after(_ substring: any StringProtocol) -> Self.SubSequence? {
         if let range = self.range(of: substring) {
-            return String(self[range.upperBound..<self.endIndex])
+            return self[range.upperBound..<self.endIndex]
         } else {
             return nil
         }
@@ -170,21 +170,10 @@ public extension StringProtocol {
         return parts
     }
     
-}
-
-public extension String {
-    
-    /// Create a string from a collection of `UnicodeScalar`.
-    init<S: Sequence>(unicodeScalars ucs: S) where S.Iterator.Element == UnicodeScalar {
-        var s = ""
-        s.unicodeScalars.append(contentsOf: ucs)
-        self = s
-    }
-    
     /// Test if a text contains a part matching a certain regular expression.
     ///
     /// Use a regular expression of the form "^...$" to test if the whole text matches the expression.
-    func contains(regex: String) -> Bool {
+    func contains(regex: any StringProtocol) -> Bool {
         var match: Range<String.Index>?
         autoreleasepool {
             match = self.range(of: regex, options: .regularExpression)
@@ -193,7 +182,7 @@ public extension String {
     }
     
     /// Find first occurrence of a regex.
-    func firstOccurrence(ofRegex regex: String) -> Range<String.Index>? {
+    func firstOccurrence(ofRegex regex: any StringProtocol) -> Range<String.Index>? {
         var match: Range<String.Index>?
         autoreleasepool {
             match = self.range(of: regex, options: .regularExpression)
@@ -202,7 +191,7 @@ public extension String {
     }
     
     /// Find first occurrence of a regex after skipping n occurrences of it.
-    func firstOccurrence(ofRegex regex: String, skipping: Int) -> Range<String.Index>? {
+    func firstOccurrence(ofRegex regex: any StringProtocol, skipping: Int) -> Range<String.Index>? {
         var match: Range<String.Index>?
         var searchRange = self.startIndex..<self.endIndex
         var skippingRest = skipping
@@ -221,13 +210,21 @@ public extension String {
         return match
     }
     
-    /// Test if a text only consists of whitespace.
-    var isWhitespace: Bool { contains(regex: #"^\s*$"#) }
+}
+
+public extension String {
+    
+    /// Create a string from a collection of `UnicodeScalar`.
+    init<S: Sequence>(unicodeScalars ucs: S) where S.Iterator.Element == UnicodeScalar {
+        var s = ""
+        s.unicodeScalars.append(contentsOf: ucs)
+        self = s
+    }
     
     /// Replace all text matching a certain certain regular expression.
     ///
     /// Use lookarounds (e.g. lookaheads) to avoid having to apply your regular expression several times.
-    func replacing(regex: String, with theReplacement: String) -> String {
+    func replacing(regex: String, with theReplacement: any StringProtocol) -> String {
         var result = self
         autoreleasepool {
             result = self.replacingOccurrences(of: regex, with: theReplacement, options: .regularExpression, range: nil)
@@ -235,21 +232,6 @@ public extension String {
         return result
     }
     
-    /// Substring of a string until a ceratin string occurs.
-    ///
-    /// If the substring is not found, the whole string is returned.
-    func until(substring: String) -> String {
-        if let range = self.range(of: substring) {
-            return String(self[self.startIndex..<range.lowerBound])
-        } else {
-            return self
-        }
-    }
-    
-    /// If the string is empty, return nil, else return self.
-    var nonEmptyOrNil: String? {
-        self.isEmpty ? nil : self
-    }
 }
 
 public extension Array where Element == String? {
