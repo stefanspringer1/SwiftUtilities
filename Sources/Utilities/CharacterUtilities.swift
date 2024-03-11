@@ -1490,6 +1490,49 @@ public extension UnicodeScalar {
     
 }
 
+public let U_CIRCUMFLEX_ACCENT = UnicodeScalar(0x005E)!
+public let U_COMBINING_CIRCUMFLEX_ACCENT = UnicodeScalar(0x0302)!
+public let U_GRAVE_ACCENT = UnicodeScalar(0x0060)!
+public let U_COMBINING_GRAVE_ACCENT = UnicodeScalar(0x0300)!
+public let U_TILDE = UnicodeScalar(0x007E)!
+public let U_COMBINING_TILDE = UnicodeScalar(0x0303)!
+public let U_DIAERESIS = UnicodeScalar(0x00A8)!
+public let U_COMBINING_DIAERESIS = UnicodeScalar(0x0308)!
+public let U_MACRON = UnicodeScalar(0x00AF)!
+public let U_COMBINING_MACRON = UnicodeScalar(0x0304)!
+public let U_ACUTE_ACCENT = UnicodeScalar(0x00B4)!
+public let U_COMBINING_ACUTE_ACCENT = UnicodeScalar(0x0301)!
+public let U_CARON = UnicodeScalar(0x02C7)!
+public let U_COMBINING_CARON = UnicodeScalar(0x030C)!
+public let U_BREVE = UnicodeScalar(0x02D8)!
+public let U_COMBINING_BREVE = UnicodeScalar(0x0306)!
+public let U_DOT_ABOVE = UnicodeScalar(0x02D9)!
+public let U_COMBINING_DOT_ABOVE = UnicodeScalar(0x0307)!
+public let U_RING_ABOVE = UnicodeScalar(0x02DA)!
+public let U_COMBINING_RING_ABOVE = UnicodeScalar(0x030A)!
+public let U_DOUBLE_ACUTE_ACCENT = UnicodeScalar(0x02DD)!
+public let U_COMBINING_DOUBLE_ACUTE_ACCENT = UnicodeScalar(0x030B)!
+
+extension UnicodeScalar {
+    var combiningEquivalent: UnicodeScalar? {
+        switch self {
+        case U_CIRCUMFLEX_ACCENT: U_COMBINING_CIRCUMFLEX_ACCENT
+        case U_GRAVE_ACCENT: U_COMBINING_GRAVE_ACCENT
+        case U_TILDE: U_COMBINING_TILDE
+        case U_DIAERESIS: U_COMBINING_DIAERESIS
+        case U_MACRON: U_COMBINING_MACRON
+        case U_ACUTE_ACCENT: U_COMBINING_ACUTE_ACCENT
+        case U_CARON: U_COMBINING_CARON
+        case U_BREVE: U_COMBINING_BREVE
+        case U_DOT_ABOVE: U_COMBINING_DOT_ABOVE
+        case U_RING_ABOVE: U_COMBINING_RING_ABOVE
+        case U_DOUBLE_ACUTE_ACCENT: U_COMBINING_DOUBLE_ACUTE_ACCENT
+        default: nil
+        }
+    }
+}
+
+
 public let U_LATIN_CAPITAL_LETTER_A = UnicodeScalar(0x0041)!
 public let U_LATIN_CAPITAL_LETTER_Z = UnicodeScalar(0x005A)!
 public let U_LATIN_SMALL_LETTER_A = UnicodeScalar(0x0061)!
