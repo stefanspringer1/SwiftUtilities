@@ -1513,7 +1513,7 @@ public let U_COMBINING_RING_ABOVE = UnicodeScalar(0x030A)!
 public let U_DOUBLE_ACUTE_ACCENT = UnicodeScalar(0x02DD)!
 public let U_COMBINING_DOUBLE_ACUTE_ACCENT = UnicodeScalar(0x030B)!
 
-extension UnicodeScalar {
+public extension UnicodeScalar {
     var combiningEquivalent: UnicodeScalar? {
         switch self {
         case U_CIRCUMFLEX_ACCENT: U_COMBINING_CIRCUMFLEX_ACCENT
