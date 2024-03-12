@@ -1492,6 +1492,7 @@ public extension UnicodeScalar {
 
 public let U_CIRCUMFLEX_ACCENT = UnicodeScalar(0x005E)!
 public let U_COMBINING_CIRCUMFLEX_ACCENT = UnicodeScalar(0x0302)!
+public let U_SMALL_TILDE = UnicodeScalar(0x02DC)!
 public let U_GRAVE_ACCENT = UnicodeScalar(0x0060)!
 public let U_COMBINING_GRAVE_ACCENT = UnicodeScalar(0x0300)!
 public let U_TILDE = UnicodeScalar(0x007E)!
@@ -1519,7 +1520,7 @@ public extension UnicodeScalar {
         switch self {
         case U_CIRCUMFLEX_ACCENT: U_COMBINING_CIRCUMFLEX_ACCENT
         case U_GRAVE_ACCENT: U_COMBINING_GRAVE_ACCENT
-        case U_TILDE: U_COMBINING_TILDE
+        case U_TILDE, U_SMALL_TILDE: U_COMBINING_TILDE
         case U_DIAERESIS: U_COMBINING_DIAERESIS
         case U_MACRON: U_COMBINING_MACRON
         case U_ACUTE_ACCENT: U_COMBINING_ACUTE_ACCENT
@@ -1532,6 +1533,23 @@ public extension UnicodeScalar {
         }
     }
     
+    var nonCombiningEquivalent: UnicodeScalar? {
+        switch self {
+        case U_COMBINING_CIRCUMFLEX_ACCENT: U_CIRCUMFLEX_ACCENT
+        case U_COMBINING_GRAVE_ACCENT: U_GRAVE_ACCENT
+        case U_COMBINING_TILDE: U_TILDE
+        case U_COMBINING_DIAERESIS: U_DIAERESIS
+        case U_COMBINING_MACRON: U_MACRON
+        case U_COMBINING_ACUTE_ACCENT: U_ACUTE_ACCENT
+        case U_COMBINING_CARON: U_CARON
+        case U_COMBINING_BREVE: U_BREVE
+        case U_COMBINING_DOT_ABOVE: U_DOT_ABOVE
+        case U_COMBINING_RING_ABOVE: U_RING_ABOVE
+        case U_COMBINING_DOUBLE_ACUTE_ACCENT: U_DOUBLE_ACUTE_ACCENT
+        default: nil
+        }
+    }
+    
 }
 
 public extension String {
@@ -1540,7 +1558,7 @@ public extension String {
         switch self {
         case "\u{005E}": "\u{0302}" // CIRCUMFLEX ACCENT -> COMBINING CIRCUMFLEX ACCENT
         case "\u{0060}": "\u{0300}" // GRAVE ACCENT -> COMBINING GRAVE ACCENT
-        case "\u{007E}": "\u{0303}" // TILDE -> COMBINING TILDE
+        case "\u{007E}", "\u{02DC}": "\u{0303}" // TILDE / SMALL TILDE -> COMBINING TILDE
         case "\u{00A8}": "\u{0308}" // DIAERESIS -> COMBINING DIAERESIS
         case "\u{00AF}": "\u{0304}" // MACRON -> COMBINING MACRON
         case "\u{00B4}": "\u{0301}" // ACUTE ACCENT -> COMBINING ACUTE ACCENT
@@ -1549,6 +1567,23 @@ public extension String {
         case "\u{02D9}": "\u{0307}" // DOT ABOVE -> COMBINING DOT ABOVE
         case "\u{02DA}": "\u{030A}" // RING ABOVE -> COMBINING RING ABOVE
         case "\u{02DD}": "\u{030B}" // DOUBLE ACUTE ACCENT -> COMBINING DOUBLE ACUTE ACCENT
+        default: nil
+        }
+    }
+    
+    var nonCombiningEquivalent: String? {
+        switch self {
+        case "\u{0302}": "\u{005E}" // COMBINING CIRCUMFLEX ACCENT -> CIRCUMFLEX ACCENT ->
+        case "\u{0300}": "\u{0060}" // COMBINING GRAVE ACCENT -> GRAVE ACCENT ->
+        case "\u{0303}": "\u{007E}" // COMBINING TILDE -> TILDE
+        case "\u{0308}": "\u{00A8}" // COMBINING DIAERESIS -> DIAERESIS
+        case "\u{0304}": "\u{00AF}" // COMBINING MACRON -> MACRON
+        case "\u{0301}": "\u{00B4}" // COMBINING ACUTE ACCENT -> ACUTE ACCENT
+        case "\u{030C}": "\u{02C7}" // COMBINING CARON -> CARON
+        case "\u{0306}": "\u{02D8}" // COMBINING BREVE -> BREVE
+        case "\u{0307}": "\u{02D9}" // COMBINING DOT ABOVE -> DOT ABOVE
+        case "\u{030A}": "\u{02DA}" // COMBINING RING ABOVE -> RING ABOVE
+        case "\u{030B}": "\u{02DD}" // COMBINING DOUBLE ACUTE ACCENT -> DOUBLE ACUTE ACCENT
         default: nil
         }
     }
