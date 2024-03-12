@@ -1492,7 +1492,6 @@ public extension UnicodeScalar {
 
 public let U_CIRCUMFLEX_ACCENT = UnicodeScalar(0x005E)!
 public let U_COMBINING_CIRCUMFLEX_ACCENT = UnicodeScalar(0x0302)!
-public let U_SMALL_TILDE = UnicodeScalar(0x02DC)!
 public let U_GRAVE_ACCENT = UnicodeScalar(0x0060)!
 public let U_COMBINING_GRAVE_ACCENT = UnicodeScalar(0x0300)!
 public let U_TILDE = UnicodeScalar(0x007E)!
@@ -1503,6 +1502,10 @@ public let U_MACRON = UnicodeScalar(0x00AF)!
 public let U_COMBINING_MACRON = UnicodeScalar(0x0304)!
 public let U_ACUTE_ACCENT = UnicodeScalar(0x00B4)!
 public let U_COMBINING_ACUTE_ACCENT = UnicodeScalar(0x0301)!
+public let U_CEDILLA = UnicodeScalar(0x00B8)!
+public let U_COMBINING_CEDILLA = UnicodeScalar(0x0327)!
+public let U_HORIZONTAL_ELLIPSIS = UnicodeScalar(0x2026)!
+public let U_COMBINING_THREE_DOTS_ABOVE = UnicodeScalar(0x20DB)!
 public let U_CARON = UnicodeScalar(0x02C7)!
 public let U_COMBINING_CARON = UnicodeScalar(0x030C)!
 public let U_BREVE = UnicodeScalar(0x02D8)!
@@ -1511,8 +1514,14 @@ public let U_DOT_ABOVE = UnicodeScalar(0x02D9)!
 public let U_COMBINING_DOT_ABOVE = UnicodeScalar(0x0307)!
 public let U_RING_ABOVE = UnicodeScalar(0x02DA)!
 public let U_COMBINING_RING_ABOVE = UnicodeScalar(0x030A)!
+public let U_OGONEK = UnicodeScalar(0x02DB)!
+public let U_COMBINING_OGONEK = UnicodeScalar(0x0328)!
+public let U_COMBINING_FOUR_DOTS_ABOVE = UnicodeScalar(0x20DC)!
+public let U_SMALL_TILDE = UnicodeScalar(0x02DC)!
 public let U_DOUBLE_ACUTE_ACCENT = UnicodeScalar(0x02DD)!
 public let U_COMBINING_DOUBLE_ACUTE_ACCENT = UnicodeScalar(0x030B)!
+
+
 
 public extension UnicodeScalar {
     
@@ -1524,10 +1533,13 @@ public extension UnicodeScalar {
         case U_DIAERESIS: U_COMBINING_DIAERESIS
         case U_MACRON: U_COMBINING_MACRON
         case U_ACUTE_ACCENT: U_COMBINING_ACUTE_ACCENT
+        case U_CEDILLA: U_COMBINING_CEDILLA
+        case U_HORIZONTAL_ELLIPSIS: U_COMBINING_THREE_DOTS_ABOVE
         case U_CARON: U_COMBINING_CARON
         case U_BREVE: U_COMBINING_BREVE
         case U_DOT_ABOVE: U_COMBINING_DOT_ABOVE
         case U_RING_ABOVE: U_COMBINING_RING_ABOVE
+        case U_OGONEK: U_COMBINING_OGONEK
         case U_DOUBLE_ACUTE_ACCENT: U_COMBINING_DOUBLE_ACUTE_ACCENT
         default: nil
         }
@@ -1541,11 +1553,21 @@ public extension UnicodeScalar {
         case U_COMBINING_DIAERESIS: U_DIAERESIS
         case U_COMBINING_MACRON: U_MACRON
         case U_COMBINING_ACUTE_ACCENT: U_ACUTE_ACCENT
+        case U_COMBINING_CEDILLA: U_CEDILLA
+        case U_COMBINING_THREE_DOTS_ABOVE: U_COMBINING_THREE_DOTS_ABOVE
         case U_COMBINING_CARON: U_CARON
         case U_COMBINING_BREVE: U_BREVE
         case U_COMBINING_DOT_ABOVE: U_DOT_ABOVE
         case U_COMBINING_RING_ABOVE: U_RING_ABOVE
+        case U_COMBINING_OGONEK: U_OGONEK
         case U_COMBINING_DOUBLE_ACUTE_ACCENT: U_DOUBLE_ACUTE_ACCENT
+        default: nil
+        }
+    }
+    
+    var accentAsNonCombining: UnicodeScalar? {
+        switch self {
+        case U_COMBINING_FOUR_DOTS_ABOVE: self
         default: nil
         }
     }
@@ -1562,10 +1584,13 @@ public extension String {
         case "\u{00A8}": "\u{0308}" // DIAERESIS -> COMBINING DIAERESIS
         case "\u{00AF}": "\u{0304}" // MACRON -> COMBINING MACRON
         case "\u{00B4}": "\u{0301}" // ACUTE ACCENT -> COMBINING ACUTE ACCENT
+        case "\u{00B8}": "\u{0327}" // CEDILLA -> COMBINING CEDILLA
+        case "\u{2026}": "\u{20DB}" // HORIZONTAL ELLIPSIS -> COMBINING_THREE DOTS ABOVE
         case "\u{02C7}": "\u{030C}" // CARON -> COMBINING CARON
         case "\u{02D8}": "\u{0306}" // BREVE -> COMBINING BREVE
         case "\u{02D9}": "\u{0307}" // DOT ABOVE -> COMBINING DOT ABOVE
         case "\u{02DA}": "\u{030A}" // RING ABOVE -> COMBINING RING ABOVE
+        case "\u{02DB}": "\u{0328}" // OGONEK -> COMBINING OGONEK
         case "\u{02DD}": "\u{030B}" // DOUBLE ACUTE ACCENT -> COMBINING DOUBLE ACUTE ACCENT
         default: nil
         }
@@ -1579,11 +1604,21 @@ public extension String {
         case "\u{0308}": "\u{00A8}" // COMBINING DIAERESIS -> DIAERESIS
         case "\u{0304}": "\u{00AF}" // COMBINING MACRON -> MACRON
         case "\u{0301}": "\u{00B4}" // COMBINING ACUTE ACCENT -> ACUTE ACCENT
+        case "\u{0327}": "\u{00B8}" // COMBINING CEDILLA -> CEDILLA
+        case "\u{20DB}": "\u{2026}" // COMBINING_THREE DOTS ABOVE -> HORIZONTAL ELLIPSIS
         case "\u{030C}": "\u{02C7}" // COMBINING CARON -> CARON
         case "\u{0306}": "\u{02D8}" // COMBINING BREVE -> BREVE
         case "\u{0307}": "\u{02D9}" // COMBINING DOT ABOVE -> DOT ABOVE
         case "\u{030A}": "\u{02DA}" // COMBINING RING ABOVE -> RING ABOVE
+        case "\u{0328}": "\u{02DB}" // COMBINING OGONEK -> OGONEK
         case "\u{030B}": "\u{02DD}" // COMBINING DOUBLE ACUTE ACCENT -> DOUBLE ACUTE ACCENT
+        default: nil
+        }
+    }
+    
+    var accentAsNonCombining: String? {
+        switch self {
+        case "\u{20DC}": self // COMBINING FOUR DOTS ABOVE
         default: nil
         }
     }
