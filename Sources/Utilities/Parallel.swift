@@ -13,8 +13,8 @@ public func executeInParallel<Seq: Sequence>(batch: Seq, threads: Int, worker: @
     for item in batch {
         
         group.enter()
+        semaphore.wait()
         queue.async {
-            semaphore.wait()
             worker(item)
             semaphore.signal()
             group.leave()
