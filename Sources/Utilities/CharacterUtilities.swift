@@ -1421,30 +1421,33 @@ public extension Character {
     }
     
     func isGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
-        self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.GREEK_LETTERS) }
+        guard let firstScalar = self.unicodeScalars.first else { return false }
+        return characterClasses[firstScalar].contains(.GREEK_LETTERS)
     }
     
     func isCapitalGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
-        self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.CAPITAL_GREEK_LETTERS) }
+        guard let firstScalar = self.unicodeScalars.first else { return false }
+        return characterClasses[firstScalar].contains(.CAPITAL_GREEK_LETTERS)
     }
     
     func isSmallGreek(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
-        self.unicodeScalars.allSatisfy { characterClasses[$0].contains(.SMALL_GREEK_LETTERS) }
+        guard let firstScalar = self.unicodeScalars.first else { return false }
+        return characterClasses[firstScalar].contains(.SMALL_GREEK_LETTERS)
     }
     
     func isRelation(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
-        let scalars = self.unicodeScalars
-        return scalars.count == 1 && characterClasses[scalars.first!].contains(.RELATIONS || .NEGATED_RELATIONS)
+        guard let firstScalar = self.unicodeScalars.first else { return false }
+        return characterClasses[firstScalar].contains(.RELATIONS || .NEGATED_RELATIONS)
     }
     
     func isBinaryOperator(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
-        let scalars = self.unicodeScalars
-        return scalars.count == 1 && characterClasses[scalars.first!].contains(.BINARY_OPERATIONS)
+        guard let firstScalar = self.unicodeScalars.first else { return false }
+        return characterClasses[firstScalar].contains(.BINARY_OPERATIONS)
     }
     
     func isPostfixOperator(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
-        let scalars = self.unicodeScalars
-        return scalars.count == 1 && characterClasses[scalars.first!].contains(.POSTFIX_OPERATORS)
+        guard let firstScalar = self.unicodeScalars.first else { return false }
+        return characterClasses[firstScalar].contains(.POSTFIX_OPERATORS)
     }
     
 }
