@@ -259,10 +259,10 @@ public func getCharacterClasses() -> CharacterClasses {
         // ---- ranges:
         [
             // Greek:
-            0x037B...0x037D, 0x03AC...0x03CE,
+            0x037B...0x037D, 0x03AC...0x03CE, 0x03DB...0x03DD,
             
             // mathematical Greek:
-            0x1D6C1...0x1D6E1, // bold
+            0x1D6C1...0x1D6E1, 0x1D7CA...0x1D7CB, // bold
             0x1D6FB...0x1D71B, // italic
             0x1D735...0x1D755, // bold italic
             0x1D76F...0x1D78F, // sans-serif bold
@@ -272,7 +272,7 @@ public func getCharacterClasses() -> CharacterClasses {
         [
             // Greek:
             0x0371, 0x0373, 0x0377, 0x0390, 0x03BC, 0x03D1, 0x03D5, 0x03D9,
-            0x03DB, 0x03DD, 0x03DF, 0x03E1, 0x03F0, 0x03F1, 0x03F8, 0x03FB,
+            0x03DF, 0x03E1, 0x03F0, 0x03F1, 0x03F8, 0x03FB,
             
             // mathematical Greek:
             // -
