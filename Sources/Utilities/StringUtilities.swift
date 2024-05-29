@@ -258,7 +258,11 @@ public extension String {
     func replacing(regex: String, with theReplacement: any StringProtocol, semanticLevel: RegexSemanticLevel) -> String {
         var result = self
         autoreleasepool {
-            result = self.replacing(try! Regex(regex).matchingSemantics(semanticLevel), with: theReplacement)
+            if let theRegex = try? Regex(regex).matchingSemantics(semanticLevel) {
+                result = self.replacing(theRegex, with: theReplacement)
+            } else {
+                fatalError("\"\(regex)\" is not a correct regular expression")
+            }
         }
         return result
     }
