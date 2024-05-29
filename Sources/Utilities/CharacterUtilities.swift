@@ -1325,8 +1325,19 @@ final public class UCCodePoints {
     public func regex(usingCharacterClasses characterClasses: CharacterClasses) -> String {
         return _regex ?? {
             var ss = [String]()
-            ranges.forEach { range in ss.append("\\x{\(String(format:"%X", range.lowerBound))}-\\x{\(String(format:"%X", range.upperBound))}") }
-            singles.forEach { single in ss.append("\\x{\(String(format:"%X", single))}") }
+            ranges.forEach { range in
+                if UnicodeScalar(range.lowerBound)!.isCombining(usingCharacterClasses: characterClasses) ||
+                    UnicodeScalar(range.upperBound)!.isCombining(usingCharacterClasses: characterClasses) {
+                    var pos = range.lowerBound
+                    repeat {
+                        ss.append("\\x{\(String(format: "%X", pos))}")
+                        pos += 1
+                    } while pos <= range.upperBound
+                } else {
+                    ss.append("\\x{\(String(format: "%X", range.lowerBound))}-\\x{\(String(format:"%X", range.upperBound))}")
+                }
+            }
+            singles.forEach { single in ss.append("\\x{\(String(format: "%X", single))}") }
             let theRegex = ss.joined()
             _regex = theRegex
             return theRegex.asRegexWithCombiningAsHexCode(usingCharacterClasses: characterClasses)
