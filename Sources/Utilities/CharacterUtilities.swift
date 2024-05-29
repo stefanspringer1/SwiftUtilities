@@ -1286,10 +1286,10 @@ public class CharacterClasses {
         }()
     }
     
-    public func replaceClasses(inRegex _regex: String) -> String {
+    public func replaceClasses(inRegex _regex: String, usingCharacterClasses characterClasses: CharacterClasses) -> String {
         var regex = _regex
         for characterClass in CharacterClass.allCases {
-            regex = regex.replacingOccurrences(of: classLiteral(forCharacterClass: characterClass), with: codePoints[characterClass]?.regex ?? "")
+            regex = regex.replacingOccurrences(of: classLiteral(forCharacterClass: characterClass), with: codePoints[characterClass]?.regex(usingCharacterClasses: characterClasses) ?? "")
         }
         return regex
     }
@@ -1322,14 +1322,14 @@ final public class UCCodePoints {
         self.singles = singles
     }
     
-    public var regex: String {
+    public func regex(usingCharacterClasses characterClasses: CharacterClasses) -> String {
         return _regex ?? {
             var ss = [String]()
             ranges.forEach { range in ss.append("\\x{\(String(format:"%X", range.lowerBound))}-\\x{\(String(format:"%X", range.upperBound))}") }
             singles.forEach { single in ss.append("\\x{\(String(format:"%X", single))}") }
             let theRegex = ss.joined()
             _regex = theRegex
-            return theRegex
+            return theRegex.asRegexWithCombiningAsHexCode(usingCharacterClasses: characterClasses)
         }()
     }
     
