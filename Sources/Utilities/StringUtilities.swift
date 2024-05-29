@@ -217,6 +217,7 @@ public extension StringProtocol {
 
 public extension String {
     
+    /// Interpreting the String as a regular expression, replace all combining characters within by the hex code formulation.
     func asRegexWithCombiningAsHexCode(usingCharacterClasses characterClasses: CharacterClasses) -> String {
         var scalars = [UnicodeScalar]()
         for scalar in self.unicodeScalars {
