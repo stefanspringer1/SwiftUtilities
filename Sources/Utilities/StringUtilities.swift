@@ -235,6 +235,19 @@ public extension String {
         return result
     }
     
+    /// Replace all text matching a certain certain regular expression, semangtic level can be set to
+    /// .unicodeScala or .graphemeCluster).
+    ///
+    /// Use lookarounds (e.g. lookaheads) to avoid having to apply your regular expression several times.
+    @available(macOS 13.0, *)
+    func replacing(regex: String, with theReplacement: any StringProtocol, semanticLevel: RegexSemanticLevel) -> String {
+        var result = self
+        autoreleasepool {
+            result = self.replacing(try! Regex(regex).matchingSemantics(semanticLevel), with: theReplacement)
+        }
+        return result
+    }
+    
 }
 
 public extension Array where Element == String? {
