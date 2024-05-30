@@ -3,7 +3,13 @@ import XCTest
 
 final class UtilitiesTests: XCTestCase {
     
-    func testReplacingLiteralRegexWithPattern() throws {
+    func testReplacingTextualRegexWithPattern() throws {
+        let input = "aba"
+        let result = input.replacing(regex: #"a([a-z])a"#, withPattern: "a$1$1a")
+        XCTAssertEqual(result, "abba")
+    }
+    
+    func testReplacementsOfUnicodeScalarsUsingLiteralRegex() throws {
         let input = "a\u{0358}c"
         var result = ""
         if #available(macOS 13.0, *) {
@@ -13,7 +19,7 @@ final class UtilitiesTests: XCTestCase {
         XCTAssertEqual(result, "a\u{0357}c")
     }
     
-    func testReplacingTextualRegexWithPattern() throws {
+    func testReplacementsOfUnicodeScalarsUsingInitalizedRegex() throws {
         let input = "a\u{0358}c"
         var result = ""
         if #available(macOS 13.0, *) {
@@ -23,7 +29,7 @@ final class UtilitiesTests: XCTestCase {
         XCTAssertEqual(result, "a\u{0357}c")
     }
     
-    func testReplacementsOfUnicodeScalars() throws {
+    func testReplacementsOfUnicodeScalarsUsingTextualRegex() throws {
         let text = "a\u{0358}c"
         let result = text.replacing(regex: #"([a-z])\x{0358}([a-z])"#, withPattern: "$1\u{0357}$2", usingSemanticLevel: .unicodeScalar)
         XCTAssertEqual(result, "a\u{0357}c")
