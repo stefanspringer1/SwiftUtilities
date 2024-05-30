@@ -1326,9 +1326,14 @@ final public class UCCodePoints {
         return _regex ?? {
             var ss = [String]()
             ranges.forEach { range in
-                if CharacterSet.letters.contains(UnicodeScalar(range.lowerBound)!) && CharacterSet.letters.contains(UnicodeScalar(range.upperBound)!) &&
-                    !UnicodeScalar(range.lowerBound)!.isCombining(usingCharacterClasses: characterClasses) &&
-                    !UnicodeScalar(range.upperBound)!.isCombining(usingCharacterClasses: characterClasses) {
+                let lowerBound = UnicodeScalar(range.lowerBound)!
+                let upperBound = UnicodeScalar(range.upperBound)!
+                if (lowerBound.isPrivateUse && upperBound.isPrivateUse) ||
+                    (
+                        CharacterSet.letters.contains(lowerBound) && CharacterSet.letters.contains(upperBound) &&
+                        !lowerBound.isCombining(usingCharacterClasses: characterClasses) && !upperBound.isCombining(usingCharacterClasses: characterClasses) &&
+                        !lowerBound.isLetterLikeSymbol && !upperBound.isLetterLikeSymbol
+                    ) {
                     ss.append("\\x{\(String(format: "%X", range.lowerBound))}-\\x{\(String(format:"%X", range.upperBound))}")
                 } else {
                     var pos = range.lowerBound
@@ -1468,7 +1473,16 @@ public extension UnicodeScalar {
     
     /// Check if a character is part of the Private Use Areas of Unicode.
     var isPrivateUse: Bool {
-        get { self.value >= 0xE000 && self.value <= 0xF8FF }
+        get {
+            (self.value >= 0xE000 && self.value <= 0xF8FF) ||
+            (self.value >= 0xF0000 && self.value <= 0xFFFFD) ||
+            (self.value >= 0x100000 && self.value <= 0x10FFFD)
+        }
+    }
+    
+    /// Check if a character is in the Unicode block "Letterlike Symbols".
+    var isLetterLikeSymbol: Bool {
+       get { self.value >= 0x2100 && self.value <= 0x214F }
     }
     
     func isSpace(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
