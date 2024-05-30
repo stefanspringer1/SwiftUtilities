@@ -3,6 +3,12 @@ import XCTest
 
 final class UtilitiesTests: XCTestCase {
     
+    func testReplacementsOfUnicodeScalars() throws {
+        let text = "a\u{0358}"
+        let result = text.replacing(regex: #"([a-z])\x{0358}"#, with: #"$1\x{0307}"#, semanticLevel: .unicodeScalar)
+        XCTAssertEqual(result, "a\u{0307}")
+    }
+    
     func testRegexForCharacterSet() throws {
         let characterClasses = getCharacterClasses()
         XCTAssertEqual(characterClasses.codePoints(forClass: .COMBINING_ABOVE)!.regex(usingCharacterClasses: characterClasses), #"""
