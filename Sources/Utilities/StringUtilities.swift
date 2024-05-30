@@ -124,10 +124,10 @@ public extension StringProtocol {
     /// Replace all text matching a certain certain regular expression.
     ///
     /// Use lookarounds (e.g. lookaheads) to avoid having to apply your regular expression several times.
-    func replacing(regex: String, withPattern replacementPattern: String) -> String {
+    func replacing(regex: String, withTemplate template: String) -> String {
         var result: String = ""
         autoreleasepool {
-            result = self.replacingOccurrences(of: regex, with: replacementPattern, options: .regularExpression, range: nil)
+            result = self.replacingOccurrences(of: regex, with: template, options: .regularExpression, range: nil)
         }
         return result
     }
@@ -242,10 +242,10 @@ public extension String {
     /// Replace all text matching a certain certain regular expression.
     ///
     /// Use lookarounds (e.g. lookaheads) to avoid having to apply your regular expression several times.
-    func replacing(regex: String, withPattern replacementPattern: any StringProtocol) -> String {
+    func replacing(regex: String, withTemplate template: any StringProtocol) -> String {
         var result = self
         autoreleasepool {
-            result = self.replacingOccurrences(of: regex, with: replacementPattern, options: .regularExpression, range: nil)
+            result = self.replacingOccurrences(of: regex, with: template, options: .regularExpression, range: nil)
         }
         return result
     }
@@ -255,8 +255,8 @@ public extension String {
     ///
     /// Use lookarounds (e.g. lookaheads) to avoid having to apply your regular expression several times.
     @available(macOS 13.0, *)
-    func replacing(regex: String, withPattern replacementPattern: String, usingSemanticLevel semanticLevel: RegexSemanticLevel) -> String {
-        return self.replacing(try! Regex(regex).matchingSemantics(semanticLevel), withPattern: replacementPattern)
+    func replacing(regex: String, withTemplate template: String, usingSemanticLevel semanticLevel: RegexSemanticLevel) -> String {
+        return self.replacing(try! Regex(regex).matchingSemantics(semanticLevel), withTemplate: template)
     }
     
 }
@@ -267,7 +267,7 @@ extension RangeReplaceableCollection where SubSequence == Substring {
     @available(macOS 13.0, *)
     func replacing(
         _ regex: some RegexComponent,
-        withPattern replacementPattern: String,
+        withTemplate template: String,
         maxReplacements: Int = .max
     ) -> Self {
         var result = self
@@ -277,7 +277,7 @@ extension RangeReplaceableCollection where SubSequence == Substring {
                 .matchingSemantics(.unicodeScalar)
             result = self.replacing(regex, maxReplacements: maxReplacements) { match in
                 let typeErasedMatch: Regex<AnyRegexOutput>.Match = .init(match)
-                return replacementPattern.replacing(numberedGroupRegex) { groupMatch in
+                return template.replacing(numberedGroupRegex) { groupMatch in
                     let groupNumber = Int(groupMatch.output.1)!
                     let replacement = typeErasedMatch[groupNumber].substring!
                     return replacement

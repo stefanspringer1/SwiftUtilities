@@ -5,7 +5,7 @@ final class UtilitiesTests: XCTestCase {
     
     func testReplacingTextualRegexWithPattern() throws {
         let input = "aba"
-        let result = input.replacing(regex: #"a([a-z])a"#, withPattern: "a$1$1a")
+        let result = input.replacing(regex: #"a([a-z])a"#, withTemplate: "a$1$1a")
         XCTAssertEqual(result, "abba")
     }
     
@@ -14,7 +14,7 @@ final class UtilitiesTests: XCTestCase {
         var result = ""
         if #available(macOS 13.0, *) {
             let regex = #/([a-z])\x{0358}([a-z])/#.matchingSemantics(.unicodeScalar)
-            result = input.replacing(regex, withPattern: "$1\u{0357}$2")
+            result = input.replacing(regex, withTemplate: "$1\u{0357}$2")
         }
         XCTAssertEqual(result, "a\u{0357}c")
     }
@@ -24,14 +24,14 @@ final class UtilitiesTests: XCTestCase {
         var result = ""
         if #available(macOS 13.0, *) {
             let regex = try! Regex(#"([a-z])\x{0358}([a-z])"#).matchingSemantics(.unicodeScalar)
-            result = input.replacing(regex, withPattern: "$1\u{0357}$2")
+            result = input.replacing(regex, withTemplate: "$1\u{0357}$2")
         }
         XCTAssertEqual(result, "a\u{0357}c")
     }
     
     func testReplacementsOfUnicodeScalarsUsingTextualRegex() throws {
         let text = "a\u{0358}c"
-        let result = text.replacing(regex: #"([a-z])\x{0358}([a-z])"#, withPattern: "$1\u{0357}$2", usingSemanticLevel: .unicodeScalar)
+        let result = text.replacing(regex: #"([a-z])\x{0358}([a-z])"#, withTemplate: "$1\u{0357}$2", usingSemanticLevel: .unicodeScalar)
         XCTAssertEqual(result, "a\u{0357}c")
     }
     
