@@ -1326,15 +1326,14 @@ final public class UCCodePoints {
         return _regex ?? {
             var ss = [String]()
             ranges.forEach { range in
-                if UnicodeScalar(range.lowerBound)!.isCombining(usingCharacterClasses: characterClasses) ||
-                    UnicodeScalar(range.upperBound)!.isCombining(usingCharacterClasses: characterClasses) {
+                if CharacterSet.letters.contains(UnicodeScalar(range.lowerBound)!) && CharacterSet.letters.contains(UnicodeScalar(range.upperBound)!) {
+                    ss.append("\\x{\(String(format: "%X", range.lowerBound))}-\\x{\(String(format:"%X", range.upperBound))}")
+                } else {
                     var pos = range.lowerBound
                     repeat {
                         ss.append("\\x{\(String(format: "%X", pos))}")
                         pos += 1
                     } while pos <= range.upperBound
-                } else {
-                    ss.append("\\x{\(String(format: "%X", range.lowerBound))}-\\x{\(String(format:"%X", range.upperBound))}")
                 }
             }
             singles.forEach { single in ss.append("\\x{\(String(format: "%X", single))}") }
