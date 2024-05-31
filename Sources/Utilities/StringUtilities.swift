@@ -217,21 +217,6 @@ public extension StringProtocol {
 
 public extension String {
     
-    /// Interpreting the String as a regular expression, replace all combining characters within by the hex code formulation.
-    func asRegexWithCombiningAsHexCode(usingCharacterClasses characterClasses: CharacterClasses) -> String {
-        var scalars = [UnicodeScalar]()
-        for scalar in self.unicodeScalars {
-            if scalar.isCombining(usingCharacterClasses: characterClasses) {
-                for scalar2 in "\\x{\(String(scalar.value, radix: 16))}".unicodeScalars {
-                    scalars.append(scalar2)
-                }
-            } else {
-                scalars.append(scalar)
-            }
-        }
-        return String(unicodeScalars: scalars)
-    }
-    
     /// Create a string from a collection of `UnicodeScalar`.
     init<S: Sequence>(unicodeScalars ucs: S) where S.Iterator.Element == UnicodeScalar {
         var s = ""

@@ -1286,6 +1286,21 @@ public class CharacterClasses {
         }()
     }
     
+    /// Interpreting the String as a regular expression, replace all combining characters within by the hex code formulation.
+    public func withCombiningAsHexCode(fromRegex regex: String) -> String {
+        var scalars = [UnicodeScalar]()
+        for scalar in regex.unicodeScalars {
+            if scalar.isCombining(usingCharacterClasses: self) {
+                for scalar2 in "\\x{\(String(scalar.value, radix: 16))}".unicodeScalars {
+                    scalars.append(scalar2)
+                }
+            } else {
+                scalars.append(scalar)
+            }
+        }
+        return String(unicodeScalars: scalars)
+    }
+    
     public func replacingClasses(inRegex _regex: String) -> String {
         var regex = _regex
         if regex.contains(#"\{"#) {
@@ -1327,6 +1342,8 @@ final public class UCCodePoints {
         self.singles = singles
     }
     
+    /// Get the regex for a character class.
+    /// Combining characters are already replaced by the hex notation.
     public func regex(usingCharacterClasses characterClasses: CharacterClasses) -> String {
         return _regex ?? {
             var ss = [String]()
@@ -1349,9 +1366,9 @@ final public class UCCodePoints {
                 }
             }
             singles.forEach { single in ss.append("\\x{\(String(format: "%X", single))}") }
-            let theRegex = ss.joined()
-            _regex = theRegex
-            return theRegex.asRegexWithCombiningAsHexCode(usingCharacterClasses: characterClasses)
+            let theRegex = characterClasses.withCombiningAsHexCode(fromRegex: ss.joined())
+            _regex =  theRegex
+            return theRegex
         }()
     }
     
