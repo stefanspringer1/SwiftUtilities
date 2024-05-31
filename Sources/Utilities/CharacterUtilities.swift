@@ -1286,13 +1286,13 @@ public class CharacterClasses {
         }()
     }
     
-    public func replacingClasses(inRegex _regex: String, usingCharacterClasses characterClasses: CharacterClasses) -> String {
+    public func replacingClasses(inRegex _regex: String) -> String {
         var regex = _regex
         if regex.contains(#"\{"#) {
             for characterClass in CharacterClass.allCases {
                 let classLiteral = classLiteral(forCharacterClass: characterClass)
                 if regex.contains(classLiteral) {
-                    regex = regex.replacingOccurrences(of: classLiteral, with: codePoints[characterClass]?.regex(usingCharacterClasses: characterClasses) ?? "")
+                    regex = regex.replacingOccurrences(of: classLiteral, with: codePoints[characterClass]?.regex(usingCharacterClasses: self) ?? "")
                 }
             }
         }
