@@ -1242,7 +1242,7 @@ public func getCharacterClasses() -> CharacterClasses {
                 0x1D54A...0x1D550,
                 
                 // mathematical italic Greek:
-                0x1D6E2...0x1D71B,
+                0x1D6E2...0x1D71B, 0x1D7CA...0x1D7CB,
                 
                 // MATHEMATICAL ITALIC SMALL DOTLESS ...:
                 0x1D6A4...0x1D6A5,
@@ -1342,8 +1342,7 @@ final public class UCCodePoints {
         self.singles = singles
     }
     
-    /// Get the regex for a character class.
-    /// Combining characters are already replaced by the hex notation.
+    /// Get the regex for a character class. Combining characters are already replaced by the hex notation.
     public func regex(usingCharacterClasses characterClasses: CharacterClasses) -> String {
         return _regex ?? {
             var ss = [String]()
