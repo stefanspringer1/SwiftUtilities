@@ -1446,7 +1446,6 @@ public extension StringProtocol {
         var parts = [Substring]()
         while let range =  text.firstMatch(of: /([^\\]|^)\${([^}]*)}/) {
             let characterClassName = String(range.output.2)
-            print("!!!! characterClassName=[\(characterClassName)]")
             guard let replacement = characterClasses.regex(forClassName: characterClassName) else {
                 throw CharacterClassError("unknown character class \"\(characterClassName)\" in regular exepression \(self)")
             }
