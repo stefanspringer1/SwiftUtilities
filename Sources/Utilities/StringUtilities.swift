@@ -27,6 +27,15 @@ public extension String {
         if let postfix = postfix { return self.appending(postfix) } else { return self }
     }
     
+    /// Removing quotes "..." or '...'.
+    var withoutQuotes: String {
+        if let range = self.firstMatch(of: /^["'](.*)["']$/) {
+            return String(range.1)
+        } else {
+            return self
+        }
+    }
+    
 }
 
 public extension StringProtocol {

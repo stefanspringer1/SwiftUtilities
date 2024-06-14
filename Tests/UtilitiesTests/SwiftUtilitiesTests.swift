@@ -5,6 +5,12 @@ final class UtilitiesTests: XCTestCase {
     
     let characterClasses = CharacterClasses()
     
+    func testWithoutQuotes() {
+        XCTAssertEqual("hello".withoutQuotes, "hello")
+        XCTAssertEqual("\"hello\"".withoutQuotes, "hello")
+        XCTAssertEqual("'hello'".withoutQuotes, "hello")
+    }
+    
     func testCharacterClassForName() throws {
         _ = CharacterClass.characterClass(ofName: "SMALL_LATIN_LETTERS")
     }
