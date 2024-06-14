@@ -1348,7 +1348,7 @@ public class CharacterClasses {
             for characterClass in CharacterClass.allCases {
                 let classLiteral = classLiteral(forCharacterClass: characterClass)
                 if regex.contains(classLiteral) {
-                    regex = regex.replacingOccurrences(of: classLiteral, with: codePoints[characterClass]?.regex(usingCharacterClasses: self) ?? "")
+                    regex = regex.replacingOccurrences(of: classLiteral, with: codePoints[characterClass]?.regexPart(usingCharacterClasses: self) ?? "")
                 }
             }
         }
@@ -1384,7 +1384,7 @@ final public class UCCodePoints {
     }
     
     /// Get the regex for a character class. Combining characters are already replaced by the hex notation.
-    public func regex(usingCharacterClasses characterClasses: CharacterClasses) -> String {
+    public func regexPart(usingCharacterClasses characterClasses: CharacterClasses) -> String {
         return _regex ?? {
             var ss = [String]()
             ranges.forEach { range in
@@ -1424,9 +1424,9 @@ final public class UCCodePoints {
 
 public extension CharacterClasses {
     
-    func regex(forClassName className: String) -> String? {
+    func regexPart(forClassName className: String) -> String? {
         guard let characterClass = CharacterClass.characterClass(ofName: className) else { return nil }
-        return self.codePoints(forClass: characterClass)?.regex(usingCharacterClasses: self)
+        return self.codePoints(forClass: characterClass)?.regexPart(usingCharacterClasses: self)
     }
     
 }
@@ -1446,7 +1446,7 @@ public extension StringProtocol {
         var parts = [Substring]()
         while let range =  text.firstMatch(of: /([^\\]|^)\${([^}]*)}/) {
             let characterClassName = String(range.output.2)
-            guard let replacement = characterClasses.regex(forClassName: characterClassName) else {
+            guard let replacement = characterClasses.regexPart(forClassName: characterClassName) else {
                 throw CharacterClassError("unknown character class \"\(characterClassName)\" in regular exepression \(self)")
             }
             parts.append(text[..<range.range.lowerBound])
