@@ -5,6 +5,11 @@ final class UtilitiesTests: XCTestCase {
     
     let characterClasses = CharacterClasses()
     
+    func testNoNEmpty() {
+        XCTAssertEqual("hello".nonEmpty, "hello")
+        XCTAssertEqual("".nonEmpty, nil)
+    }
+    
     func testWithoutQuotes() {
         XCTAssertEqual("hello".withoutQuotes, "hello")
         XCTAssertEqual("\"hello\"".withoutQuotes, "hello")

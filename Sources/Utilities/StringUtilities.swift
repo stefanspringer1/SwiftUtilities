@@ -130,6 +130,9 @@ public extension StringProtocol {
     /// Test if a text only consists of whitespace.
     var isWhitespace: Bool { contains(regex: #"^\s*$"#) }
     
+    /// Test if a text only consists of whitespace.
+    var nonEmpty: Self? { self.isEmpty ? nil : self }
+    
     /// Replace all text matching a certain certain regular expression.
     ///
     /// Use lookarounds (e.g. lookaheads) to avoid having to apply your regular expression several times.
