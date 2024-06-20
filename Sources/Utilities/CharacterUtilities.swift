@@ -1367,8 +1367,8 @@ public class CharacterClasses {
         }
     }
     
-    public func codePoints(forClass theClass: CharacterClass) -> UCCodePoints? {
-        codePoints[theClass]
+    public func codePoints(forClass theClass: CharacterClass) -> UCCodePoints {
+        codePoints[theClass]!
     }
 }
 
@@ -1424,8 +1424,8 @@ final public class UCCodePoints {
 
 public extension CharacterClasses {
     
-    func regexPart(forCharacterClass characterClass: CharacterClass) -> String? {
-        self.codePoints(forClass: characterClass)?.regexPart(usingCharacterClasses: self)
+    func regexPart(forCharacterClass characterClass: CharacterClass) -> String {
+        self.codePoints(forClass: characterClass).regexPart(usingCharacterClasses: self)
     }
     
     func regexPart(forCharacterClassName characterClassName: String) -> String? {
