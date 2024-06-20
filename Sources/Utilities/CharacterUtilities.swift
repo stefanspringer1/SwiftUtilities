@@ -1424,9 +1424,13 @@ final public class UCCodePoints {
 
 public extension CharacterClasses {
     
-    func regexPart(forClassName className: String) -> String? {
-        guard let characterClass = CharacterClass.characterClass(ofName: className) else { return nil }
-        return self.codePoints(forClass: characterClass)?.regexPart(usingCharacterClasses: self)
+    func regexPart(forCharacterClass characterClass: CharacterClass) -> String? {
+        self.codePoints(forClass: characterClass)?.regexPart(usingCharacterClasses: self)
+    }
+    
+    func regexPart(forCharacterClassName characterClassName: String) -> String? {
+        guard let characterClass = CharacterClass.characterClass(ofName: characterClassName) else { return nil }
+        return regexPart(forCharacterClass: characterClass)
     }
     
 }
@@ -1446,7 +1450,7 @@ public extension StringProtocol {
         var parts = [Substring]()
         while let range =  text.firstMatch(of: /([^\\]|^)\${([^}]*)}/) {
             let characterClassName = String(range.output.2)
-            guard let replacement = characterClasses.regexPart(forClassName: characterClassName) else {
+            guard let replacement = characterClasses.regexPart(forCharacterClassName: characterClassName) else {
                 throw CharacterClassError("unknown character class \"\(characterClassName)\" in regular exepression \(self)")
             }
             parts.append(text[..<range.range.lowerBound])
