@@ -1,5 +1,5 @@
-///  The definition of the usual named character entities.
-public let namedCharacterEntities: [String:UnicodeScalar] = [
+///  The definition of the usual character entities.
+public let characterEntities: [String:UnicodeScalar] = [
     "Aacgr": "\u{0386}",
     "aacgr": "\u{03AC}",
     "Aacute": "\u{00C1}",

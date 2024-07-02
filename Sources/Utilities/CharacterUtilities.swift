@@ -1446,7 +1446,7 @@ struct CharacterClassError: Error, CustomStringConvertible {
 public extension StringProtocol {
     
     /// The character classes referenced in the form "${THE\_CHARACTER\_CLASS}" are being replaced by the according regex expresssions.
-    /// If includingNamedCharacterEntities is set to `true`, the usual named character entities in the form "${THE\_ENTITY\_NAME}" are also being replaced by the according regex expresssions.
+    /// If includingNamedCharacterEntities is set to `true`, the usual character entities in the form "${THE\_ENTITY\_NAME}" are also being replaced by the according regex expresssions.
     /// The `$` can be escaped by `\$`.
     func replacingCharacterClasses(usingCharacterClasses characterClasses: CharacterClasses, includingNamedCharacterEntities: Bool = false) throws -> String {
         var text = Substring(self)
@@ -1455,7 +1455,7 @@ public extension StringProtocol {
             let characterClassName = String(range.output.2)
             guard let replacement = characterClasses.regexPart(forCharacterClassName: characterClassName) ??
                 (includingNamedCharacterEntities ? namedCharacterEntities[characterClassName]?.asRegex : nil) else {
-                throw CharacterClassError("unknown character class\(includingNamedCharacterEntities ? " or named character entity" : "") \"\(characterClassName)\" in regular expression \(self)")
+                throw CharacterClassError("unknown character class\(includingNamedCharacterEntities ? " or character entity" : "") \"\(characterClassName)\" in regular expression \(self)")
             }
             parts.append(text[..<range.range.lowerBound])
             parts.append(range.output.1)
@@ -1465,7 +1465,7 @@ public extension StringProtocol {
         return parts.joined() + text
     }
     
-    /// The usual named character entities in the form "${THE\_ENTITY\_NAME}" are being replaced by the according regex expresssions.
+    /// The usual character entities in the form "${THE\_ENTITY\_NAME}" are being replaced by the according regex expresssions.
     /// The `$` can be escaped by `\$`.
     func replacingNamedCharacterEntities() throws -> String {
         var text = Substring(self)
@@ -1473,7 +1473,7 @@ public extension StringProtocol {
         while let range =  text.firstMatch(of: /([^\\]|^)\${([^}]*)}/) {
             let characterClassName = String(range.output.2)
             guard let replacement = namedCharacterEntities[characterClassName]?.asRegex else {
-                throw CharacterClassError("unknown named character entity \"\(characterClassName)\" in regular expression \(self)")
+                throw CharacterClassError("unknown character entity \"\(characterClassName)\" in regular expression \(self)")
             }
             parts.append(text[..<range.range.lowerBound])
             parts.append(range.output.1)
