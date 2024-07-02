@@ -1443,19 +1443,37 @@ struct CharacterClassError: Error, CustomStringConvertible {
     }
 }
 
-/// "\{BASE_CHARACTER}" is used in soem applications to denote a fixed empty base for following combining characters,
-/// to differentiate it from a space character; it is mapped to the private use code point U+EA07.
-public let BASE_CHARACTER = "\u{EA07}"
-
 public extension StringProtocol {
     
-    func replacingCharacterClasses(usingCharacterClasses characterClasses: CharacterClasses) throws -> String {
+    /// The character classes referenced in the form "${THE\_CHARACTER\_CLASS}" are being replaced by the according regex expresssions.
+    /// If includingNamedCharacterEntities is set to `true`, the usual named character entities in the form "${THE\_ENTITY\_NAME}" are also being replaced by the according regex expresssions.
+    /// The `$` can be escaped by `\$`.
+    func replacingCharacterClasses(usingCharacterClasses characterClasses: CharacterClasses, includingNamedCharacterEntities: Bool = false) throws -> String {
         var text = Substring(self)
         var parts = [Substring]()
         while let range =  text.firstMatch(of: /([^\\]|^)\${([^}]*)}/) {
             let characterClassName = String(range.output.2)
-            guard let replacement = if characterClassName == "BASE_CHARACTER" { BASE_CHARACTER } else { characterClasses.regexPart(forCharacterClassName: characterClassName) } else {
-                throw CharacterClassError("unknown character class \"\(characterClassName)\" in regular exepression \(self)")
+            guard let replacement = characterClasses.regexPart(forCharacterClassName: characterClassName) ??
+                (includingNamedCharacterEntities ? namedCharacterEntities[characterClassName]?.asRegex : nil) else {
+                throw CharacterClassError("unknown character class\(includingNamedCharacterEntities ? " or named character entity" : "") \"\(characterClassName)\" in regular expression \(self)")
+            }
+            parts.append(text[..<range.range.lowerBound])
+            parts.append(range.output.1)
+            parts.append(Substring(replacement))
+            text = text[range.range.upperBound...]
+        }
+        return parts.joined() + text
+    }
+    
+    /// The usual named character entities in the form "${THE\_ENTITY\_NAME}" are being replaced by the according regex expresssions.
+    /// The `$` can be escaped by `\$`.
+    func replacingNamedCharacterEntities() throws -> String {
+        var text = Substring(self)
+        var parts = [Substring]()
+        while let range =  text.firstMatch(of: /([^\\]|^)\${([^}]*)}/) {
+            let characterClassName = String(range.output.2)
+            guard let replacement = namedCharacterEntities[characterClassName]?.asRegex else {
+                throw CharacterClassError("unknown named character entity \"\(characterClassName)\" in regular expression \(self)")
             }
             parts.append(text[..<range.range.lowerBound])
             parts.append(range.output.1)
@@ -1622,6 +1640,16 @@ public extension UnicodeScalar {
     
     func isPostfixOperator(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
         characterClasses[self].contains(.POSTFIX_OPERATORS)
+    }
+    
+    /// Return the Unicode scalar as regular expresssion.
+    var asRegex: String {
+        "\\x{\(String(self.value, radix: 16))}"
+    }
+    
+    /// Return the Unicode scalar as a String.
+    var asString: String {
+        String(self)
     }
     
 }
