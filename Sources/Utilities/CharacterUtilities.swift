@@ -1448,7 +1448,7 @@ public extension StringProtocol {
     /// The character classes referenced in the form "${THE\_CHARACTER\_CLASS}" are being replaced by the according regex expresssions.
     /// If includingNamedCharacterEntities is set to `true`, the usual character entities in the form "${THE\_ENTITY\_NAME}" are also being replaced by the according regex expresssions.
     /// The `$` can be escaped by `\$`.
-    func replacingCharacterClasses(usingCharacterClasses characterClasses: CharacterClasses, includingNamedCharacterEntities: Bool = false) throws -> String {
+    func replacingCharacterClassesWithRegex(usingCharacterClasses characterClasses: CharacterClasses, includingNamedCharacterEntities: Bool = false) throws -> String {
         var text = Substring(self)
         var parts = [Substring]()
         while let range =  text.firstMatch(of: /([^\\]|^)\${([^}]*)}/) {
@@ -1467,12 +1467,12 @@ public extension StringProtocol {
     
     /// The usual character entities in the form "${THE\_ENTITY\_NAME}" are being replaced by the according regex expresssions.
     /// The `$` can be escaped by `\$`.
-    func replacingNamedCharacterEntities() throws -> String {
+    func replacingNamedCharacterEntitiesWithString() throws -> String {
         var text = Substring(self)
         var parts = [Substring]()
         while let range =  text.firstMatch(of: /([^\\]|^)\${([^}]*)}/) {
             let characterClassName = String(range.output.2)
-            guard let replacement = characterEntities[characterClassName]?.asRegex else {
+            guard let replacement = characterEntities[characterClassName]?.asString else {
                 throw CharacterClassError("unknown character entity \"\(characterClassName)\" in regular expression \(self)")
             }
             parts.append(text[..<range.range.lowerBound])

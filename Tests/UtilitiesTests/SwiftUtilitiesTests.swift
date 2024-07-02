@@ -22,13 +22,13 @@ final class UtilitiesTests: XCTestCase {
     
     func testCharacterClassNamesInRegex() throws {
         let input = #"[${SMALL_LATIN_LETTERS}${CAPITAL_LATIN_LETTERS}]"#
-        let result = try input.replacingCharacterClasses(usingCharacterClasses: characterClasses)
+        let result = try input.replacingCharacterClassesWithRegex(usingCharacterClasses: characterClasses)
         XCTAssertEqual(result, #"[\x{61}-\x{7A}\x{41}-\x{5A}]"#)
     }
     
     func testCharacterClassNamesInRegexWithEscape() throws {
         let input = #"[${SMALL_LATIN_LETTERS}\${CAPITAL_LATIN_LETTERS}]"#
-        let result = try input.replacingCharacterClasses(usingCharacterClasses: characterClasses)
+        let result = try input.replacingCharacterClassesWithRegex(usingCharacterClasses: characterClasses)
         XCTAssertEqual(result, #"[\x{61}-\x{7A}\${CAPITAL_LATIN_LETTERS}]"#)
     }
     
