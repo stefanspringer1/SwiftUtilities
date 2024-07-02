@@ -1446,16 +1446,14 @@ struct CharacterClassError: Error, CustomStringConvertible {
 public extension StringProtocol {
     
     /// The character classes referenced in the form "${THE\_CHARACTER\_CLASS}" are being replaced by the according regex expresssions.
-    /// If includingNamedCharacterEntities is set to `true`, the usual character entities in the form "${THE\_ENTITY\_NAME}" are also being replaced by the according regex expresssions.
     /// The `$` can be escaped by `\$`.
-    func replacingCharacterClassesWithRegex(usingCharacterClasses characterClasses: CharacterClasses, includingNamedCharacterEntities: Bool = false) throws -> String {
+    func replacingCharacterClassesWithRegex(usingCharacterClasses characterClasses: CharacterClasses) throws -> String {
         var text = Substring(self)
         var parts = [Substring]()
         while let range =  text.firstMatch(of: /([^\\]|^)\${([^}]*)}/) {
             let characterClassName = String(range.output.2)
-            guard let replacement = characterClasses.regexPart(forCharacterClassName: characterClassName) ??
-                (includingNamedCharacterEntities ? characterEntities[characterClassName]?.asRegex : nil) else {
-                throw CharacterClassError("unknown character class\(includingNamedCharacterEntities ? " or character entity" : "") \"\(characterClassName)\" in regular expression \(self)")
+            guard let replacement = characterClasses.regexPart(forCharacterClassName: characterClassName) else {
+                throw CharacterClassError("unknown character class \"\(characterClassName)\" in regular expression \(self)")
             }
             parts.append(text[..<range.range.lowerBound])
             parts.append(range.output.1)
@@ -1465,15 +1463,15 @@ public extension StringProtocol {
         return parts.joined() + text
     }
     
-    /// The usual character entities in the form "${THE\_ENTITY\_NAME}" are being replaced by the according regex expresssions.
-    /// The `$` can be escaped by `\$`.
-    func replacingNamedCharacterEntitiesWithString() throws -> String {
+    /// The usual character entities in the (XML notation) form "&THE\_ENTITY\_NAME;" are being replaced by the according regex expresssions.
+    /// The `&` can be escaped by `\&`.
+    func replacingCharacterEntitiesWithRegex() throws -> String {
         var text = Substring(self)
         var parts = [Substring]()
-        while let range =  text.firstMatch(of: /([^\\]|^)\${([^}]*)}/) {
-            let characterClassName = String(range.output.2)
-            guard let replacement = characterEntities[characterClassName]?.asString else {
-                throw CharacterClassError("unknown character entity \"\(characterClassName)\" in regular expression \(self)")
+        while let range =  text.firstMatch(of: /([^\\]|^)\&([^;]*);/) {
+            let entityName = String(range.output.2)
+            guard let replacement = characterEntities[entityName]?.asRegex else {
+                throw CharacterClassError("unknown character entity \"\(entityName)\" in regular expression \(self)")
             }
             parts.append(text[..<range.range.lowerBound])
             parts.append(range.output.1)
@@ -1481,6 +1479,24 @@ public extension StringProtocol {
             text = text[range.range.upperBound...]
         }
         return parts.joined() + text
+    }
+    
+    /// The usual character entities in the (XML notation) form "&THE\_ENTITY\_NAME;" are being replaced by the according String.
+    /// The `&` can be escaped by `\&`, this escapement is then removed by this method.
+    func replacingCharacterEntitiesWithString() throws -> String {
+        var text = Substring(self)
+        var parts = [Substring]()
+        while let range =  text.firstMatch(of: /([^\\]|^)\&([^;]*);/) {
+            let entityName = String(range.output.2)
+            guard let replacement = characterEntities[entityName]?.asString else {
+                throw CharacterClassError("unknown character entity \"\(entityName)\" in regular expression \(self)")
+            }
+            parts.append(text[..<range.range.lowerBound])
+            parts.append(range.output.1)
+            parts.append(Substring(replacement))
+            text = text[range.range.upperBound...]
+        }
+        return (parts.joined() + text).replacingOccurrences(of: #"\&"#, with: "&")
     }
     
 }
@@ -1645,6 +1661,11 @@ public extension UnicodeScalar {
     /// Return the Unicode scalar as regular expresssion.
     var asRegex: String {
         "\\x{\(String(self.value, radix: 16))}"
+    }
+    
+    /// Return the Unicode scalar as a Character.
+    var asCharacter: Character {
+        Character(self)
     }
     
     /// Return the Unicode scalar as a String.

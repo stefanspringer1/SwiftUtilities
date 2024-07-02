@@ -298,4 +298,25 @@ final class UtilitiesTests: XCTestCase {
         XCTAssertEqual("[\(" \n hal lo \n ".trimmingRight())]", "[ \n hal lo]")
         XCTAssertEqual("[\(" \n hal lo \n ".trimming())]", "[hal lo]")
     }
+    
+    func testReplacingCharacterClassesWithRegex() throws {
+        XCTAssertEqual(
+            try "${LATIN_LETTERS}${CLOSING_DELIMITERS}".replacingCharacterClassesWithRegex(usingCharacterClasses: characterClasses),
+            #"\x{61}-\x{7A}\x{41}-\x{5A}\x{5C}\x{5D}\x{7C}\x{7D}\x{29}\x{2F}\x{2016}\x{2016}\x{2191}\x{2193}\x{2195}\x{21D1}\x{21D3}\x{21D5}\x{2309}\x{230B}\x{23B1}\x{27E9}\x{2986}\x{300B}\x{3015}\x{301B}"#
+        )
+    }
+    
+    func testReplacingCharacterEntitiesWithRegex() throws {
+        XCTAssertEqual(
+            try "&auml;&alpha;".replacingCharacterEntitiesWithRegex(),
+            #"\x{e4}\x{3b1}"#
+        )
+    }
+    
+    func testReplacingCharacterEntitiesWithString() throws {
+        XCTAssertEqual(
+            try #"&auml;&alpha;\&alpha;"#.replacingCharacterEntitiesWithString(),
+            "äα&alpha;"
+        )
+    }
 }
