@@ -1454,7 +1454,7 @@ public extension StringProtocol {
         while let range =  text.firstMatch(of: /([^\\]|^)\${([^}]*)}/) {
             let characterClassName = String(range.output.2)
             guard let replacement = characterClasses.regexPart(forCharacterClassName: characterClassName) ??
-                (includingNamedCharacterEntities ? namedCharacterEntities[characterClassName]?.asRegex : nil) else {
+                (includingNamedCharacterEntities ? characterEntities[characterClassName]?.asRegex : nil) else {
                 throw CharacterClassError("unknown character class\(includingNamedCharacterEntities ? " or character entity" : "") \"\(characterClassName)\" in regular expression \(self)")
             }
             parts.append(text[..<range.range.lowerBound])
@@ -1472,7 +1472,7 @@ public extension StringProtocol {
         var parts = [Substring]()
         while let range =  text.firstMatch(of: /([^\\]|^)\${([^}]*)}/) {
             let characterClassName = String(range.output.2)
-            guard let replacement = namedCharacterEntities[characterClassName]?.asRegex else {
+            guard let replacement = characterEntities[characterClassName]?.asRegex else {
                 throw CharacterClassError("unknown character entity \"\(characterClassName)\" in regular expression \(self)")
             }
             parts.append(text[..<range.range.lowerBound])
