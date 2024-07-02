@@ -1443,6 +1443,10 @@ struct CharacterClassError: Error, CustomStringConvertible {
     }
 }
 
+/// "\{BASE_CHARACTER}" is used in soem applications to denote a fixed empty base for following combining characters,
+/// to differentiate it from a space character; it is mapped to the private use code point U+EA07.
+public let BASE_CHARACTER = "\u{EA07}"
+
 public extension StringProtocol {
     
     func replacingCharacterClasses(usingCharacterClasses characterClasses: CharacterClasses) throws -> String {
@@ -1450,9 +1454,7 @@ public extension StringProtocol {
         var parts = [Substring]()
         while let range =  text.firstMatch(of: /([^\\]|^)\${([^}]*)}/) {
             let characterClassName = String(range.output.2)
-            // "\{BASE_CHARACTER}" is used in soem applications to denote a fixed empty base for following combining characters,
-            // to differentiate it from a space character; it is mapped to the private use code point U+EA07.
-            guard let replacement = if characterClassName == "BASE_CHARACTER" { "\u{EA07}" } else { characterClasses.regexPart(forCharacterClassName: characterClassName) } else {
+            guard let replacement = if characterClassName == "BASE_CHARACTER" { BASE_CHARACTER } else { characterClasses.regexPart(forCharacterClassName: characterClassName) } else {
                 throw CharacterClassError("unknown character class \"\(characterClassName)\" in regular exepression \(self)")
             }
             parts.append(text[..<range.range.lowerBound])
