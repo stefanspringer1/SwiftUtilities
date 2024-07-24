@@ -1488,7 +1488,7 @@ public extension StringProtocol {
         var parts = [Substring]()
         while let range =  text.firstMatch(of: /([^\\]|^)\&([^;]*);/) {
             let entityName = String(range.output.2)
-            guard let replacement = characterEntities[entityName]?.asString else {
+            guard let replacement = characterEntities[entityName]?.asString ?? w3cFormulaEntitiesWithSingleCodepoint[entityName] else {
                 throw CharacterClassError("unknown character entity \"\(entityName)\" in regular expression \(self)")
             }
             parts.append(text[..<range.range.lowerBound])
