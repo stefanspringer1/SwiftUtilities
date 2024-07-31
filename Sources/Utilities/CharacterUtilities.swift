@@ -1321,7 +1321,7 @@ public class CharacterClasses {
     
     public func classLiteral(forCharacterClass characterClass: CharacterClass) -> String {
         classLiterals[characterClass] ?? {
-            let literal = "\\{\(String(describing: characterClass))}"
+            let literal = "${\(String(describing: characterClass))}"
             classLiterals[characterClass] = literal
             return literal
         }()
@@ -1340,19 +1340,6 @@ public class CharacterClasses {
             }
         }
         return String(unicodeScalars: scalars)
-    }
-    
-    public func replacingClasses(inRegex _regex: String) -> String {
-        var regex = _regex
-        if regex.contains(#"\{"#) {
-            for characterClass in CharacterClass.allCases {
-                let classLiteral = classLiteral(forCharacterClass: characterClass)
-                if regex.contains(classLiteral) {
-                    regex = regex.replacingOccurrences(of: classLiteral, with: codePoints[characterClass]?.regexPart(usingCharacterClasses: self) ?? "")
-                }
-            }
-        }
-        return regex
     }
     
     func add(_ classes: CharacterClass..., toCodePoint codePoint: UCCodePoint) {
