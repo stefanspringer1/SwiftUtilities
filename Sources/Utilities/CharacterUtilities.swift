@@ -1342,6 +1342,10 @@ public class CharacterClasses {
         return String(unicodeScalars: scalars)
     }
     
+    public func replacingClasses(inRegex regex: String) throws -> String {
+        try regex.replacingCharacterClassesWithRegex(usingCharacterClasses: self)
+    }
+    
     func add(_ classes: CharacterClass..., toCodePoint codePoint: UCCodePoint) {
         var combinedClass = combinedClasses[codePoint] ?? 0
         classes.forEach { combinedClass |= $0.rawValue }
