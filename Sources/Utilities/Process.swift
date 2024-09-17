@@ -14,7 +14,7 @@ public func runProgram(
     errorOutHandler: @escaping (String) -> (),
     commandLineDebugHandler: ((String) -> ())? = nil
 ) {
-    commandLineDebugHandler?("in [\(currentDirectoryURL)]: \"\(executableURL.osPath)\" \(arguments.map{"\"\($0)\""}.joined(separator: " ")) (environment: \(environment?.description ?? "not set")")
+    commandLineDebugHandler?("in [\(currentDirectoryURL)]: \"\(executableURL.osPath)\" \(arguments.map{"\"\($0)\""}.joined(separator: " ")) (environment: \(environment?.description ?? "not set"))")
     
     let process = Process()
     
