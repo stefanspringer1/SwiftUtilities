@@ -38,7 +38,7 @@
 
 */
 
-public let w3cFormulaEntitiesWithSingleCodepoint: [String:String] = [
+public let w3cFormulaEntitiesWithSingleCodepoint: [String:UnicodeScalar] = [
     "AElig": "\u{C6}", // LATIN CAPITAL LETTER AE
     "AMP": "\u{38}", // AMPERSAND
     "Aacute": "\u{C1}", // LATIN CAPITAL LETTER A WITH ACUTE

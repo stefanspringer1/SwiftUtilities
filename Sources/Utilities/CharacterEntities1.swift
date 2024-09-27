@@ -1233,7 +1233,6 @@ public let characterEntities: [String:UnicodeScalar] = [
     "tcedil": "\u{0163}",
     "Tcy": "\u{0422}",
     "tcy": "\u{0442}",
-    "tdot": "\u{20DB}",
     "telrec": "\u{2315}",
     "Tfr": "\u{1D517}",
     "tfr": "\u{1D531}",
