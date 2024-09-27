@@ -1461,6 +1461,7 @@ public extension StringProtocol {
         var parts = [Substring]()
         while let range =  text.firstMatch(of: /([^\\]|^)\&([^;]*);/) {
             let entityName = String(range.output.2)
+            print("!!!! [\(entityName)] -> [\(characterEntities[entityName])]")
             guard let replacement = characterEntities[entityName]?.asRegex else {
                 throw CharacterClassError("unknown character entity \"\(entityName)\" in regular expression \(self)")
             }
