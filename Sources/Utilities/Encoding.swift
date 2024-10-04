@@ -4,7 +4,7 @@ import ArgumentParser
 public enum EncodingArgument: String, ExpressibleByArgument, CaseIterable {
     case ascii, iso2022JP, isoLatin1, isoLatin2, japaneseEUC, macOSRoman, nextstep, nonLossyASCII, shiftJIS, symbol, unicode, utf16, utf16BigEndian, utf16LittleEndian, utf32, utf32BigEndian, utf32LittleEndian, utf8, windowsCP1250, windowsCP1251, windowsCP1252, windowsCP1253, windowsCP1254
     
-    var encoding: String.Encoding {
+    public var encoding: String.Encoding {
         switch self {
         case .ascii: .ascii
         case .iso2022JP: .iso2022JP
