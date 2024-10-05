@@ -153,12 +153,19 @@ public extension URL {
     var osPath: String {
         get {
             var newPathComponents = [String]()
+            print(self.pathComponents)
             for pathComponent in self.pathComponents {
-                if pathComponent.hasSuffix(":"), newPathComponents.count == 1, let last = newPathComponents.last, last == "/" {
-                    newPathComponents.removeLast()
+                if pathComponent == "/" {
+                    newPathComponents.append("")
+                } else {
+                    newPathComponents.append(pathComponent)
                 }
-                newPathComponents.append(pathComponent)
+//                if (pathComponent == "/" || pathComponent.hasSuffix(":")), newPathComponents.count == 1, let last = newPathComponents.last, last == "/" {
+//                    newPathComponents.removeLast()
+//                }
+//                newPathComponents.append(pathComponent)
             }
+            print(newPathComponents)
             return newPathComponents.joined(separator: fileSeparator)
         }
     }

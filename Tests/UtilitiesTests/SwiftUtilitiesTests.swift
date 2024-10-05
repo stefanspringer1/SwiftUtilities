@@ -324,7 +324,7 @@ final class UtilitiesTests: XCTestCase {
 #if os(macOS) || os(Linux) || os(Android)
         XCTAssertEqual(
             #"/hello/yes"#,
-            URL(fileURLWithPath: #"\hello\yes"#,).osPath
+            URL(fileURLWithPath: #"/hello/yes"#).osPath
         )
 #endif
     }
