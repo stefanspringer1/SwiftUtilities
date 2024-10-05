@@ -320,4 +320,11 @@ final class UtilitiesTests: XCTestCase {
         )
     }
     
+    func testCleaningUpURL() throws {
+        XCTAssertEqual(
+            URL(fileURLWithPath: "/hello/nice/world/.././../yes").cleaningUpPath.osPath,
+            "/hello/yes"
+        )
+    }
+    
 }

@@ -152,7 +152,7 @@ public extension URL {
     /// Get the path as used on the current platform (with separator either `/` or `\` between the path components).
     var osPath: String {
         get {
-            self.path.replacingOccurrences(of: "/", with: fileSeparator)
+            self.path.replacingOccurrences(of: "/", with: fileSeparator).replacingOccurrences(of: doubleFileSeparator, with: fileSeparator)
         }
     }
     
@@ -583,4 +583,25 @@ public class WritableFile {
         }
     }
 
+}
+
+public extension URL {
+    
+    /// Removing "." and ".." from the path.
+    var cleaningUpPath: URL {
+        var newPathComponents = [String]()
+        for pathComponent in self.pathComponents {
+            switch pathComponent {
+            case ".": continue
+            case "..":
+                if newPathComponents.isEmpty {
+                    newPathComponents = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).deletingLastPathComponent().pathComponents
+                } else {
+                    newPathComponents.removeLast()
+                }
+            default: newPathComponents.append(pathComponent)
+            }
+        }
+        return URL(pathComponents: newPathComponents)
+    }
 }

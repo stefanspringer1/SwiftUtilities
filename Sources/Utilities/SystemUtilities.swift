@@ -6,9 +6,11 @@ import Foundation
 
 /// The file separator of the current platform ("/" or "\\").
 #if os(Windows)
-public let fileSeparator = "\\"
+public let fileSeparator = #"\"#
+public let doubleFileSeparator = #"\\"#
 #else
 public let fileSeparator = "/"
+public let doubleFileSeparator = "//"
 #endif
 
 /// The path separator for collection of paths (":" or ";").
