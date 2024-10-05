@@ -156,7 +156,9 @@ public extension URL {
             print(self.pathComponents)
             for pathComponent in self.pathComponents {
                 if pathComponent == "/" {
-                    newPathComponents.append("")
+                    if pathComponent == fileSeparator {
+                        newPathComponents.append("")
+                    }
                 } else {
                     newPathComponents.append(pathComponent)
                 }
