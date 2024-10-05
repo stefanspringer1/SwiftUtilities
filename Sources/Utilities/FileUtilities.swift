@@ -592,7 +592,7 @@ public extension URL {
         var newPathComponents = [String]()
         for pathComponent in self.pathComponents {
             switch pathComponent {
-            case ".": continue
+            case ".", #"\"#: continue
             case "..":
                 if newPathComponents.isEmpty {
                     newPathComponents = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).deletingLastPathComponent().pathComponents
