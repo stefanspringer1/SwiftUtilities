@@ -320,11 +320,41 @@ final class UtilitiesTests: XCTestCase {
         )
     }
     
-    func testCleaningUpURL() throws {
+        func testOSPathNix() {
+#if os(macOS) || os(Linux) || os(Android)
         XCTAssertEqual(
-            URL(fileURLWithPath: "/hello/nice/world/.././../yes").cleaningUpPath.osPath,
-            "/hello/yes"
+            #"/hello/yes"#,
+            URL(fileURLWithPath: #"\hello\yes"#,).osPath
         )
+#endif
     }
-    
+
+    func testOSPathWindows() {
+#if os(Windows)
+        XCTAssertEqual(
+            #"C:\hello\yes"#,
+            URL(fileURLWithPath: #"C:/hello/yes"#).osPath
+        )
+#endif
+    }
+
+    func testCleaningUpURLNix() throws {
+#if os(macOS) || os(Linux) || os(Android)
+        XCTAssertEqual(
+            "/hello/yes",
+            URL(fileURLWithPath: "/hello/nice/world/.././../yes").cleaningUpPath.osPath
+        )
+ #endif
+    }
+
+    func testCleaningUpURLWindows() throws {
+#if os(Windows)
+        XCTAssertEqual(
+            URL(fileURLWithPath: #"C:\hello\yes"#).osPath,
+            URL(fileURLWithPath: #"C:\hello\nice\world\..\.\..\yes"#).cleaningUpPath.osPath
+        )
+#endif
+    }
+
+
 }

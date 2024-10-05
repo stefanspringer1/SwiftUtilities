@@ -152,7 +152,14 @@ public extension URL {
     /// Get the path as used on the current platform (with separator either `/` or `\` between the path components).
     var osPath: String {
         get {
-            self.path.replacingOccurrences(of: "/", with: fileSeparator).replacingOccurrences(of: doubleFileSeparator, with: fileSeparator)
+            var newPathComponents = [String]()
+            for pathComponent in self.pathComponents {
+                if pathComponent.hasSuffix(":"), newPathComponents.count == 1, let last = newPathComponents.last, last == "/" {
+                    newPathComponents.removeLast()
+                }
+                newPathComponents.append(pathComponent)
+            }
+            return newPathComponents.joined(separator: fileSeparator)
         }
     }
     
@@ -592,14 +599,18 @@ public extension URL {
         var newPathComponents = [String]()
         for pathComponent in self.pathComponents {
             switch pathComponent {
-            case ".", #"\"#: continue
+            case ".": continue
             case "..":
                 if newPathComponents.isEmpty {
                     newPathComponents = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).deletingLastPathComponent().pathComponents
                 } else {
                     newPathComponents.removeLast()
                 }
-            default: newPathComponents.append(pathComponent)
+            default: 
+                if pathComponent.hasSuffix(":"), newPathComponents.count == 1, let last = newPathComponents.last, last == "/" {
+                    newPathComponents.removeLast()
+                }
+                newPathComponents.append(pathComponent)
             }
         }
         return URL(pathComponents: newPathComponents)
