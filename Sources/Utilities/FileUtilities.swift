@@ -153,7 +153,6 @@ public extension URL {
     var osPath: String {
         get {
             var newPathComponents = [String]()
-            print(self.pathComponents)
             for pathComponent in self.pathComponents {
                 if pathComponent == "/" {
                     if pathComponent == fileSeparator {
@@ -167,7 +166,6 @@ public extension URL {
 //                }
 //                newPathComponents.append(pathComponent)
             }
-            print(newPathComponents)
             return newPathComponents.joined(separator: fileSeparator)
         }
     }
