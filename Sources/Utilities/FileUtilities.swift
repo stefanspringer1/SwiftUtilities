@@ -90,37 +90,24 @@ public extension URL {
     /// Get files from an URL.
     ///
     /// - Parameters:
-    ///     - withPattern: Regular expression matching the file name (the pattern will will enclosed by a beginning `^` and
-    ///       a closing `$` before its application).
-    ///     - excluding: If not `nil`: Regular expression that must not match the file name (the pattern will will enclosed by a beginning `^` and
-    ///       a closing `$` before its application).
+    ///     - withPattern: Regular expression matching the file name (be sure to use a beginning `^` and
+    ///       a closing `$` when the whole match is desired).
+    ///     - excluding: If not `nil`: Regular expression that must not match the file name (be sure to use a beginning `^` and
+    ///       a closing `$` when the whole match is desired).
     ///     - recursively: If the search should be done recursively. Else, only direct child files are searched.
     ///
     /// - Returns: The URLs of the found files as array.
-    func files(withPattern _pattern: String, excluding _excludePattern: String? = nil, findRecursively: Bool) throws -> [URL] {
-        
-        let pattern = "^\(_pattern)$"
-        let excludePattern: String?
-        if let _excludePattern {
-            excludePattern = "^\(_excludePattern)$"
-        } else {
-            excludePattern = nil
-        }
+    func files(withPattern pattern: Regex<AnyRegexOutput>, excluding excludePattern: Regex<AnyRegexOutput>? = nil, findRecursively: Bool) throws -> [URL] {
         
         func toAdd(file: URL) throws -> Bool {
             if file.isFile {
-                var match: Range<String.Index>?
-                var matchExcluded: Range<String.Index>?
-                autoreleasepool {
-                    match = file.lastPathComponent.range(of: pattern, options: .regularExpression)
-                    if let excludePattern {
-                        matchExcluded = file.lastPathComponent.range(of: excludePattern, options: .regularExpression)
-                    }
+                if let excludePattern {
+                    file.lastPathComponent.contains(pattern) && !file.lastPathComponent.contains(excludePattern)
+                } else {
+                    file.lastPathComponent.contains(pattern)
                 }
-                return match != nil && matchExcluded == nil
-                //return file.lastPathComponent.contains(regex: pattern) // if you do this instead here, memory usage will go up!
             } else {
-                return false
+                false
             }
         }
         
@@ -147,6 +134,29 @@ public extension URL {
             files.append(self)
         }
         return files
+    }
+    
+    /// Get files from an URL.
+    ///
+    /// - Parameters:
+    ///     - withPattern: Regular expression matching the file name (the pattern will will enclosed by a beginning `^` and
+    ///       a closing `$` before its application).
+    ///     - excluding: If not `nil`: Regular expression that must not match the file name (the pattern will will enclosed by a beginning `^` and
+    ///       a closing `$` before its application).
+    ///     - recursively: If the search should be done recursively. Else, only direct child files are searched.
+    ///
+    /// - Returns: The URLs of the found files as array.
+    func files(withPattern _pattern: String, excluding _excludePattern: String? = nil, findRecursively: Bool) throws -> [URL] {
+        let pattern = "^\(_pattern)$"
+        let excludePattern: String?
+        if let _excludePattern {
+            excludePattern = "^\(_excludePattern)$"
+        } else {
+            excludePattern = nil
+        }
+        let excludePatternRegex: Regex<AnyRegexOutput>?
+        if let excludePattern { excludePatternRegex = try Regex(excludePattern) } else { excludePatternRegex = nil }
+        return try files(withPattern: try Regex(pattern), excluding:excludePatternRegex, findRecursively: findRecursively)
     }
     
     /// Get the path as used on the current platform (with separator either `/` or `\` between the path components).
