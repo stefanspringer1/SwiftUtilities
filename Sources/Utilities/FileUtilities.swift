@@ -154,8 +154,7 @@ public extension URL {
         } else {
             excludePattern = nil
         }
-        let excludePatternRegex: Regex<AnyRegexOutput>?
-        if let excludePattern { excludePatternRegex = try Regex(excludePattern) } else { excludePatternRegex = nil }
+        let excludePatternRegex: Regex<AnyRegexOutput>? = if let excludePattern { try Regex(excludePattern) } else { nil }
         return try files(withPattern: try Regex(pattern), excluding:excludePatternRegex, findRecursively: findRecursively)
     }
     
