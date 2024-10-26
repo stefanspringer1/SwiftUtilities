@@ -1,4 +1,4 @@
-public let w3cFormulaEntitiesWithmultipleCodepoints: [String:String] = [
+public let w3cFormulaEntitiesWithMultipleCodepoints: [String:String] = [
     "NotEqualTilde": "\u{2242}\u{338}", // MINUS TILDE with slash
     "NotGreaterFullEqual": "\u{2267}\u{338}", // GREATER-THAN OVER EQUAL TO with slash
     "NotGreaterGreater": "\u{226B}\u{338}", // MUCH GREATER THAN with slash
