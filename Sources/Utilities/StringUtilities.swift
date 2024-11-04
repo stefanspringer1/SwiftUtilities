@@ -227,6 +227,20 @@ public extension StringProtocol {
     }
 }
 
+extension BidirectionalCollection where Self.SubSequence == Substring {
+
+    /// Find first occurrence of a regex after skipping n occurrences of it.
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+    public func firstOccurrence(of r: some RegexComponent, skipping: Int) -> Range<String.Index>? {
+        let matches = self.matches(of: r)
+        if matches.count > skipping {
+            return matches[skipping].range
+        } else {
+            return nil
+        }
+    }
+}
+
 public extension String {
     
     /// Create a string from a collection of `UnicodeScalar`.
