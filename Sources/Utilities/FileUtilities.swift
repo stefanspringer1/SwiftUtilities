@@ -155,7 +155,7 @@ public extension URL {
             excludePattern = nil
         }
         let excludePatternRegex: Regex<AnyRegexOutput>? = if let excludePattern { try Regex(excludePattern) } else { nil }
-        return try files(withPattern: try Regex(pattern), excluding:excludePatternRegex, findRecursively: findRecursively)
+        return try files(withPattern: try Regex(pattern), excluding: excludePatternRegex, findRecursively: findRecursively)
     }
     
     /// Get the path as used on the current platform (with separator either `/` or `\` between the path components).
