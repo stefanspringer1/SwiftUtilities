@@ -5,6 +5,19 @@ final class UtilitiesTests: XCTestCase {
     
     let characterClasses = CharacterClasses()
     
+    /*func createFile(inSubDirectopry directoryName: String) {
+    _ = FileManager.default.createFile(atPath: "C:\\tmp\\\(directoryName)\\test.txt", contents: nil)
+        print("... After creation of file in subdirectory \"\(directoryName)\".")
+    }
+
+    func testWritableFile_OK() throws {
+        createFile(inSubDirectopry: "a")
+    }
+
+    func testWritableFile_CRASH() throws {
+        createFile(inSubDirectopry: "ä")
+    }*/
+
     func testNoNEmpty() {
         XCTAssertEqual("hello".nonEmpty, "hello")
         XCTAssertEqual("".nonEmpty, nil)
