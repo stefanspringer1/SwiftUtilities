@@ -6,14 +6,14 @@ final class UtilitiesTests: XCTestCase {
     let characterClasses = CharacterClasses()
     
     /*func createFile(inSubDirectopry directoryName: String) {
-        // Note that the according subdirectory has to exist already!
+        // Note that the according subdirectory has to exist already,
+        // but the file to create should not exist.
 #if os(Windows)
-        let path = "/tmp/\(directoryName)/test.txt"
-#else
         let path = "C:\\tmp\\\(directoryName)\\test.txt"
+#else
+        let path = "/tmp/\(directoryName)/test.txt"
 #endif
-    _ = FileManager.default.createFile(atPath: path, contents: nil)
-        print("... After creation of file in subdirectory \"\(directoryName)\".")
+        print("!!!!! \(FileManager.default.createFile(atPath: path, contents: nil))")
     }
 
     func testWritableFile_OK() throws {
