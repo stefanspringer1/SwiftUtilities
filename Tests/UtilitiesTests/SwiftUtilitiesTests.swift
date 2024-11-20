@@ -6,7 +6,13 @@ final class UtilitiesTests: XCTestCase {
     let characterClasses = CharacterClasses()
     
     /*func createFile(inSubDirectopry directoryName: String) {
-    _ = FileManager.default.createFile(atPath: "C:\\tmp\\\(directoryName)\\test.txt", contents: nil)
+        // Note that the according subdirectory has to exist already!
+#if os(Windows)
+        let path = "/tmp/\(directoryName)/test.txt"
+#else
+        let path = "C:\\tmp\\\(directoryName)\\test.txt"
+#endif
+    _ = FileManager.default.createFile(atPath: path, contents: nil)
         print("... After creation of file in subdirectory \"\(directoryName)\".")
     }
 
@@ -14,7 +20,7 @@ final class UtilitiesTests: XCTestCase {
         createFile(inSubDirectopry: "a")
     }
 
-    func testWritableFile_CRASH() throws {
+    func testWritableFile_WINDOWSCRASH() throws {
         createFile(inSubDirectopry: "ä")
     }*/
 
