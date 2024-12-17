@@ -137,10 +137,20 @@ public func text(forCentimeters centimeters: Double, usingUnit unit: UnitOfLengt
 
 /// Get the textual representation for a star value (i.e. relative width).
 public func text(forStars stars: Double, digits: Int = 3) -> String {
-    if stars == floor(stars) {
-        return String(Int(stars)) + "*"
+    sizeText(forValue: stars, digits: digits, postfix: "*")
+}
+
+/// Get the textual representation for a percent value (i.e. relative width).
+public func text(forPercentage percentage: Double, digits: Int = 3) -> String {
+    sizeText(forValue: percentage, digits: digits, postfix: "%")
+}
+
+/// Get the textual representation for a value (i.e. relative width).
+public func sizeText(forValue value: Double, digits: Int = 3, postfix: String) -> String {
+    if value == floor(value) {
+        return String(Int(value)) + "*"
     } else {
-        var numberText = Substring(String(format: "%.\(digits)f", stars))
+        var numberText = Substring(String(format: "%.\(digits)f", value))
         while numberText.hasSuffix("0") {
             numberText = numberText.dropLast()
         }
