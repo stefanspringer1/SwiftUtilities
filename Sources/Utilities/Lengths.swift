@@ -157,6 +157,6 @@ public func sizeText(forValue value: Double, digits: Int = 3, postfix: String) -
         if numberText.hasSuffix(".") {
             numberText = numberText.dropLast()
         }
-        return numberText + "*"
+        return numberText + postfix
     }
 }
