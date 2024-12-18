@@ -334,8 +334,8 @@ final class UtilitiesTests: XCTestCase {
     
     func testReplacingCharacterEntitiesWithString() throws {
         XCTAssertEqual(
-            try #"&auml;&alpha;\&alpha;"#.replacingCharacterEntitiesWithString(),
-            "äα&alpha;"
+            try #"&auml;&alpha;\&alpha;\\&alpha;"#.replacingCharacterEntitiesWithString(),
+            #"äα&alpha;\α"#
         )
     }
     

@@ -1477,7 +1477,7 @@ public extension StringProtocol {
     func replacingCharacterEntitiesWithString() throws -> String {
         var text = Substring(self)
         var parts = [Substring]()
-        while let range =  text.firstMatch(of: /([^\\]|^)\&([^;]*);/) {
+        while let range = text.firstMatch(of: /([^\\]|^|\\\\)\&([^;]*);/) {
             let entityName = String(range.output.2)
             guard let replacement = (characterEntities[entityName] ?? w3cFormulaEntitiesWithSingleCodepoint[entityName])?.asString else {
                 throw CharacterClassError("unknown character entity \"\(entityName)\" in regular expression \(self)")
@@ -1487,7 +1487,7 @@ public extension StringProtocol {
             parts.append(Substring(replacement))
             text = text[range.range.upperBound...]
         }
-        return (parts.joined() + text).replacingOccurrences(of: #"\&"#, with: "&")
+        return (parts.joined() + text).replacingOccurrences(of: #"\&"#, with: "&").replacingOccurrences(of: #"\\"#, with: #"\"#)
     }
     
 }
