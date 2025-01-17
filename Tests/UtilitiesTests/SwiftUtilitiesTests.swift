@@ -375,5 +375,10 @@ final class UtilitiesTests: XCTestCase {
 #endif
     }
 
+    func testWidths() throws {
+        XCTAssertEqual(length(fromText: "0.5em", in: .em), 0.5)
+        XCTAssertEqual(length(fromText: "0.5cm", in: .cm), 0.5)
+        XCTAssertEqual(length(fromText: "1in", in: .cm), 2.54)
+    }
 
 }

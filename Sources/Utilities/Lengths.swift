@@ -100,6 +100,11 @@ public func centimetersWithOriginalUnit(fromText _text: String?) -> (centimeters
     return (factor == 1 ? number : number * factor, unit)
 }
 
+public func length(fromText text: String?, in unit: UnitOfLength) -> Double? {
+    guard let (centimeters, _) = centimetersWithOriginalUnit(fromText: text) else { return nil }
+    return centimeters / unit.factorFromCentimeters
+}
+
 /// Get the percent value from " ... % ".
 public func percents(fromText _text: String?) -> Double? {
     guard let text = _text?.trimming() else { return nil }
