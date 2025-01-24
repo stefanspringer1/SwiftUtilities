@@ -15,7 +15,7 @@ public enum CharacterClass: CombinedCharacterClass, CaseIterable {
     case COMBINING_BELOW       = 0b000000000000000000000000000001000
     case COMBINING_MIDDLE      = 0b000000000000000000000000000010000
     case COMBINING             = 0b000000000000000000000000000011100 // do not insert characters directly into this class, use COMBINING_ABOVE, COMBINING_BELOW, or COMBINING_MIDDLE
-    case ISO_8859_1            = 0b000000000000000000000000000100000
+    //case ISO_8859_1            = 0b000000000000000000000000000100000
     case CAPITAL_GREEK_LETTERS = 0b000000000000000000000000001000000
     case SMALL_GREEK_LETTERS   = 0b000000000000000000000000010000000
     case GREEK_LETTERS         = 0b000000000000000000000000011000000 // do not insert characters directly into this class, use SMALL_GREEK_LETTERS or CAPITAL_GREEK_LETTERS
@@ -57,7 +57,7 @@ public enum CharacterClass: CombinedCharacterClass, CaseIterable {
         case "COMBINING_BELOW": .COMBINING_BELOW
         case "COMBINING_MIDDLE": .COMBINING_MIDDLE
         case "COMBINING": .COMBINING
-        case "ISO_8859_1": .ISO_8859_1
+        //case "ISO_8859_1": .ISO_8859_1
         case "CAPITAL_GREEK_LETTERS": .CAPITAL_GREEK_LETTERS
         case "SMALL_GREEK_LETTERS": .SMALL_GREEK_LETTERS
         case "GREEK_LETTERS": .GREEK_LETTERS
@@ -236,28 +236,28 @@ public class CharacterClasses {
         
         self.codePoints[.COMBINING] = combiningAbove + combiningBelow + combiningMiddle
         
-        // ------------------------------------------------------------------------
-        // ISO 8859-1:
-        // ------------------------------------------------------------------------
-        
-        do {
-            let codePoints = UCCodePoints(
-                // ---- ranges:
-                [
-                    0x0020...0x007E, 0x00A0...0x00FF,
-                ],
-                // ---- single codepoints:
-                [
-                    // -
-                ]
-            )
-            
-            codePoints.forEach {
-                self.add(.ISO_8859_1, toCodePoint: $0)
-            }
-            
-            self.codePoints[.ISO_8859_1] = codePoints
-        }
+//        // ------------------------------------------------------------------------
+//        // ISO 8859-1:
+//        // ------------------------------------------------------------------------
+//        
+//        do {
+//            let codePoints = UCCodePoints(
+//                // ---- ranges:
+//                [
+//                    0x0020...0x007E, 0x00A0...0x00FF,
+//                ],
+//                // ---- single codepoints:
+//                [
+//                    // -
+//                ]
+//            )
+//            
+//            codePoints.forEach {
+//                self.add(.ISO_8859_1, toCodePoint: $0)
+//            }
+//            
+//            self.codePoints[.ISO_8859_1] = codePoints
+//        }
         
         // ------------------------------------------------------------------------
         // Greek Letters:
