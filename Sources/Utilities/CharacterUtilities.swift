@@ -309,7 +309,7 @@ public class CharacterClasses {
                 // Greek:
                 0x0388...0x03AB,
                 
-                // mathematical Greek:
+                // mathematical small Greek:
                 0x1D6A8...0x1D6C0, // bold
                 0x1D6E2...0x1D6FA, // italic
                 0x1D726...0x1D734, // bold italic
@@ -322,8 +322,8 @@ public class CharacterClasses {
                 0x0370, 0x0372, 0x0376, 0x037F, 0x0386, 0x0394, 0x03CF, 0x03DC,
                 0x03F4, 0x03F7, 0x03F9, 0x03FA, 0x03FD, 0x03FE, 0x03FF,
                 
-                // mathematical Greek:
-                // -
+                // mathematical small Greek:
+                0x1D7CB,
             ]
         )
         
@@ -343,8 +343,8 @@ public class CharacterClasses {
                 // Greek:
                 0x037B...0x037D, 0x03AC...0x03CE, 0x03DB...0x03DD,
                 
-                // mathematical Greek:
-                0x1D6C1...0x1D6E1, 0x1D7CA...0x1D7CB, // bold
+                // mathematical capital Greek:
+                0x1D6C1...0x1D6E1, // bold
                 0x1D6FB...0x1D71B, // italic
                 0x1D735...0x1D755, // bold italic
                 0x1D76F...0x1D78F, // sans-serif bold
@@ -356,8 +356,8 @@ public class CharacterClasses {
                 0x0371, 0x0373, 0x0377, 0x0390, 0x03BC, 0x03D1, 0x03D5, 0x03D9,
                 0x03DF, 0x03E1, 0x03F0, 0x03F1, 0x03F8, 0x03FB,
                 
-                // mathematical Greek:
-                // -
+                // mathematical capital Greek:
+                0x1D7CA,
             ]
         )
         
@@ -997,17 +997,30 @@ public class CharacterClasses {
                     0x06FA...0x06FC, 0x0712...0x072F, 0x074D...0x076B, 0x1F88...0x1F8F,
                     0x1F98...0x1F9F, 0x1FA8...0x1FAF,
                     
-                    // mathematical Greek:
+                    // mathematical capital Greek:
                     0x1D6A8...0x1D6C0, // bold
                     0x1D6E2...0x1D6FA, // italic
                     0x1D726...0x1D734, // bold italic
                     0x1D756...0x1D76E, // sans-serif bold
                     0x1D790...0x1D7A8, // sans-serif bold italic
+                    
+                    // mathematical small Greek:
+                    0x1D6C1...0x1D6E1, // bold
+                    0x1D6FB...0x1D71B, // italic
+                    0x1D735...0x1D755, // bold italic
+                    0x1D76F...0x1D78F, // sans-serif bold
+                    0x1D7A9...0x1D7C9, // sans-serif bold italic
                 ],
                 // ---- single codepoints:
                 [
                     0x00B5, 0x00BA, 0x00C0, 0x0370, 0x0370, 0x0384, 0x038C, 0x038C, 0x038E,
-                    0x038E, 0x03A3, 0x03A3, 0x06EE, 0x0710, 0x0712, 0x1FCC, 0x1FFC
+                    0x038E, 0x03A3, 0x03A3, 0x06EE, 0x0710, 0x0712, 0x1FCC, 0x1FFC,
+                    
+                    // mathematical capital Greek:
+                    0x1D7CA,
+                    
+                    // mathematical small Greek:
+                    0x1D7CB,
                 ]
             )
             
