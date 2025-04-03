@@ -995,7 +995,14 @@ public class CharacterClasses {
                     0x048A...0x04FA, 0x05D0...0x05EA, 0x05EF...0x05F2, 0x0620...0x063F,
                     0x0641...0x064A, 0x066E...0x066F, 0x0671...0x06D3, 0x06EE...0x06EF,
                     0x06FA...0x06FC, 0x0712...0x072F, 0x074D...0x076B, 0x1F88...0x1F8F,
-                    0x1F98...0x1F9F, 0x1FA8...0x1FAF
+                    0x1F98...0x1F9F, 0x1FA8...0x1FAF,
+                    
+                    // mathematical Greek:
+                    0x1D6A8...0x1D6C0, // bold
+                    0x1D6E2...0x1D6FA, // italic
+                    0x1D726...0x1D734, // bold italic
+                    0x1D756...0x1D76E, // sans-serif bold
+                    0x1D790...0x1D7A8, // sans-serif bold italic
                 ],
                 // ---- single codepoints:
                 [
