@@ -1680,6 +1680,10 @@ public extension UnicodeScalar {
         characterClasses[self].contains(.POSTFIX_OPERATORS)
     }
     
+    func isLetter(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        characterClasses[self].contains(.LETTERS)
+    }
+    
     /// Return the Unicode scalar as regular expresssion.
     var asRegex: String {
         "\\x{\(String(self.value, radix: 16))}"
