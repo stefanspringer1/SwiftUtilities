@@ -114,7 +114,7 @@ public extension URL {
         var files = [URL]()
         if self.isDirectory {
             let propertiesForKeys: [URLResourceKey] = [.isRegularFileKey, .fileSizeKey]
-            let options: FileManager.DirectoryEnumerationOptions = [.skipsHiddenFiles, .skipsPackageDescendants]
+            let options: FileManager.DirectoryEnumerationOptions = [.skipsPackageDescendants]
             if findRecursively {
                 if let enumerator = FileManager.default.enumerator(at: self, includingPropertiesForKeys: propertiesForKeys, options: options) {
                     for case let fileURL as URL in enumerator {
