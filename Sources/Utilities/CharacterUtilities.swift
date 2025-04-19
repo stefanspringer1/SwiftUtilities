@@ -1640,6 +1640,11 @@ public extension String {
         return scalars.count == 1 && characterClasses[scalars.first!].contains(.BINARY_OPERATIONS)
     }
     
+    func isLargeOperator(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        let scalars = self.unicodeScalars
+        return scalars.count == 1 && characterClasses[scalars.first!].contains(.LARGE_OPERATORS)
+    }
+    
     func isPostfixOperator(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
         let scalars = self.unicodeScalars
         return scalars.count == 1 && characterClasses[scalars.first!].contains(.POSTFIX_OPERATORS)
@@ -1685,6 +1690,11 @@ public extension Character {
     func isBinaryOperator(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
         guard let firstScalar = self.unicodeScalars.first else { return false }
         return characterClasses[firstScalar].contains(.BINARY_OPERATIONS)
+    }
+    
+    func isLargeOperator(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
+        guard let firstScalar = self.unicodeScalars.first else { return false }
+        return characterClasses[firstScalar].contains(.LARGE_OPERATORS)
     }
     
     func isPostfixOperator(usingCharacterClasses characterClasses: CharacterClasses) -> Bool {
