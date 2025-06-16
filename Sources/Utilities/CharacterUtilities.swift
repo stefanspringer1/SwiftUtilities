@@ -1324,7 +1324,7 @@ public class CharacterClasses {
                 // ---- ranges:
                 [
                     // accented Latin letters:
-                    0x0100...0x024F,
+                    0x00C0...0x00FF, 0x0100...0x024F,
                     
                     // accented Greek letters:
                     0x0388...0x0390, 0x03AA...0x03B0, 0x03CA...0x03CE, 0x03D3...0x03D4,
