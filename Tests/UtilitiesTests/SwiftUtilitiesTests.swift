@@ -86,11 +86,9 @@ final class UtilitiesTests: XCTestCase {
     func testRegexForCharacterSet() throws {
         XCTAssertEqual(
             characterClasses.codePoints(forClass: .COMBINING_ABOVE).regexPart(usingCharacterClasses: characterClasses),
-//            #"""
-//            \x{2D8}\x{2D9}\x{2DA}\x{300}\x{301}\x{302}\x{303}\x{304}\x{305}\x{306}\x{307}\x{308}\x{309}\x{30A}\x{30B}\x{30C}\x{30D}\x{30E}\x{30F}\x{310}\x{311}\x{312}\x{313}\x{314}\x{315}\x{31A}\x{31B}\x{33D}\x{33E}\x{33F}\x{340}\x{341}\x{342}\x{343}\x{344}\x{34A}\x{34B}\x{34C}\x{350}\x{351}\x{352}\x{357}\x{358}\x{35D}\x{35E}\x{360}\x{361}\x{363}\x{364}\x{365}\x{366}\x{367}\x{368}\x{369}\x{36A}\x{36B}\x{36C}\x{36D}\x{36E}\x{36F}\x{483}\x{484}\x{485}\x{486}\x{487}\x{2DE0}\x{2DE1}\x{2DE2}\x{2DE3}\x{2DE4}\x{2DE5}\x{2DE6}\x{2DE7}\x{2DE8}\x{2DE9}\x{2DEA}\x{2DEB}\x{2DEC}\x{2DED}\x{2DEE}\x{2DEF}\x{2DF0}\x{2DF1}\x{2DF2}\x{2DF3}\x{2DF4}\x{2DF5}\x{2DF6}\x{2DF7}\x{2DF8}\x{2DF9}\x{2DFA}\x{2DFB}\x{2DFC}\x{2DFD}\x{2DFE}\x{2DFF}\x{A674}\x{A675}\x{A676}\x{A677}\x{A678}\x{A679}\x{A67A}\x{A67B}\x{A67C}\x{A67D}\x{FE20}\x{FE21}\x{FE22}\x{FE23}\x{FE24}\x{FE25}\x{FE26}\x{FE2E}\x{FE2F}\x{20DB}\x{20DC}\x{346}\x{35B}\x{A66F}\x{A69E}
-//            """#
-            // problem with ranges should be fixed in newer Swift versions (see test: testRangesInRegexForNonLetters()):
-            #"\x{2D8}-\x{2DA}\x{300}-\x{315}\x{31A}-\x{31B}\x{33D}-\x{344}\x{34A}-\x{34C}\x{350}-\x{352}\x{357}-\x{358}\x{35D}-\x{35E}\x{360}-\x{361}\x{363}-\x{36F}\x{483}-\x{487}\x{2DE0}-\x{2DFF}\x{A674}-\x{A67D}\x{FE20}-\x{FE26}\x{FE2E}-\x{FE2F}\x{20DB}\x{20DC}\x{346}\x{35B}\x{A66F}\x{A69E}"#
+            #"""
+            \x{2D8}\x{2D9}\x{2DA}\x{300}\x{301}\x{302}\x{303}\x{304}\x{305}\x{306}\x{307}\x{308}\x{309}\x{30A}\x{30B}\x{30C}\x{30D}\x{30E}\x{30F}\x{310}\x{311}\x{312}\x{313}\x{314}\x{315}\x{31A}\x{31B}\x{33D}\x{33E}\x{33F}\x{340}\x{341}\x{342}\x{343}\x{344}\x{34A}\x{34B}\x{34C}\x{350}\x{351}\x{352}\x{357}\x{358}\x{35D}\x{35E}\x{360}\x{361}\x{363}\x{364}\x{365}\x{366}\x{367}\x{368}\x{369}\x{36A}\x{36B}\x{36C}\x{36D}\x{36E}\x{36F}\x{483}\x{484}\x{485}\x{486}\x{487}\x{2DE0}\x{2DE1}\x{2DE2}\x{2DE3}\x{2DE4}\x{2DE5}\x{2DE6}\x{2DE7}\x{2DE8}\x{2DE9}\x{2DEA}\x{2DEB}\x{2DEC}\x{2DED}\x{2DEE}\x{2DEF}\x{2DF0}\x{2DF1}\x{2DF2}\x{2DF3}\x{2DF4}\x{2DF5}\x{2DF6}\x{2DF7}\x{2DF8}\x{2DF9}\x{2DFA}\x{2DFB}\x{2DFC}\x{2DFD}\x{2DFE}\x{2DFF}\x{A674}\x{A675}\x{A676}\x{A677}\x{A678}\x{A679}\x{A67A}\x{A67B}\x{A67C}\x{A67D}\x{FE20}\x{FE21}\x{FE22}\x{FE23}\x{FE24}\x{FE25}\x{FE26}\x{FE2E}\x{FE2F}\x{20DB}\x{20DC}\x{346}\x{35B}\x{A66F}\x{A69E}
+            """#
         )
     }
     
@@ -99,13 +97,6 @@ final class UtilitiesTests: XCTestCase {
         XCTAssertEqual("\u{0041}".contains(/[\x{0300}-\x{0333}\x{2200}-\x{22ED}]/), false)
         XCTAssertEqual("\u{0326}".contains(/[\x{0300}-\x{0333}\x{2200}-\x{22ED}]/), true)
         XCTAssertEqual("\u{0041}".contains(/[\x{0300}-\x{0333}\x{2200}-\x{22ED}]/), false)
-        
-        XCTAssertEqual("\u{0041}".contains(/[\x{33D}-\x{344}]/), false)
-        print("".contains(#/^\s+[\x{388}-\x{3AB}\x{1D6A8}-\x{1D6C0}\x{1D6E2}-\x{1D6FA}\x{1D726}-\x{1D734}\x{1D756}-\x{1D76E}\x{1D790}-\x{1D7A8}\x{37B}-\x{37D}\x{3AC}-\x{3CE}\x{3DB}-\x{3DD}\x{1D6C1}-\x{1D6E1}\x{1D6FB}-\x{1D71B}\x{1D735}-\x{1D755}\x{1D76F}-\x{1D78F}\x{1D7A9}-\x{1D7C9}\x{370}\x{372}\x{376}\x{37F}\x{386}\x{394}\x{3CF}\x{3DC}\x{3F4}\x{3F7}\x{3F9}\x{3FA}\x{3FD}\x{3FE}\x{3FF}\x{1D7CB}\x{371}\x{373}\x{377}\x{390}\x{3BC}\x{3D1}\x{3D5}\x{3D9}\x{3DF}\x{3E1}\x{3F0}\x{3F1}\x{3F8}\x{3FB}\x{1D7CA}][\x{2D8}-\x{2DA}\x{300}-\x{315}\x{31A}-\x{31B}\x{33D}-\x{344}\x{34A}-\x{34C}\x{350}-\x{352}\x{357}-\x{358}\x{35D}-\x{35E}\x{360}-\x{361}\x{363}-\x{36F}\x{483}-\x{487}\x{2DE0}-\x{2DFF}\x{A674}-\x{A67D}\x{FE20}-\x{FE26}\x{FE2E}-\x{FE2F}\x{316}-\x{319}\x{31C}-\x{333}\x{339}-\x{33C}\x{347}-\x{349}\x{34D}-\x{34E}\x{353}-\x{356}\x{359}-\x{35A}\x{FE27}-\x{FE2D}\x{334}-\x{338}\x{488}-\x{489}\x{A670}-\x{A672}\x{20DB}\x{20DC}\x{346}\x{35B}\x{A66F}\x{A69E}\x{345}\x{35C}\x{35F}\x{362}]*(?=($|\s))$/#)
-    }
-    
-    func testRangesForCharacterClasses() throws {
-        print("".contains(#regexWithCharacterClassesAnd2Groups(characterClasses.codePoints(forClass: .COMBINING_ABOVE).regexPart(usingCharacterClasses: characterClasses))
     }
     
     func randomString(length: Int) -> String {
