@@ -84,9 +84,21 @@ final class UtilitiesTests: XCTestCase {
     }
     
     func testRegexForCharacterSet() throws {
-        XCTAssertEqual(characterClasses.codePoints(forClass: .COMBINING_ABOVE).regexPart(usingCharacterClasses: characterClasses), #"""
-        \x{2D8}\x{2D9}\x{2DA}\x{300}\x{301}\x{302}\x{303}\x{304}\x{305}\x{306}\x{307}\x{308}\x{309}\x{30A}\x{30B}\x{30C}\x{30D}\x{30E}\x{30F}\x{310}\x{311}\x{312}\x{313}\x{314}\x{315}\x{31A}\x{31B}\x{33D}\x{33E}\x{33F}\x{340}\x{341}\x{342}\x{343}\x{344}\x{34A}\x{34B}\x{34C}\x{350}\x{351}\x{352}\x{357}\x{358}\x{35D}\x{35E}\x{360}\x{361}\x{363}\x{364}\x{365}\x{366}\x{367}\x{368}\x{369}\x{36A}\x{36B}\x{36C}\x{36D}\x{36E}\x{36F}\x{483}\x{484}\x{485}\x{486}\x{487}\x{2DE0}\x{2DE1}\x{2DE2}\x{2DE3}\x{2DE4}\x{2DE5}\x{2DE6}\x{2DE7}\x{2DE8}\x{2DE9}\x{2DEA}\x{2DEB}\x{2DEC}\x{2DED}\x{2DEE}\x{2DEF}\x{2DF0}\x{2DF1}\x{2DF2}\x{2DF3}\x{2DF4}\x{2DF5}\x{2DF6}\x{2DF7}\x{2DF8}\x{2DF9}\x{2DFA}\x{2DFB}\x{2DFC}\x{2DFD}\x{2DFE}\x{2DFF}\x{A674}\x{A675}\x{A676}\x{A677}\x{A678}\x{A679}\x{A67A}\x{A67B}\x{A67C}\x{A67D}\x{FE20}\x{FE21}\x{FE22}\x{FE23}\x{FE24}\x{FE25}\x{FE26}\x{FE2E}\x{FE2F}\x{20DB}\x{20DC}\x{346}\x{35B}\x{A66F}\x{A69E}
-        """#)
+        XCTAssertEqual(
+            characterClasses.codePoints(forClass: .COMBINING_ABOVE).regexPart(usingCharacterClasses: characterClasses),
+//            #"""
+//            \x{2D8}\x{2D9}\x{2DA}\x{300}\x{301}\x{302}\x{303}\x{304}\x{305}\x{306}\x{307}\x{308}\x{309}\x{30A}\x{30B}\x{30C}\x{30D}\x{30E}\x{30F}\x{310}\x{311}\x{312}\x{313}\x{314}\x{315}\x{31A}\x{31B}\x{33D}\x{33E}\x{33F}\x{340}\x{341}\x{342}\x{343}\x{344}\x{34A}\x{34B}\x{34C}\x{350}\x{351}\x{352}\x{357}\x{358}\x{35D}\x{35E}\x{360}\x{361}\x{363}\x{364}\x{365}\x{366}\x{367}\x{368}\x{369}\x{36A}\x{36B}\x{36C}\x{36D}\x{36E}\x{36F}\x{483}\x{484}\x{485}\x{486}\x{487}\x{2DE0}\x{2DE1}\x{2DE2}\x{2DE3}\x{2DE4}\x{2DE5}\x{2DE6}\x{2DE7}\x{2DE8}\x{2DE9}\x{2DEA}\x{2DEB}\x{2DEC}\x{2DED}\x{2DEE}\x{2DEF}\x{2DF0}\x{2DF1}\x{2DF2}\x{2DF3}\x{2DF4}\x{2DF5}\x{2DF6}\x{2DF7}\x{2DF8}\x{2DF9}\x{2DFA}\x{2DFB}\x{2DFC}\x{2DFD}\x{2DFE}\x{2DFF}\x{A674}\x{A675}\x{A676}\x{A677}\x{A678}\x{A679}\x{A67A}\x{A67B}\x{A67C}\x{A67D}\x{FE20}\x{FE21}\x{FE22}\x{FE23}\x{FE24}\x{FE25}\x{FE26}\x{FE2E}\x{FE2F}\x{20DB}\x{20DC}\x{346}\x{35B}\x{A66F}\x{A69E}
+//            """#
+            // problem with ranges should be fixed in newer Swift versions (see test: testRangesInRegexForNonLetters()):
+            #"\x{2D8}-\x{2DA}\x{300}-\x{315}\x{31A}-\x{31B}\x{33D}-\x{344}\x{34A}-\x{34C}\x{350}-\x{352}\x{357}-\x{358}\x{35D}-\x{35E}\x{360}-\x{361}\x{363}-\x{36F}\x{483}-\x{487}\x{2DE0}-\x{2DFF}\x{A674}-\x{A67D}\x{FE20}-\x{FE26}\x{FE2E}-\x{FE2F}\x{20DB}\x{20DC}\x{346}\x{35B}\x{A66F}\x{A69E}"#
+        )
+    }
+    
+    func testRangesInRegexForNonLetters() throws {
+        XCTAssertEqual("\u{222B}".contains(/[\x{0300}-\x{0333}\x{2200}-\x{22ED}]/), true)
+        XCTAssertEqual("\u{0041}".contains(/[\x{0300}-\x{0333}\x{2200}-\x{22ED}]/), false)
+        XCTAssertEqual("\u{0326}".contains(/[\x{0300}-\x{0333}\x{2200}-\x{22ED}]/), true)
+        XCTAssertEqual("\u{0041}".contains(/[\x{0300}-\x{0333}\x{2200}-\x{22ED}]/), false)
     }
     
     func randomString(length: Int) -> String {
@@ -321,7 +333,9 @@ final class UtilitiesTests: XCTestCase {
     func testReplacingCharacterClassesWithRegex() throws {
         XCTAssertEqual(
             try "${LATIN_LETTERS}${CLOSING_DELIMITERS}".replacingCharacterClassesWithRegex(usingCharacterClasses: characterClasses),
-            #"\x{61}-\x{7A}\x{41}-\x{5A}\x{5C}\x{5D}\x{7C}\x{7D}\x{29}\x{2F}\x{2016}\x{2016}\x{2191}\x{2193}\x{2195}\x{21D1}\x{21D3}\x{21D5}\x{2309}\x{230B}\x{23B1}\x{27E9}\x{2986}\x{300B}\x{3015}\x{301B}"#
+            //#"\x{61}-\x{7A}\x{41}-\x{5A}\x{5C}\x{5D}\x{7C}\x{7D}\x{29}\x{2F}\x{2016}\x{2016}\x{2191}\x{2193}\x{2195}\x{21D1}\x{21D3}\x{21D5}\x{2309}\x{230B}\x{23B1}\x{27E9}\x{2986}\x{300B}\x{3015}\x{301B}"#
+            // problem with ranges should be fixed in newer Swift versions (see test: testRangesInRegexForNonLetters()):
+            #"\x{61}-\x{7A}\x{41}-\x{5A}\x{5C}-\x{5D}\x{7C}-\x{7D}\x{29}\x{2F}\x{2016}\x{2016}\x{2191}\x{2193}\x{2195}\x{21D1}\x{21D3}\x{21D5}\x{2309}\x{230B}\x{23B1}\x{27E9}\x{2986}\x{300B}\x{3015}\x{301B}"#
         )
     }
     

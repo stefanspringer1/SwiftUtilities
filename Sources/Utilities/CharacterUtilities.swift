@@ -1472,22 +1472,24 @@ final public class UCCodePoints {
         return _regex ?? {
             var ss = [String]()
             ranges.forEach { range in
-                let lowerBound = UnicodeScalar(range.lowerBound)!
-                let upperBound = UnicodeScalar(range.upperBound)!
-                if (lowerBound.isPrivateUse && upperBound.isPrivateUse) ||
-                    (
-                        CharacterSet.letters.contains(lowerBound) && CharacterSet.letters.contains(upperBound) &&
-                        !lowerBound.isCombining(usingCharacterClasses: characterClasses) && !upperBound.isCombining(usingCharacterClasses: characterClasses) &&
-                        !lowerBound.isLetterLikeSymbol && !upperBound.isLetterLikeSymbol
-                    ) {
-                    ss.append("\\x{\(String(format: "%X", range.lowerBound))}-\\x{\(String(format:"%X", range.upperBound))}")
-                } else {
-                    var pos = range.lowerBound
-                    repeat {
-                        ss.append("\\x{\(String(format: "%X", pos))}")
-                        pos += 1
-                    } while pos <= range.upperBound
-                }
+//                let lowerBound = UnicodeScalar(range.lowerBound)!
+//                let upperBound = UnicodeScalar(range.upperBound)!
+//                if (lowerBound.isPrivateUse && upperBound.isPrivateUse) ||
+//                    (
+//                        CharacterSet.letters.contains(lowerBound) && CharacterSet.letters.contains(upperBound) &&
+//                        !lowerBound.isCombining(usingCharacterClasses: characterClasses) && !upperBound.isCombining(usingCharacterClasses: characterClasses) &&
+//                        !lowerBound.isLetterLikeSymbol && !upperBound.isLetterLikeSymbol
+//                    ) {
+//                    ss.append("\\x{\(String(format: "%X", range.lowerBound))}-\\x{\(String(format:"%X", range.upperBound))}")
+//                } else {
+//                    var pos = range.lowerBound
+//                    repeat {
+//                        ss.append("\\x{\(String(format: "%X", pos))}")
+//                        pos += 1
+//                    } while pos <= range.upperBound
+//                }
+                // problem with ranges should be fixed in newer Swift versions (see test: testRangesInRegexForNonLetters()):
+                ss.append("\\x{\(String(format: "%X", range.lowerBound))}-\\x{\(String(format:"%X", range.upperBound))}")
             }
             singles.forEach { single in ss.append("\\x{\(String(format: "%X", single))}") }
             let theRegex = characterClasses.withCombiningAsHexCode(fromRegex: ss.joined())
