@@ -99,6 +99,13 @@ final class UtilitiesTests: XCTestCase {
         XCTAssertEqual("\u{0041}".contains(/[\x{0300}-\x{0333}\x{2200}-\x{22ED}]/), false)
         XCTAssertEqual("\u{0326}".contains(/[\x{0300}-\x{0333}\x{2200}-\x{22ED}]/), true)
         XCTAssertEqual("\u{0041}".contains(/[\x{0300}-\x{0333}\x{2200}-\x{22ED}]/), false)
+        
+        XCTAssertEqual("\u{0041}".contains(/[\x{33D}-\x{344}]/), false)
+        print("".contains(#/^\s+[\x{388}-\x{3AB}\x{1D6A8}-\x{1D6C0}\x{1D6E2}-\x{1D6FA}\x{1D726}-\x{1D734}\x{1D756}-\x{1D76E}\x{1D790}-\x{1D7A8}\x{37B}-\x{37D}\x{3AC}-\x{3CE}\x{3DB}-\x{3DD}\x{1D6C1}-\x{1D6E1}\x{1D6FB}-\x{1D71B}\x{1D735}-\x{1D755}\x{1D76F}-\x{1D78F}\x{1D7A9}-\x{1D7C9}\x{370}\x{372}\x{376}\x{37F}\x{386}\x{394}\x{3CF}\x{3DC}\x{3F4}\x{3F7}\x{3F9}\x{3FA}\x{3FD}\x{3FE}\x{3FF}\x{1D7CB}\x{371}\x{373}\x{377}\x{390}\x{3BC}\x{3D1}\x{3D5}\x{3D9}\x{3DF}\x{3E1}\x{3F0}\x{3F1}\x{3F8}\x{3FB}\x{1D7CA}][\x{2D8}-\x{2DA}\x{300}-\x{315}\x{31A}-\x{31B}\x{33D}-\x{344}\x{34A}-\x{34C}\x{350}-\x{352}\x{357}-\x{358}\x{35D}-\x{35E}\x{360}-\x{361}\x{363}-\x{36F}\x{483}-\x{487}\x{2DE0}-\x{2DFF}\x{A674}-\x{A67D}\x{FE20}-\x{FE26}\x{FE2E}-\x{FE2F}\x{316}-\x{319}\x{31C}-\x{333}\x{339}-\x{33C}\x{347}-\x{349}\x{34D}-\x{34E}\x{353}-\x{356}\x{359}-\x{35A}\x{FE27}-\x{FE2D}\x{334}-\x{338}\x{488}-\x{489}\x{A670}-\x{A672}\x{20DB}\x{20DC}\x{346}\x{35B}\x{A66F}\x{A69E}\x{345}\x{35C}\x{35F}\x{362}]*(?=($|\s))$/#)
+    }
+    
+    func testRangesForCharacterClasses() throws {
+        print("".contains(#regexWithCharacterClassesAnd2Groups(characterClasses.codePoints(forClass: .COMBINING_ABOVE).regexPart(usingCharacterClasses: characterClasses))
     }
     
     func randomString(length: Int) -> String {
