@@ -214,8 +214,7 @@ public class CharacterClasses {
             // ---- single codepoints:
             [
                 0x20DB, 0x20DC, 0x0346, 0x035B, 0xA66F, 0xA69E,
-            ],
-            suppressRegexRangeNotation: true
+            ]
         )
         
         combiningAbove.forEach {
@@ -237,8 +236,7 @@ public class CharacterClasses {
             // ---- single codepoints:
             [
                 0x0345, 0x035C, 0x035F, 0x0362,
-            ],
-            suppressRegexRangeNotation: true
+            ]
         )
         
         combiningBelow.forEach {
@@ -259,8 +257,7 @@ public class CharacterClasses {
             // ---- single codepoints:
             [
                 // -
-            ],
-            suppressRegexRangeNotation: true
+            ]
         )
         
         combiningMiddle.forEach {
@@ -1278,8 +1275,7 @@ public class CharacterClasses {
             // ---- single codepoints:
             [
                 0x00A0, 0x202F, 0x205F, 0x3000, 0xFEFF,
-            ],
-            suppressRegexRangeNotation: true
+            ]
         )
         
         nontrivialSpaces.forEach {
@@ -1401,8 +1397,7 @@ public class CharacterClasses {
                     0x2663, 0x266A, 0x2713, 0x2717, 0x2720, 0x2736, 0x27C2, 0x27FC, 0x27FF, 0x2916, 0x2933, 0x2945, 0x299A, 0x29B9, 0x29C9,
                     0x29DA, 0x29EB, 0x29F6, 0x2A04, 0x2A06, 0x2A40, 0x2A50, 0x2A66, 0x2A6A, 0x2AE4, 0x2AFD, 0xE905, 0xFE68, 0x1D49C,
                     0x1D4A2, 0x1D4BB, 0x1D546,
-                ],
-                suppressRegexRangeNotation: true
+                ]
             )
             
             codePoints.forEach {
@@ -1461,17 +1456,21 @@ public class CharacterClasses {
     }
 }
 
+fileprivate let nontrivialSpacesLowerBound = UnicodeScalar(0x2000)!
+fileprivate let nontrivialSpacesUpperBound = UnicodeScalar(0x200B)!
+
+fileprivate let letterlikeSymbolsLowerBound = UnicodeScalar(0x2100)!
+fileprivate let letterlikeSymbolsUpperBound = UnicodeScalar(0x214F)!
+
 final public class UCCodePoints {
     
     public let ranges: [ClosedRange<UInt32>]
     public let singles: [UInt32]
-    public let suppressRegexRangeNotation: Bool
     private var _regex: String? = nil
 
-    init(_ ranges: [ClosedRange<UInt32>], _ singles: [UInt32], suppressRegexRangeNotation: Bool = false) {
+    init(_ ranges: [ClosedRange<UInt32>], _ singles: [UInt32]) {
         self.ranges = ranges
         self.singles = singles
-        self.suppressRegexRangeNotation = suppressRegexRangeNotation
     }
     
     /// Get the regex for a character class. Combining characters are already replaced by the hex notation.
@@ -1481,7 +1480,10 @@ final public class UCCodePoints {
             ranges.forEach { range in
                 let lowerBound = UnicodeScalar(range.lowerBound)!
                 let upperBound = UnicodeScalar(range.upperBound)!
-                if suppressRegexRangeNotation {
+//                if suppressRegexRangeNotation {
+                if lowerBound.isCombining(usingCharacterClasses: characterClasses) || upperBound.isCombining(usingCharacterClasses: characterClasses) ||
+                    (nontrivialSpacesLowerBound <= lowerBound && lowerBound <= nontrivialSpacesUpperBound) || (nontrivialSpacesLowerBound <= upperBound && upperBound <= nontrivialSpacesUpperBound) ||
+                    (letterlikeSymbolsLowerBound <= lowerBound && lowerBound <= letterlikeSymbolsUpperBound) || (letterlikeSymbolsLowerBound <= upperBound && upperBound <= letterlikeSymbolsUpperBound) {
                     var pos = range.lowerBound
                     repeat {
                         ss.append("\\x{\(String(format: "%X", pos))}")
@@ -1504,7 +1506,7 @@ final public class UCCodePoints {
     }
     
     public static func +(lhs: UCCodePoints, rhs: UCCodePoints) -> UCCodePoints {
-        UCCodePoints(lhs.ranges + rhs.ranges, lhs.singles + rhs.singles, suppressRegexRangeNotation: lhs.suppressRegexRangeNotation || rhs.suppressRegexRangeNotation)
+        UCCodePoints(lhs.ranges + rhs.ranges, lhs.singles + rhs.singles)
     }
 }
 
