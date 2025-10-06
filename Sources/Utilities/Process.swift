@@ -4,7 +4,12 @@
 
 import Foundation
 import Subprocess
+
+#if canImport(System)
 import System
+#else
+import SystemPackage
+#endif
 
 /// Run an external program by using an asynchonous call.
 /// Environment might be .inherit.updating(["NewKey": "NewValue"]).
@@ -17,10 +22,10 @@ import System
 ) async -> Bool {
     do {
         async let monitorResult = run(
-            .path(System.FilePath(stringLiteral: executableURL.path)),
+            .path(FilePath(stringLiteral: executableURL.path)),
             arguments: Arguments(arguments),
             environment: environment,
-            workingDirectory: System.FilePath(stringLiteral: currentDirectoryURL.path),
+            workingDirectory: FilePath(stringLiteral: currentDirectoryURL.path),
             error: .combineWithOutput
         ) { execution, standardOutput in
             for try await line in standardOutput.lines() {
