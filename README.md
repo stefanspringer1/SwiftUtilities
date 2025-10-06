@@ -22,6 +22,10 @@ Add an `import` statement in the source code:
 import Utilities
 ```
 
+## Running the tests.
+
+The environment variable `TESTDATA` should point to the subdirectory `testdata` (full path).
+
 ## API documentation
 
 Build the API documentation using DocC, e.g. in Xcode via the `Product` / `Build Documentation` command. Include the `--include-extended-types` option (available since Swift 5.8) to also document extensions to types from other modules: `swift package generate-documentation --include-extended-types`.

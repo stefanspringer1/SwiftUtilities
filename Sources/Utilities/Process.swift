@@ -3,7 +3,68 @@
  */
 
 import Foundation
+import Subprocess
+import System
 
+// Run an external program by using an asynchonous call.
+@Sendable func runProgramAsync(
+    executableURL: URL,
+    environment: [String:String]? = nil,
+    arguments: [String],
+    currentDirectoryURL: URL,
+    outputHandler: @Sendable (String) -> ()
+) async -> Bool {
+    do {
+        async let monitorResult = run(
+            .path(System.FilePath(stringLiteral: executableURL.path)),
+            arguments: Arguments(arguments),
+//            environment: Environment(Configuration()),
+            workingDirectory: System.FilePath(stringLiteral: currentDirectoryURL.path),
+            error: .combineWithOutput
+        ) { execution, standardOutput in
+            for try await line in standardOutput.lines() {
+                outputHandler(line.trimmingCharacters(in: .newlines))
+            }
+        }
+        
+        let terminationStatus = try await monitorResult.terminationStatus
+        return terminationStatus == .exited(0)
+    } catch {
+        outputHandler("error calling \(executableURL.path): \(String(describing: error))")
+        return false
+    }
+}
+
+// Run an external program by using a synchonous call.
+@Sendable func runProgramSync(
+    executableURL: URL,
+    environment: [String:String]? = nil,
+    arguments: [String],
+    currentDirectoryURL: URL,
+    outputHandler: @Sendable @escaping (String) -> ()
+) -> Bool {
+    
+    let semaphore = DispatchSemaphore(value: 0)
+    
+    let asyncResult = AsyncValue<Bool>(initialValue: false)
+    Task {
+        let result = await runProgramAsync(
+            executableURL: executableURL,
+            environment: environment,
+            arguments: arguments,
+            currentDirectoryURL: currentDirectoryURL,
+            outputHandler: outputHandler
+        )
+        asyncResult.set(result)
+        semaphore.signal()
+    }
+    
+    semaphore.wait()
+    return asyncResult.value
+}
+
+// Run an external program.
+@available(*, deprecated, message: "use function 'runProgramAsync' or 'runProgramSync' instead")
 public func runProgram(
     executableURL: URL,
     environment: [String:String]? = nil,

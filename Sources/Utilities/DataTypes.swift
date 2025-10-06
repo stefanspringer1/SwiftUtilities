@@ -4,6 +4,36 @@
 
 import Foundation
 
+/// A value trhat can be set and accessed asynchronously.
+public final class AsyncValue<T>: @unchecked Sendable {
+    
+    private var _value: T
+    
+    init(initialValue: T) {
+        _value = initialValue
+    }
+    
+    let semaphore = DispatchSemaphore(value: 1)
+    
+    /// Gets the current value.
+    var value: T {
+        semaphore.wait()
+        let value = _value
+        semaphore.signal()
+        return value
+    }
+    
+    internal let group = DispatchGroup()
+    internal let queue = DispatchQueue(label: "CollectingLogger", qos: .background)
+    
+    public func set(_ newValue: T) {
+        semaphore.wait()
+        _value = newValue
+        semaphore.signal()
+    }
+    
+}
+
 /// A wrapper around Set that can passed around by reference.
 public class Referenced<T> {
     
