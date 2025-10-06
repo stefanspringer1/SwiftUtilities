@@ -4,7 +4,7 @@
 
 import Foundation
 
-/// A value trhat can be set and accessed asynchronously.
+/// A value that can be set and accessed asynchronously.
 public final class AsyncValue<T>: @unchecked Sendable {
     
     private var _value: T
@@ -29,6 +29,36 @@ public final class AsyncValue<T>: @unchecked Sendable {
     public func set(_ newValue: T) {
         semaphore.wait()
         _value = newValue
+        semaphore.signal()
+    }
+    
+}
+
+/// An array that can be set and accessed asynchronously.
+public final class AsyncArray<T>: @unchecked Sendable {
+    
+    private var _values: [T]
+    
+    public init(initialValues: [T]) {
+        _values = initialValues
+    }
+    
+    let semaphore = DispatchSemaphore(value: 1)
+    
+    /// Gets the current values.
+    var values: [T] {
+        semaphore.wait()
+        let values = _values
+        semaphore.signal()
+        return values
+    }
+    
+    internal let group = DispatchGroup()
+    internal let queue = DispatchQueue(label: "CollectingLogger", qos: .background)
+    
+    public func append(_ newValue: T) {
+        semaphore.wait()
+        _values.append(newValue)
         semaphore.signal()
     }
     
