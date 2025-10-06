@@ -13,13 +13,14 @@ import SystemPackage
 
 /// Run an external program by using an asynchronous call.
 /// Environment might be .inherit.updating(["NewKey": "NewValue"]).
+/// Returns the return code of the program or (if the program could not be started or could not be ended in a regular fashion) `nil`.
 @Sendable public func runProgramAsync(
     executableURL: URL,
     environment: Environment = .inherit,
     arguments: [String],
     currentDirectoryURL: URL,
     outputHandler: @Sendable (String) -> ()
-) async -> Int {
+) async -> Int? {
     do {
         let platformOptions = {
             var _platformOptions = PlatformOptions()
@@ -46,27 +47,29 @@ import SystemPackage
         case .exited(let code):
             return Int(code)
         case .unhandledException(let code):
-            return Int(code)
+            outputHandler("fatal error calling \(executableURL.path): unhandled exception \(code))")
+            return nil
         }
     } catch {
         outputHandler("fatal error calling \(executableURL.path): \(String(describing: error))")
-        return Int.max
+        return nil
     }
 }
 
 /// Run an external program by using a synchonous call.
 /// Environment might be .inherit.updating(["NewKey": "NewValue"]).
+/// Returns the return code of the program or (if the program could not be started or could not be ended in a regular fashion) `nil`.
 @Sendable public func runProgramSync(
     executableURL: URL,
     environment: Environment = .inherit,
     arguments: [String],
     currentDirectoryURL: URL,
     outputHandler: @Sendable @escaping (String) -> ()
-) -> Int {
+) -> Int? {
     
     let semaphore = DispatchSemaphore(value: 0)
     
-    let asyncResult = AsyncValue<Int>(initialValue: 1)
+    let asyncResult = AsyncValue<Int?>(initialValue: 1)
     Task {
         let result = await runProgramAsync(
             executableURL: executableURL,
