@@ -8,7 +8,7 @@ import System
 
 /// Run an external program by using an asynchonous call.
 /// Environment might be .inherit.updating(["NewKey": "NewValue"]).
-@Sendable func runProgramAsync(
+@Sendable public func runProgramAsync(
     executableURL: URL,
     environment: Environment = .inherit,
     arguments: [String],
@@ -38,7 +38,7 @@ import System
 
 /// Run an external program by using a synchonous call.
 /// Environment might be .inherit.updating(["NewKey": "NewValue"]).
-@Sendable func runProgramSync(
+@Sendable public func runProgramSync(
     executableURL: URL,
     environment: Environment = .inherit,
     arguments: [String],
