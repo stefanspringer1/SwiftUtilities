@@ -398,6 +398,7 @@ final class UtilitiesTests: XCTestCase {
     func testRunProgramSync() {
         let ok = runProgramSync(
             executableURL: URL(filePath: "/usr/bin/more")!,
+            environment: .inherit.updating(["NewKey": "NewValue"]),
             arguments: ["a.txt"],
             currentDirectoryURL: URL(filePath: ProcessInfo.processInfo.environment["TESTDATA"]!),
             outputHandler: { print($0) }
@@ -411,6 +412,7 @@ final class UtilitiesTests: XCTestCase {
     func testRunProgramAsync() async {
         let ok = await runProgramAsync(
             executableURL: URL(filePath: "/usr/bin/more")!,
+            environment: .inherit.updating(["NewKey": "NewValue"]),
             arguments: ["a.txt"],
             currentDirectoryURL: URL(filePath: ProcessInfo.processInfo.environment["TESTDATA"]!),
             outputHandler: { print($0) }
@@ -425,6 +427,7 @@ final class UtilitiesTests: XCTestCase {
         parallel(batch: ["a","b","c","d"], threads: 2) { name in
             let ok = await runProgramAsync(
                 executableURL: URL(filePath: "/usr/bin/more")!,
+                environment: .inherit.updating(["NewKey": "NewValue"]),
                 arguments: ["\(name).txt"],
                 currentDirectoryURL: URL(filePath: ProcessInfo.processInfo.environment["TESTDATA"]!),
                 outputHandler: { print($0) }
@@ -440,6 +443,7 @@ final class UtilitiesTests: XCTestCase {
         parallel(batch: ["a","b","c","d"], threads: 2) { name in
             let ok = await runProgramAsync(
                 executableURL: URL(filePath: "/usr/bin/more")!,
+                environment: .inherit.updating(["NewKey": "NewValue"]),
                 arguments: ["\(name).txt"],
                 currentDirectoryURL: URL(filePath: ProcessInfo.processInfo.environment["TESTDATA"]!),
                 outputHandler: { print($0) }

@@ -6,10 +6,11 @@ import Foundation
 import Subprocess
 import System
 
-// Run an external program by using an asynchonous call.
+/// Run an external program by using an asynchonous call.
+/// Environment might be .inherit.updating(["NewKey": "NewValue"]).
 @Sendable func runProgramAsync(
     executableURL: URL,
-    environment: [String:String]? = nil,
+    environment: Environment = .inherit,
     arguments: [String],
     currentDirectoryURL: URL,
     outputHandler: @Sendable (String) -> ()
@@ -18,7 +19,7 @@ import System
         async let monitorResult = run(
             .path(System.FilePath(stringLiteral: executableURL.path)),
             arguments: Arguments(arguments),
-//            environment: Environment(Configuration()),
+            environment: environment,
             workingDirectory: System.FilePath(stringLiteral: currentDirectoryURL.path),
             error: .combineWithOutput
         ) { execution, standardOutput in
@@ -35,10 +36,11 @@ import System
     }
 }
 
-// Run an external program by using a synchonous call.
+/// Run an external program by using a synchonous call.
+/// Environment might be .inherit.updating(["NewKey": "NewValue"]).
 @Sendable func runProgramSync(
     executableURL: URL,
-    environment: [String:String]? = nil,
+    environment: Environment = .inherit,
     arguments: [String],
     currentDirectoryURL: URL,
     outputHandler: @Sendable @escaping (String) -> ()
