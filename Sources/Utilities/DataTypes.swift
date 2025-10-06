@@ -16,7 +16,7 @@ public final class AsyncValue<T>: @unchecked Sendable {
     let semaphore = DispatchSemaphore(value: 1)
     
     /// Gets the current value.
-    var value: T {
+    public var value: T {
         semaphore.wait()
         let value = _value
         semaphore.signal()
@@ -46,7 +46,7 @@ public final class AsyncArray<T>: @unchecked Sendable {
     let semaphore = DispatchSemaphore(value: 1)
     
     /// Gets the current values.
-    var values: [T] {
+    public var values: [T] {
         semaphore.wait()
         let values = _values
         semaphore.signal()
