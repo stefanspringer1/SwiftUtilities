@@ -21,11 +21,19 @@ import SystemPackage
     outputHandler: @Sendable (String) -> ()
 ) async -> Bool {
     do {
+        let platformOptions = {
+            var _platformOptions = PlatformOptions()
+            #if os(Windows)
+            _platformOptions.windowStyle = .hidden
+            #endif
+            return _platformOptions
+        }()
         async let monitorResult = run(
             .path(FilePath(stringLiteral: executableURL.path)),
             arguments: Arguments(arguments),
             environment: environment,
             workingDirectory: FilePath(stringLiteral: currentDirectoryURL.path),
+            platformOptions: platformOptions,
             error: .combineWithOutput
         ) { execution, standardOutput in
             for try await line in standardOutput.lines() {
