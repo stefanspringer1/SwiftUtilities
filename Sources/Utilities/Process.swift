@@ -19,7 +19,7 @@ import SystemPackage
     arguments: [String],
     currentDirectoryURL: URL,
     outputHandler: @Sendable (String) -> ()
-) async -> Bool {
+) async -> Int {
     do {
         let platformOptions = {
             var _platformOptions = PlatformOptions()
@@ -42,10 +42,15 @@ import SystemPackage
         }
         
         let terminationStatus = try await monitorResult.terminationStatus
-        return terminationStatus == .exited(0)
+        switch terminationStatus {
+        case .exited(let code):
+            return Int(code)
+        case .unhandledException(let code):
+            return Int(code)
+        }
     } catch {
-        outputHandler("error calling \(executableURL.path): \(String(describing: error))")
-        return false
+        outputHandler("fatal error calling \(executableURL.path): \(String(describing: error))")
+        return Int.max
     }
 }
 
@@ -57,11 +62,11 @@ import SystemPackage
     arguments: [String],
     currentDirectoryURL: URL,
     outputHandler: @Sendable @escaping (String) -> ()
-) -> Bool {
+) -> Int {
     
     let semaphore = DispatchSemaphore(value: 0)
     
-    let asyncResult = AsyncValue<Bool>(initialValue: false)
+    let asyncResult = AsyncValue<Int>(initialValue: 1)
     Task {
         let result = await runProgramAsync(
             executableURL: executableURL,
