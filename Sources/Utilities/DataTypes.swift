@@ -9,7 +9,7 @@ public final class AsyncValue<T>: @unchecked Sendable {
     
     private var _value: T
     
-    init(initialValue: T) {
+    public init(initialValue: T) {
         _value = initialValue
     }
     
