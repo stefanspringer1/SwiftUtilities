@@ -11,7 +11,7 @@ import System
 import SystemPackage
 #endif
 
-/// Run an external program by using an asynchonous call.
+/// Run an external program by using an asynchronous call.
 /// Environment might be .inherit.updating(["NewKey": "NewValue"]).
 @Sendable public func runProgramAsync(
     executableURL: URL,
