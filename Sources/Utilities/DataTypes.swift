@@ -175,6 +175,14 @@ public class Index<K: Hashable,V: Hashable> {
             return dictionary[key]?.referenced
         }
         
+        set(newValue) {
+            if let newValue {
+                dictionary[key] = Referenced(newValue)
+            } else {
+                dictionary[key] = nil
+            }
+        }
+        
     }
     
     public func removeAll(keepingCapacity keepCapacity: Bool = false) {
@@ -209,6 +217,14 @@ public class IndexWithNonHashableValues<K: Hashable,V> {
         
         get {
             return dictionary[key]?.referenced
+        }
+        
+        set(newValue) {
+            if let newValue {
+                dictionary[key] = Referenced(newValue)
+            } else {
+                dictionary[key] = nil
+            }
         }
         
     }
