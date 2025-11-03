@@ -13,7 +13,7 @@ import Foundation
 ///  eligible platforms, and it also does not contain any whitespace (the setting forces `avoidSpace: true`).
 public func formattedTime(avoidSpace: Bool = false, forFilename: Bool = false) -> String {
     let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSZZZZZ"
+    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
     var result = formatter.string(from: Date())
     if avoidSpace || forFilename {
         result = result.replacingOccurrences(of: " ", with: "T")
