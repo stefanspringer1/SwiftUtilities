@@ -10,7 +10,7 @@ import AutoreleasepoolShim
 public final class StandardError: TextOutputStream, Sendable {
     
     private static let standardError = FileHandle.standardError
-    public static var instance = StandardError()
+    public static let instance = StandardError()
     
     public func write(_ text: String) {
         StandardError.standardError.write(Data(text.utf8))
