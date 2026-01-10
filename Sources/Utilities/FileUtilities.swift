@@ -6,14 +6,15 @@ import Foundation
 import ArgumentParser
 import AutoreleasepoolShim
 
-/// This class can be used to print to standard error output using `print("hello", to: &StandardError.instance)`.
-public final class StandardError: TextOutputStream, Sendable {
+/// This can be used to print to standard error output using `var stderr = StandardError(); print("Hello", to: &stderr)`.
+public struct StandardError: TextOutputStream, Sendable {
     
-    private static let standardError = FileHandle.standardError
-    public static let instance = StandardError()
+    private static let handle = FileHandle.standardError
     
-    public func write(_ text: String) {
-        StandardError.standardError.write(Data(text.utf8))
+    public init() {}
+    
+    public func write(_ string: String) {
+        Self.handle.write(Data(string.utf8))
     }
 }
 
