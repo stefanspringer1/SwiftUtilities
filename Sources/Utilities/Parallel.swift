@@ -6,7 +6,7 @@ import Foundation
 
 /// Process the items in `batch` in parallel by the function `worker`.
 @available(macOS 10.15, *)
-public func parallel<T: Sendable>(batch: Array<T>, worker: @escaping @Sendable (T) async -> ()) {
+public func parallel<T: Sendable>(batch: any Sequence<T>, worker: @escaping @Sendable (T) async -> ()) {
     let semaphore = DispatchSemaphore(value: 0)
 
     Task {
