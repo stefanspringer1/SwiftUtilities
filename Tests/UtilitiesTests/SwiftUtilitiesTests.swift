@@ -403,7 +403,7 @@ final class UtilitiesTests: XCTestCase {
             currentDirectoryURL: URL(filePath: ProcessInfo.processInfo.environment["TESTDATA"]!),
             outputHandler: { print($0) }
         )
-        print(ok)
+        print(String(describing: ok))
     }
 #endif
     
@@ -417,12 +417,13 @@ final class UtilitiesTests: XCTestCase {
             currentDirectoryURL: URL(filePath: ProcessInfo.processInfo.environment["TESTDATA"]!),
             outputHandler: { print($0) }
         )
-        print(ok)
+        print(ok as Any)
     }
 #endif
     
 #if os(macOS)
     // This test only prints!
+    @available(macOS 26.0, *)
     func testParallelWithRunProgramAsync() {
         parallel(batch: ["a","b","c","d"], threads: 2) { name in
             let ok = await runProgramAsync(
@@ -432,13 +433,14 @@ final class UtilitiesTests: XCTestCase {
                 currentDirectoryURL: URL(filePath: ProcessInfo.processInfo.environment["TESTDATA"]!),
                 outputHandler: { print($0) }
             )
-            print("\(name).txt: \(ok)")
+            print("\(name).txt: \(String(describing: ok))")
         }
     }
 #endif
     
 #if os(macOS)
     // This test only prints!
+    @available(macOS 26.0, *)
     func testParallelWithRunProgramSync() {
         parallel(batch: ["a","b","c","d"], threads: 2) { name in
             let ok = await runProgramAsync(
@@ -448,7 +450,7 @@ final class UtilitiesTests: XCTestCase {
                 currentDirectoryURL: URL(filePath: ProcessInfo.processInfo.environment["TESTDATA"]!),
                 outputHandler: { print($0) }
             )
-            print("\(name).txt: \(ok)")
+            print("\(name).txt: \(String(describing: ok))")
         }
     }
 #endif
