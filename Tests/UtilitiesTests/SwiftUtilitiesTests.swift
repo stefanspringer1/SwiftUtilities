@@ -423,7 +423,7 @@ final class UtilitiesTests: XCTestCase {
     
 #if os(macOS)
     // This test only prints!
-    @available(macOS 26.0, *)
+    @available(macOS 10.15, *)
     func testParallelWithRunProgramAsync() {
         parallel(batch: ["a","b","c","d"], threads: 2) { name in
             let ok = await runProgramAsync(
@@ -440,7 +440,7 @@ final class UtilitiesTests: XCTestCase {
     
 #if os(macOS)
     // This test only prints!
-    @available(macOS 26.0, *)
+    @available(macOS 10.15, *)
     func testParallelWithRunProgramSync() {
         parallel(batch: ["a","b","c","d"], threads: 2) { name in
             let ok = await runProgramAsync(

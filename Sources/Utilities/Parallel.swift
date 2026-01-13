@@ -4,10 +4,30 @@
 
 import Foundation
 
+/// Process the items in `batch` in parallel by the function `worker`.
+@available(macOS 10.15, *)
+public func parallel<T: Sendable>(batch: Array<T>, worker: @escaping @Sendable (T) async -> ()) {
+    let semaphore = DispatchSemaphore(value: 0)
+
+    Task {
+        await withTaskGroup(of: Void.self) { taskGroup in
+            for work in batch {
+                taskGroup.addTask {
+                    await worker(work)
+                }
+            }
+        }
+        semaphore.signal()
+    }
+    
+    semaphore.wait()
+}
+
 /// Process the items in `batch` in parallel by the function `worker` using `threads` number of threads.
-@available(macOS 26.0, *)
+@available(macOS 10.15, *)
 public func parallel<T: Sendable>(batch: Array<T>, threads: Int, worker: @escaping @Sendable (T) async -> ()) {
-    Task.immediate {
+    let semaphore = DispatchSemaphore(value: 0)
+    Task {
         await withTaskGroup(of: Void.self) { taskGroup in
             let maxWorkers = min(threads, batch.count)
             for i in 0..<maxWorkers {
@@ -19,14 +39,19 @@ public func parallel<T: Sendable>(batch: Array<T>, threads: Int, worker: @escapi
             var nextIndex = maxWorkers
             for await _ in taskGroup {
                 if nextIndex < batch.count {
-                    let work = batch[nextIndex]
-                    await worker(work)
+                    let index = nextIndex
+                    taskGroup.addTask {
+                        let work = batch[index]
+                        await worker(work)
+                    }
                 }
                 nextIndex += 1
                 
             }
         }
+        semaphore.signal()
     }
+    semaphore.wait()
 }
 
 /// Process the items in `batch` in parallel by the function `worker` using `threads` number of threads.
