@@ -14,7 +14,7 @@ import SystemPackage
 /// Run an external program by using an asynchronous call.
 /// Environment might be .inherit.updating(["NewKey": "NewValue"]).
 /// Returns the return code of the program or (if the program could not be started or could not be ended in a regular fashion) `nil`.
-@Sendable public func runProgramAsync(
+@Sendable public func runProgram(
     executableURL: URL,
     environment: Environment = .inherit,
     arguments: [String],
@@ -56,38 +56,8 @@ import SystemPackage
     }
 }
 
-/// Run an external program by using a synchonous call.
-/// Environment might be .inherit.updating(["NewKey": "NewValue"]).
-/// Returns the return code of the program or (if the program could not be started or could not be ended in a regular fashion) `nil`.
-@Sendable public func runProgramSync(
-    executableURL: URL,
-    environment: Environment = .inherit,
-    arguments: [String],
-    currentDirectoryURL: URL,
-    outputHandler: @Sendable @escaping (String) -> ()
-) -> Int? {
-    
-    let semaphore = DispatchSemaphore(value: 0)
-    
-    let asyncResult = AsyncValue<Int?>(initialValue: 1)
-    Task {
-        let result = await runProgramAsync(
-            executableURL: executableURL,
-            environment: environment,
-            arguments: arguments,
-            currentDirectoryURL: currentDirectoryURL,
-            outputHandler: outputHandler
-        )
-        asyncResult.set(result)
-        semaphore.signal()
-    }
-    
-    semaphore.wait()
-    return asyncResult.value
-}
-
 // Run an external program.
-@available(*, deprecated, message: "use function 'runProgramAsync' or 'runProgramSync' instead")
+@available(*, deprecated, message: "use function 'runProgramAsync' or 'runProgramSync' instead (and only in async contexts)")
 public func runProgram(
     executableURL: URL,
     environment: [String:String]? = nil,
