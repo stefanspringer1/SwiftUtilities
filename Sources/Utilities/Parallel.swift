@@ -30,23 +30,13 @@ public func parallel<T: Sendable>(batch: Array<T>, threads: Int, worker: @escapi
     Task {
         await withTaskGroup(of: Void.self) { taskGroup in
             let maxWorkers = min(threads, batch.count)
-            for i in 0..<maxWorkers {
+            for (index,work) in batch.enumerated() {
+                if index >= maxWorkers {
+                    _ = await taskGroup.next()
+                }
                 taskGroup.addTask {
-                    let work = batch[i]
                     await worker(work)
                 }
-            }
-            var nextIndex = maxWorkers
-            for await _ in taskGroup {
-                if nextIndex < batch.count {
-                    let index = nextIndex
-                    taskGroup.addTask {
-                        let work = batch[index]
-                        await worker(work)
-                    }
-                }
-                nextIndex += 1
-                
             }
         }
         semaphore.signal()
