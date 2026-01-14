@@ -19,7 +19,7 @@ import SystemPackage
     environment: Environment = .inherit,
     arguments: [String],
     currentDirectoryURL: URL,
-    outputHandler: @Sendable (String) -> ()
+    outputHandler: @Sendable (String) async -> ()
 ) async -> Int? {
     do {
         let platformOptions = {
@@ -38,7 +38,7 @@ import SystemPackage
             error: .combineWithOutput
         ) { execution, standardOutput in
             for try await line in standardOutput.lines() {
-                outputHandler(line.trimmingCharacters(in: .newlines))
+                await outputHandler(line.trimmingCharacters(in: .newlines))
             }
         }
         
@@ -47,11 +47,11 @@ import SystemPackage
         case .exited(let code):
             return Int(code)
         case .unhandledException(let code):
-            outputHandler("fatal error calling \(executableURL.path): unhandled exception \(code))")
+            await outputHandler("fatal error calling \(executableURL.path): unhandled exception \(code))")
             return nil
         }
     } catch {
-        outputHandler("fatal error calling \(executableURL.path): \(String(describing: error))")
+        await outputHandler("fatal error calling \(executableURL.path): \(String(describing: error))")
         return nil
     }
 }
