@@ -534,7 +534,7 @@ public let characterEntities: [String:UnicodeScalar] = [
     "jcy": "\u{0439}",
     "Jfr": "\u{1D50D}",
     "jfr": "\u{1D527}",
-    "jmath": "\u{006A}",
+    "jmath": "\u{0237}",
     "Jopf": "\u{1D541}",
     "Jscr": "\u{1D4A5}",
     "jscr": "\u{1D4BF}",
