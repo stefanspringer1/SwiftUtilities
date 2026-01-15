@@ -1208,7 +1208,7 @@ public let w3cFormulaEntitiesWithSingleCodepoint: [String:UnicodeScalar] = [
     "jcirc": "\u{135}", // LATIN SMALL LETTER J WITH CIRCUMFLEX
     "jcy": "\u{439}", // CYRILLIC SMALL LETTER SHORT I
     "jfr": "\u{1D527}", // MATHEMATICAL FRAKTUR SMALL J
-    "jmath": "\u{0237}", // LATIN SMALL LETTER DOTLESS J
+    "jmath": "\u{237}", // LATIN SMALL LETTER DOTLESS J
     "jopf": "\u{1D55B}", // MATHEMATICAL DOUBLE-STRUCK SMALL J
     "jscr": "\u{1D4BF}", // MATHEMATICAL SCRIPT SMALL J
     "jsercy": "\u{458}", // CYRILLIC SMALL LETTER JE
