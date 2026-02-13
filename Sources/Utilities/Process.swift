@@ -48,7 +48,7 @@ import SystemPackage
             return Int(code)
         case .unhandledException(let code):
             await outputHandler("fatal error calling \(executableURL.path): unhandled exception \(code))")
-            return nil
+            return Int(code)
         }
     } catch {
         await outputHandler("fatal error calling \(executableURL.path): \(String(describing: error))")
