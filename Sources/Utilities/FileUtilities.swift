@@ -63,7 +63,7 @@ public enum FileUtilExceptions: Error {
 }
 
 /// A marker to know if we are testing and want to produce certain errors deliberately.
-public enum TestMode: String, ExpressibleByArgument, Sendable {
+public enum TestMode: String, ExpressibleByArgument, CaseIterable, Sendable {
     case normalRun
     case corruptBackup // corrupt backup to test that that gets noticed
 }
