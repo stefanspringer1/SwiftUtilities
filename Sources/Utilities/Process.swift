@@ -35,7 +35,7 @@ import SystemPackage
             environment: environment,
             workingDirectory: FilePath(stringLiteral: currentDirectoryURL.path),
             platformOptions: platformOptions,
-            error: .combineWithOutput
+            error: .combinedWithOutput
         ) { execution, standardOutput in
             for try await line in standardOutput.lines() {
                 await outputHandler(line.trimmingCharacters(in: .newlines))
@@ -46,7 +46,7 @@ import SystemPackage
         switch terminationStatus {
         case .exited(let code):
             return Int(code)
-        case .unhandledException(let code):
+        case .signaled(let code):
             await outputHandler("fatal error calling \(executableURL.path): unhandled exception \(code))")
             return Int(code)
         }
