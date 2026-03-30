@@ -24,9 +24,9 @@ import SystemPackage
     do {
         let platformOptions = {
             var _platformOptions = PlatformOptions()
-            #if os(Windows)
+#if os(Windows)
             _platformOptions.windowStyle = .hidden
-            #endif
+#endif
             return _platformOptions
         }()
         async let monitorResult = run(
@@ -46,9 +46,11 @@ import SystemPackage
         switch terminationStatus {
         case .exited(let code):
             return Int(code)
+        #if !os(Windows)
         case .signaled(let code):
             await outputHandler("fatal error calling \(executableURL.path): unhandled exception \(code))")
             return Int(code)
+        #endif
         }
     } catch {
         await outputHandler("fatal error calling \(executableURL.path): \(String(describing: error))")
