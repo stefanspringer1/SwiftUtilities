@@ -24,9 +24,9 @@ import SystemPackage
     do {
         let platformOptions = {
             var _platformOptions = PlatformOptions()
-#if os(Windows)
+            #if os(Windows)
             _platformOptions.windowStyle = .hidden
-#endif
+            #endif
             return _platformOptions
         }()
         async let monitorResult = run(
