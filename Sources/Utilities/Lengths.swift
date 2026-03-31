@@ -97,11 +97,11 @@ public func numberAndUnitTexts(fromText _text: String?) -> (number: Substring, u
 }
 
 /// Normalize length number.
-public func normalizeLengthNumber(inText text: String?, withDecimalPlacesForUnit: [String:Int]) -> String? {
+public func normalizeLengthNumber(inText text: String?, withDecimalPlacesForUnit: [String:Int], dropDecimalPlacesWhenZero: Bool = false) -> String? {
     guard let (number: numberText, unit: unitText) = numberAndUnitTexts(fromText: text),
           let unitText, let numberOfDecimalPlaces = withDecimalPlacesForUnit[String(unitText)] else { return text }
     let numberParts = numberText.split(separator: ".")
-    guard numberParts.count == 2 else { return "\(numberText).\(String(repeating: "0", count: numberOfDecimalPlaces))\(unitText)" }
+    guard numberParts.count == 2 else { return "\(numberText)\(dropDecimalPlacesWhenZero ? "" : ".\(String(repeating: "0", count: numberOfDecimalPlaces))")\(unitText)" }
     var decimalPlaces = numberParts[1]
     decimalPlaces.replace(/0+$/, with: "")
     let missingZeros = numberOfDecimalPlaces - decimalPlaces.count
@@ -111,7 +111,11 @@ public func normalizeLengthNumber(inText text: String?, withDecimalPlacesForUnit
         guard let numberFromDecimalPlaces = Double(decimalPlaces) else { return text }
         decimalPlaces = Substring(String(Int(round(numberFromDecimalPlaces / (pow(10.0, Double(-missingZeros)))))))
     }
-    return "\(numberParts[0]).\(decimalPlaces)\(unitText)"
+    if dropDecimalPlacesWhenZero, decimalPlaces.contains(/^0+$/) {
+        return "\(numberParts[0])\(unitText)"
+    } else {
+        return "\(numberParts[0]).\(decimalPlaces)\(unitText)"
+    }
 }
 
 /// Get the "cm" value from a text where a unit is used that occurs in the `UnitOfLength` enumeration.
