@@ -118,13 +118,11 @@ public func normalizeLengthNumber(inText text: String?, withDecimalPlacesForUnit
 /// The second vaue is the original unit used.
 public func centimetersWithOriginalUnit(fromText _text: String?) -> (centimeters: Double, originalUnit: UnitOfLength?)? {
     guard let (number: numberText, unit: unitText) = numberAndUnitTexts(fromText: _text) else { return nil }
-    
     guard let number = Double(numberText) else { return nil }
-    
+    if number == 0 { return (0, nil) }
     guard let unitText, let unit = UnitOfLength.fromText(String(unitText)) else { return nil }
     let factor = unit.factorFromCentimeters
-    
-    return (factor == 1 ? number : number * factor, unit)
+    return (centimeters: factor == 1 ? number : number * factor, originalUnit: unit)
 }
 
 public func length(fromText text: String?, in unit: UnitOfLength) -> Double? {
