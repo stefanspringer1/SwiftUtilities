@@ -1192,7 +1192,7 @@ public class CharacterClasses {
                 ],
                 // ---- single codepoints:
                 [
-                    0x003F, 0x005C,
+                    0x003F, 0x0040, 0x005C, 0x005E, 0x005F, 0x0060, 0x007E, 0x00A7, 0x00B4,
                     
                     // "PUNCUATION" according to charmaps:
                     /*
