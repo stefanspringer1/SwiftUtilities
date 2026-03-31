@@ -50,7 +50,7 @@ public enum UnitOfLength: String, CaseIterable, CustomStringConvertible {
     case sp
     
     /// Get the appropriate enumeration value from a string representaion of it.
-    public static func fromString(_ s: String?) -> Self? {
+    public static func fromText(_ s: String?) -> Self? {
         return UnitOfLength.allCases.first { $0.rawValue == s }
     }
     
@@ -80,21 +80,47 @@ public enum UnitOfLength: String, CaseIterable, CustomStringConvertible {
     }
 }
 
-/// Get the "cm" value from a text where a unit is used that occurs in the `UnitOfLength` enumeration.
-/// The second vaue is the original unit used.
-public func centimetersWithOriginalUnit(fromText _text: String?) -> (centimeters: Double, originalUnit: UnitOfLength?)? {
+/// Get number and unit from a textual length value.
+public func numberAndUnitTexts(fromText _text: String?) -> (number: Substring, unit: Substring?)? {
     guard let text = _text?.trimming() else { return nil }
-    if let number = Double(text), number == 0 { return (0,nil) }
+    if Double(text) != nil { return (number: text, unit: nil) }
     guard let firstChar = text.unicodeScalars.first(where: { scalar in
         (scalar >= U_LATIN_SMALL_LETTER_A && scalar <= U_LATIN_SMALL_LETTER_Z) ||
         (scalar >= U_LATIN_CAPITAL_LETTER_A && scalar <= U_LATIN_CAPITAL_LETTER_Z)
-    }
-    ) else { return nil }
+    }) else { return nil }
     guard let firstCharIndex = text.firstIndex(of: Character(firstChar)) else { return nil }
     
-    guard let number = Double(text[..<firstCharIndex].trimmingCharacters(in: .whitespaces)) else { return nil }
+    let number = text[..<firstCharIndex].trimming()
+    let unit = text[firstCharIndex...].trimming()
     
-    guard let unit = UnitOfLength.fromString(text[firstCharIndex...].trimmingCharacters(in: .whitespaces)) else { return nil }
+    return (number: number, unit: unit)
+}
+
+/// Normalize length number.
+public func normalizeLengthNumber(inText text: String?, toNumberOfDecimalPlaces numberOfDecimalPlaces: Int, reducingAccuracyForUnits: [String?]? = nil) -> String? {
+    guard let (number: numberText, unit: unitText) = numberAndUnitTexts(fromText: text) else { return text }
+    let numberParts = numberText.split(separator: ".")
+    guard numberParts.count == 2 else { return "\(numberText).\(String(repeating: "0", count: numberOfDecimalPlaces))\(unitText ?? "")" }
+    var decimalPlaces = numberParts[1]
+    decimalPlaces.replace(/0+$/, with: "")
+    let missingZeros = numberOfDecimalPlaces - decimalPlaces.count
+    if missingZeros > 0 {
+        decimalPlaces += String(repeating: "0", count: missingZeros)
+    } else if missingZeros < 0, reducingAccuracyForUnits?.contains(unitText == nil ? nil : String(unitText!)) == true {
+        guard let numberFromDecimalPlaces = Double(decimalPlaces) else { return text }
+        decimalPlaces = Substring(String(Int(round(numberFromDecimalPlaces / (pow(10.0, Double(-missingZeros)))))))
+    }
+    return "\(numberParts[0]).\(decimalPlaces)\(unitText ?? "")"
+}
+
+/// Get the "cm" value from a text where a unit is used that occurs in the `UnitOfLength` enumeration.
+/// The second vaue is the original unit used.
+public func centimetersWithOriginalUnit(fromText _text: String?) -> (centimeters: Double, originalUnit: UnitOfLength?)? {
+    guard let (number: numberText, unit: unitText) = numberAndUnitTexts(fromText: _text) else { return nil }
+    
+    guard let number = Double(numberText) else { return nil }
+    
+    guard let unitText, let unit = UnitOfLength.fromText(String(unitText)) else { return nil }
     let factor = unit.factorFromCentimeters
     
     return (factor == 1 ? number : number * factor, unit)
