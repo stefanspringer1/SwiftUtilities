@@ -415,8 +415,8 @@ final class UtilitiesTests: XCTestCase {
         
         XCTAssertEqual(normalizeLengthNumber(inText: "2em", withDecimalPlacesForUnit: ["em": 2]), "2.00em")
         XCTAssertEqual(normalizeLengthNumber(inText: "2.0000em", withDecimalPlacesForUnit: ["em": 2]), "2.00em")
-        XCTAssertEqual(normalizeLengthNumber(inText: "2em", withDecimalPlacesForUnit: ["em": 2], dropDecimalPlacesWhenZero: true), "2em")
-        XCTAssertEqual(normalizeLengthNumber(inText: "2.0000em", withDecimalPlacesForUnit: ["em": 2], dropDecimalPlacesWhenZero: true), "2em")
+        XCTAssertEqual(normalizeLengthNumber(inText: "2em", withDecimalPlacesForUnit: ["em": 2], droppingDecimalPlacesWhenZero: true), "2em")
+        XCTAssertEqual(normalizeLengthNumber(inText: "2.0000em", withDecimalPlacesForUnit: ["em": 2], droppingDecimalPlacesWhenZero: true), "2em")
     }
     
     // This test only prints!
