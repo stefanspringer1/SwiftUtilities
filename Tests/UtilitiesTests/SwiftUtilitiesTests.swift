@@ -395,32 +395,23 @@ final class UtilitiesTests: XCTestCase {
     
     func testnormalizeLengthNumber() throws {
         
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.5em", toNumberOfDecimalPlaces: 2), "0.50em")
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.5em", toNumberOfDecimalPlaces: 4), "0.5000em")
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.50000 em", toNumberOfDecimalPlaces: 2), "0.50em")
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.50000 em", toNumberOfDecimalPlaces: 4), "0.5000em")
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.50001em", toNumberOfDecimalPlaces: 2), "0.50001em")
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.50001em", toNumberOfDecimalPlaces: 2, reducingAccuracyForUnits: ["em"]), "0.50em")
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.505em", toNumberOfDecimalPlaces: 2, reducingAccuracyForUnits: ["em"]), "0.51em")
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.50001em", toNumberOfDecimalPlaces: 4, reducingAccuracyForUnits: ["em"]), "0.5000em")
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.50005em", toNumberOfDecimalPlaces: 4, reducingAccuracyForUnits: ["em"]), "0.5001em")
+        XCTAssertEqual(normalizeLengthNumber(inText: "0.5em", withDecimalPlacesForUnit: ["em": 2]), "0.50em")
+        XCTAssertEqual(normalizeLengthNumber(inText: "0.5em", withDecimalPlacesForUnit: ["em": 4]), "0.5000em")
+        XCTAssertEqual(normalizeLengthNumber(inText: "0.50000 em", withDecimalPlacesForUnit: ["em": 2]), "0.50em")
+        XCTAssertEqual(normalizeLengthNumber(inText: "0.50000 em", withDecimalPlacesForUnit: ["em": 4]), "0.5000em")
+        XCTAssertEqual(normalizeLengthNumber(inText: "0.50001em", withDecimalPlacesForUnit: ["em": 2]), "0.50em")
+        XCTAssertEqual(normalizeLengthNumber(inText: "0.505em", withDecimalPlacesForUnit: ["em": 2]), "0.51em")
+        XCTAssertEqual(normalizeLengthNumber(inText: "0.50001em", withDecimalPlacesForUnit: ["em": 4]), "0.5000em")
+        XCTAssertEqual(normalizeLengthNumber(inText: "0.50005em", withDecimalPlacesForUnit: ["em": 4]), "0.5001em")
         
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.5", toNumberOfDecimalPlaces: 2), "0.50")
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.5", toNumberOfDecimalPlaces: 4), "0.5000")
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.50000 ", toNumberOfDecimalPlaces: 2), "0.50")
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.50000 ", toNumberOfDecimalPlaces: 4), "0.5000")
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.50001", toNumberOfDecimalPlaces: 2), "0.50001")
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.50001", toNumberOfDecimalPlaces: 2, reducingAccuracyForUnits: [nil]), "0.50")
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.505", toNumberOfDecimalPlaces: 2, reducingAccuracyForUnits: [nil]), "0.51")
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.50001", toNumberOfDecimalPlaces: 4, reducingAccuracyForUnits: [nil]), "0.5000")
-        XCTAssertEqual(normalizeLengthNumber(inText: "0.50005", toNumberOfDecimalPlaces: 4, reducingAccuracyForUnits: [nil]), "0.5001")
+        XCTAssertEqual(normalizeLengthNumber(inText: "100em", withDecimalPlacesForUnit: ["em": 2]), "100.00em")
+        XCTAssertEqual(normalizeLengthNumber(inText: "100em", withDecimalPlacesForUnit: ["em": 4]), "100.0000em")
+        XCTAssertEqual(normalizeLengthNumber(inText: "100em", withDecimalPlacesForUnit: ["em": 2]), "100.00em")
+        XCTAssertEqual(normalizeLengthNumber(inText: "100em", withDecimalPlacesForUnit: ["em": 4]), "100.0000em")
         
-        XCTAssertEqual(normalizeLengthNumber(inText: "100em", toNumberOfDecimalPlaces: 2), "100.00em")
-        XCTAssertEqual(normalizeLengthNumber(inText: "100em", toNumberOfDecimalPlaces: 4), "100.0000em")
-        XCTAssertEqual(normalizeLengthNumber(inText: "100em", toNumberOfDecimalPlaces: 2), "100.00em")
-        XCTAssertEqual(normalizeLengthNumber(inText: "100em", toNumberOfDecimalPlaces: 4), "100.0000em")
-        XCTAssertEqual(normalizeLengthNumber(inText: "100", toNumberOfDecimalPlaces: 2), "100.00")
-        XCTAssertEqual(normalizeLengthNumber(inText: "100", toNumberOfDecimalPlaces: 4), "100.0000")
+        XCTAssertEqual(normalizeLengthNumber(inText: "0.5", withDecimalPlacesForUnit: ["em": 2]), "0.5")
+        XCTAssertEqual(normalizeLengthNumber(inText: "0.50000", withDecimalPlacesForUnit: ["em": 2]), "0.50000")
+        XCTAssertEqual(normalizeLengthNumber(inText: "100", withDecimalPlacesForUnit: ["em": 2]), "100")
     }
     
     // This test only prints!
