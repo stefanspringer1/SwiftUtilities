@@ -333,7 +333,7 @@ final class UtilitiesTests: XCTestCase {
             try "${LATIN_LETTERS}${CLOSING_DELIMITERS}".replacingCharacterClassesWithRegex(usingCharacterClasses: characterClasses),
             //#"\x{61}-\x{7A}\x{41}-\x{5A}\x{5C}\x{5D}\x{7C}\x{7D}\x{29}\x{2F}\x{2016}\x{2016}\x{2191}\x{2193}\x{2195}\x{21D1}\x{21D3}\x{21D5}\x{2309}\x{230B}\x{23B1}\x{27E9}\x{2986}\x{300B}\x{3015}\x{301B}"#
             // problem with ranges should be fixed in newer Swift versions (see test: testRangesInRegexForNonLetters()):
-            #"\x{61}-\x{7A}\x{41}-\x{5A}\x{5C}-\x{5D}\x{7C}-\x{7D}\x{29}\x{2F}\x{2016}\x{2016}\x{2191}\x{2193}\x{2195}\x{21D1}\x{21D3}\x{21D5}\x{2309}\x{230B}\x{23B1}\x{27E9}\x{2986}\x{300B}\x{3015}\x{301B}"#
+            #"\x{61}-\x{7A}\x{41}-\x{5A}\x{29}\x{5D}\x{7D}\x{2F}\x{2016}\x{2016}\x{2191}\x{2193}\x{2195}\x{21D1}\x{21D3}\x{21D5}\x{2309}\x{230B}\x{23B1}\x{27E9}\x{2986}\x{300B}\x{3015}\x{301B}"#
         )
     }
     
