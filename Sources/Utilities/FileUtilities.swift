@@ -293,11 +293,11 @@ public extension URL {
     
     /// Add a postifx between the basename and the extension, separated by `.`, and
     /// maybe another additional extension.
-    func adding(postfix: String?, withAdditionalExtension additionalExtension: String? = nil) -> URL {
+    func adding(postfix: String?, withAdditionalExtension additionalExtension: String? = nil, extensionBeforePostfix: Bool = false) -> URL {
         return URL(fileURLWithPath: [
             self.deletingPathExtension().path,
-            postfix,
-            self.pathExtension,
+            extensionBeforePostfix ? self.pathExtension : postfix,
+            extensionBeforePostfix ? postfix : self.pathExtension,
             additionalExtension
         ].compactMap { $0 }.filter{ !$0.isEmpty }.joined(separator: "."))
     }
