@@ -680,7 +680,7 @@ public extension URL {
     }
     
     /// Adding a relative part like "../file".
-    mutating func adding(relativePath: String) -> URL {
+    func adding(relativePath: String) -> URL {
         var copy = self
         copy.add(relativePath: relativePath)
         return copy
