@@ -639,6 +639,10 @@ public class WritableFile {
         }
     }
     
+    public convenience init(url: URL, append: Bool = false, blocking: Bool = true) throws {
+        try self.init(path: url.osPath, append: append, blocking: blocking)
+    }
+    
     private let NEWLINE = "\n".data(using: .utf8)!
     
     public func write(_ message: String, newline: Bool = true) throws {
