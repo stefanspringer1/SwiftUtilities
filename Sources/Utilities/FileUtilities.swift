@@ -98,7 +98,7 @@ public extension URL {
     ///     - recursively: If the search should be done recursively. Else, only direct child files are searched.
     ///
     /// - Returns: The URLs of the found files as array.
-    func files(withPattern pattern: Regex<AnyRegexOutput>, excluding excludePattern: Regex<AnyRegexOutput>? = nil, findRecursively: Bool) throws -> [URL] {
+    func files(withPattern pattern: some RegexComponent, excluding excludePattern: (some RegexComponent)? = nil, findRecursively: Bool) throws -> [URL] {
         
         func toAdd(file: URL) throws -> Bool {
             if file.isFile {
