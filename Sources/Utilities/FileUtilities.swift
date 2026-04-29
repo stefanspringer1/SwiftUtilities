@@ -98,14 +98,55 @@ public extension URL {
     ///     - recursively: If the search should be done recursively. Else, only direct child files are searched.
     ///
     /// - Returns: The URLs of the found files as array.
-    func files(withPattern pattern: some RegexComponent, excluding excludePattern: (some RegexComponent)? = nil, findRecursively: Bool) throws -> [URL] {
+    func files(
+        withPattern pattern: some RegexComponent,
+        excluding excludePattern: some RegexComponent,
+        findRecursively: Bool
+    ) throws -> [URL] {
+        try files(
+            including: { $0.lastPathComponent.contains(pattern) },
+            excluding: { $0.lastPathComponent.contains(excludePattern) },
+            findRecursively: findRecursively
+        )
+    }
+    
+    /// Get files from an URL.
+    ///
+    /// - Parameters:
+    ///     - withPattern: Regular expression matching the file name (be sure to use a beginning `^` and
+    ///       a closing `$` when the whole match is desired).
+    ///    - recursively: If the search should be done recursively. Else, only direct child files are searched.
+    ///
+    /// - Returns: The URLs of the found files as array.
+    func files(
+        withPattern pattern: some RegexComponent,
+        findRecursively: Bool
+    ) throws -> [URL] {
+        try files(
+            including: { $0.lastPathComponent.contains(pattern) },
+            findRecursively: findRecursively
+        )
+    }
+    
+    /// Get files from an URL.
+    ///
+    /// - Parameters:
+    ///    - including: closure to check if an URL is to be included
+    ///    - excluding: closure to check if an URL is to be excluded
+    ///
+    /// - Returns: The URLs of the found files as array.
+    func files(
+        including: (URL) -> Bool,
+        excluding: ((URL) -> Bool)? = nil,
+        findRecursively: Bool
+    ) throws -> [URL] {
         
         func toAdd(file: URL) throws -> Bool {
             if file.isFile {
-                if let excludePattern {
-                    file.lastPathComponent.contains(pattern) && !file.lastPathComponent.contains(excludePattern)
+                if let excluding {
+                    including(file) && !excluding(file)
                 } else {
-                    file.lastPathComponent.contains(pattern)
+                    including(file)
                 }
             } else {
                 false
@@ -155,8 +196,20 @@ public extension URL {
         } else {
             excludePattern = nil
         }
-        let excludePatternRegex: Regex<AnyRegexOutput>? = if let excludePattern { try Regex(excludePattern) } else { nil }
-        return try files(withPattern: try Regex(pattern), excluding: excludePatternRegex, findRecursively: findRecursively)
+        let includePatternRegex = try Regex(pattern)
+        if let excludePattern {
+            let excludePatternRegex = try Regex(excludePattern)
+            return try files(
+                including: { $0.lastPathComponent.contains(includePatternRegex) },
+                excluding: { $0.lastPathComponent.contains(excludePatternRegex) },
+                findRecursively: findRecursively
+            )
+        } else {
+            return try files(
+                including: { $0.lastPathComponent.contains(includePatternRegex) },
+                findRecursively: findRecursively
+            )
+        }
     }
     
     /// Get the path as used on the current platform (with separator either `/` or `\` between the path components).
