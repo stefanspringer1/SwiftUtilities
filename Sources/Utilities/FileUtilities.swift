@@ -669,7 +669,7 @@ public class WritableFile {
 public extension URL {
     
     /// Add a relative part like "../file".
-    mutating func add(relativePath: String) {
+    mutating func append(relativePath: String) {
         for part in relativePath.split(separator: /[\/\\]/, omittingEmptySubsequences: true) {
             if part == ".." {
                 self.deleteLastPathComponent()
@@ -680,9 +680,9 @@ public extension URL {
     }
     
     /// Adding a relative part like "../file".
-    func adding(relativePath: String) -> URL {
+    func appending(relativePath: String) -> URL {
         var copy = self
-        copy.add(relativePath: relativePath)
+        copy.append(relativePath: relativePath)
         return copy
     }
     
