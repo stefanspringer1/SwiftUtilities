@@ -671,10 +671,10 @@ public extension URL {
     /// Add a relative part like "../file".
     mutating func append(relativePath: String) {
         for part in relativePath.split(separator: /[\/\\]/, omittingEmptySubsequences: true) {
-            if part == ".." {
-                self.deleteLastPathComponent()
-            } else {
-                self.append(component: part)
+            switch part {
+            case ".": break
+            case "..": self.deleteLastPathComponent()
+            default: self.append(component: part)
             }
         }
     }
